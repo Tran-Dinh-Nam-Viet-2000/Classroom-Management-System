@@ -28,14 +28,15 @@ namespace CMSFPTU_WebApi.Entities
         public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
         public virtual DbSet<Teacher> Teachers { get; set; }
+        public virtual DbSet<TeacherClass> TeacherClasses { get; set; }
         public virtual DbSet<TeacherSubject> TeacherSubjects { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-/*warning to protect potentially sensitive information in your connection string, you should move it out of source code. you can avoid scaffolding the connection string by using the name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. for more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?linkid=723263. */
-                optionsBuilder.UseSqlServer("Name=DefaultConnection");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=TRANDINHNAMVIET\\SQLEXPRESS;Initial Catalog=CMSFPTU;Persist Security Info=True;User ID=sa;Password=123");
             }
         }
 
@@ -398,6 +399,29 @@ namespace CMSFPTU_WebApi.Entities
                     .HasForeignKey(d => d.AccountId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__teacher__account__3B75D760");
+            });
+
+            modelBuilder.Entity<TeacherClass>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("teacher_class");
+
+                entity.Property(e => e.ClassId).HasColumnName("class_id");
+
+                entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
+
+                entity.HasOne(d => d.Class)
+                    .WithMany()
+                    .HasForeignKey(d => d.ClassId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__teacher_c__class__6FE99F9F");
+
+                entity.HasOne(d => d.Teacher)
+                    .WithMany()
+                    .HasForeignKey(d => d.TeacherId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__teacher_c__teach__6EF57B66");
             });
 
             modelBuilder.Entity<TeacherSubject>(entity =>
