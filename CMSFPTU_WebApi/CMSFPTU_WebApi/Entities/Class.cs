@@ -10,15 +10,13 @@ namespace CMSFPTU_WebApi.Entities
         public Class()
         {
             Requests = new HashSet<Request>();
-            Students = new HashSet<Student>();
+            Schedules = new HashSet<Schedule>();
         }
 
         public long ClassId { get; set; }
-        public long TeacherId { get; set; }
         public string ClassCode { get; set; }
 
-        public virtual Teacher Teacher { get; set; }
         public virtual ICollection<Request> Requests { get; set; }
-        public virtual ICollection<Student> Students { get; set; }
+        public virtual ICollection<Schedule> Schedules { get; set; }
     }
 }

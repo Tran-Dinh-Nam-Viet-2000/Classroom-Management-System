@@ -18,25 +18,24 @@ namespace CMSFPTU_WebApi.Entities
         }
 
         public virtual DbSet<Account> Accounts { get; set; }
-        public virtual DbSet<Admin> Admins { get; set; }
+        public virtual DbSet<AccountClass> AccountClasses { get; set; }
+        public virtual DbSet<AccountSubject> AccountSubjects { get; set; }
         public virtual DbSet<Class> Classes { get; set; }
         public virtual DbSet<ClassSubject> ClassSubjects { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
+        public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<RoomType> RoomTypes { get; set; }
+        public virtual DbSet<Schedule> Schedules { get; set; }
         public virtual DbSet<Slot> Slots { get; set; }
-        public virtual DbSet<Student> Students { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
-        public virtual DbSet<Teacher> Teachers { get; set; }
-        public virtual DbSet<TeacherClass> TeacherClasses { get; set; }
-        public virtual DbSet<TeacherSubject> TeacherSubjects { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=TRANDINHNAMVIET\\SQLEXPRESS;Initial Catalog=CMSFPTU;Persist Security Info=True;User ID=sa;Password=123");
+                optionsBuilder.UseSqlServer("Data Source=TRANDINHNAMVIET\\SQLEXPRESS;Initial Catalog=CMSFPTU;Persist Security Info=True;User ID=sa;Password=123;");
             }
         }
 
@@ -49,6 +48,14 @@ namespace CMSFPTU_WebApi.Entities
                 entity.ToTable("account");
 
                 entity.Property(e => e.AccountId).HasColumnName("account_id");
+
+                entity.Property(e => e.AccountCode)
+                    .IsRequired()
+                    .HasMaxLength(20)
+                    .IsUnicode(false)
+                    .HasColumnName("account_code");
+
+                entity.Property(e => e.AccountStatus).HasColumnName("account_status");
 
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
@@ -66,6 +73,10 @@ namespace CMSFPTU_WebApi.Entities
                     .IsUnicode(false)
                     .HasColumnName("email");
 
+                entity.Property(e => e.EnrollmentYear)
+                    .HasColumnType("date")
+                    .HasColumnName("enrollment_year");
+
                 entity.Property(e => e.Firstname)
                     .IsRequired()
                     .HasMaxLength(20)
@@ -73,6 +84,10 @@ namespace CMSFPTU_WebApi.Entities
                     .HasColumnName("firstname");
 
                 entity.Property(e => e.Gender).HasColumnName("gender");
+
+                entity.Property(e => e.HiringDate)
+                    .HasColumnType("date")
+                    .HasColumnName("hiring_date");
 
                 entity.Property(e => e.LastLogin)
                     .HasColumnType("datetime")
@@ -96,6 +111,8 @@ namespace CMSFPTU_WebApi.Entities
                     .IsUnicode(false)
                     .HasColumnName("phone");
 
+                entity.Property(e => e.RoleId).HasColumnName("role_id");
+
                 entity.Property(e => e.UpdateBy).HasColumnName("update_by");
 
                 entity.Property(e => e.UpdatedAt)
@@ -107,33 +124,58 @@ namespace CMSFPTU_WebApi.Entities
                     .HasMaxLength(20)
                     .IsUnicode(false)
                     .HasColumnName("username");
+
+                entity.HasOne(d => d.Role)
+                    .WithMany(p => p.Accounts)
+                    .HasForeignKey(d => d.RoleId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__account__role_id__38996AB5");
             });
 
-            modelBuilder.Entity<Admin>(entity =>
+            modelBuilder.Entity<AccountClass>(entity =>
             {
-                entity.ToTable("admin");
+                entity.HasNoKey();
 
-                entity.Property(e => e.AdminId).HasColumnName("admin_id");
+                entity.ToTable("account_class");
 
                 entity.Property(e => e.AccountId).HasColumnName("account_id");
 
-                entity.Property(e => e.AdminCode)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("admin_code");
-
-                entity.Property(e => e.AdminStatus).HasColumnName("admin_status");
-
-                entity.Property(e => e.HiringDate)
-                    .HasColumnType("date")
-                    .HasColumnName("hiring_date");
+                entity.Property(e => e.ClassId).HasColumnName("class_id");
 
                 entity.HasOne(d => d.Account)
-                    .WithMany(p => p.Admins)
+                    .WithMany()
                     .HasForeignKey(d => d.AccountId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__admin__account_i__38996AB5");
+                    .HasConstraintName("FK__account_c__accou__3C69FB99");
+
+                entity.HasOne(d => d.Class)
+                    .WithMany()
+                    .HasForeignKey(d => d.ClassId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__account_c__class__3D5E1FD2");
+            });
+
+            modelBuilder.Entity<AccountSubject>(entity =>
+            {
+                entity.HasNoKey();
+
+                entity.ToTable("account_subject");
+
+                entity.Property(e => e.AccountId).HasColumnName("account_id");
+
+                entity.Property(e => e.SubjectId).HasColumnName("subject_id");
+
+                entity.HasOne(d => d.Account)
+                    .WithMany()
+                    .HasForeignKey(d => d.AccountId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__account_s__accou__52593CB8");
+
+                entity.HasOne(d => d.Subject)
+                    .WithMany()
+                    .HasForeignKey(d => d.SubjectId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__account_s__subje__534D60F1");
             });
 
             modelBuilder.Entity<Class>(entity =>
@@ -147,14 +189,6 @@ namespace CMSFPTU_WebApi.Entities
                     .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("class_code");
-
-                entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
-
-                entity.HasOne(d => d.Teacher)
-                    .WithMany(p => p.Classes)
-                    .HasForeignKey(d => d.TeacherId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__class__teacher_i__3E52440B");
             });
 
             modelBuilder.Entity<ClassSubject>(entity =>
@@ -171,13 +205,13 @@ namespace CMSFPTU_WebApi.Entities
                     .WithMany()
                     .HasForeignKey(d => d.ClassId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__class_sub__class__5441852A");
+                    .HasConstraintName("FK__class_sub__class__4F7CD00D");
 
                 entity.HasOne(d => d.Subject)
                     .WithMany()
                     .HasForeignKey(d => d.SubjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__class_sub__subje__5535A963");
+                    .HasConstraintName("FK__class_sub__subje__5070F446");
             });
 
             modelBuilder.Entity<Request>(entity =>
@@ -192,16 +226,16 @@ namespace CMSFPTU_WebApi.Entities
 
                 entity.Property(e => e.ClassId).HasColumnName("class_id");
 
-                entity.Property(e => e.Description)
-                    .IsRequired()
-                    .IsUnicode(false)
-                    .HasColumnName("description");
-
                 entity.Property(e => e.RequestBy).HasColumnName("request_by");
 
                 entity.Property(e => e.RequestDate)
                     .HasColumnType("date")
                     .HasColumnName("request_date");
+
+                entity.Property(e => e.RequestDescription)
+                    .IsRequired()
+                    .IsUnicode(false)
+                    .HasColumnName("request_description");
 
                 entity.Property(e => e.RequestName)
                     .IsRequired()
@@ -219,37 +253,63 @@ namespace CMSFPTU_WebApi.Entities
 
                 entity.Property(e => e.SlotId).HasColumnName("slot_id");
 
+                entity.Property(e => e.Status).HasColumnName("status");
+
                 entity.Property(e => e.SubjectId).HasColumnName("subject_id");
 
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.Requests)
                     .HasForeignKey(d => d.AccountId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__request__account__4E88ABD4");
+                    .HasConstraintName("FK__request__account__49C3F6B7");
 
                 entity.HasOne(d => d.Class)
                     .WithMany(p => p.Requests)
                     .HasForeignKey(d => d.ClassId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__request__class_i__52593CB8");
+                    .HasConstraintName("FK__request__class_i__4D94879B");
 
                 entity.HasOne(d => d.Room)
                     .WithMany(p => p.Requests)
                     .HasForeignKey(d => d.RoomId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__request__room_id__5165187F");
+                    .HasConstraintName("FK__request__room_id__4CA06362");
 
                 entity.HasOne(d => d.Slot)
                     .WithMany(p => p.Requests)
                     .HasForeignKey(d => d.SlotId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__request__slot_id__5070F446");
+                    .HasConstraintName("FK__request__slot_id__4BAC3F29");
 
                 entity.HasOne(d => d.Subject)
                     .WithMany(p => p.Requests)
                     .HasForeignKey(d => d.SubjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__request__subject__4F7CD00D");
+                    .HasConstraintName("FK__request__subject__4AB81AF0");
+            });
+
+            modelBuilder.Entity<Role>(entity =>
+            {
+                entity.ToTable("role");
+
+                entity.Property(e => e.RoleId).HasColumnName("role_id");
+
+                entity.Property(e => e.RoleCode)
+                    .IsRequired()
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("role_code");
+
+                entity.Property(e => e.RoleDescription)
+                    .IsRequired()
+                    .IsUnicode(false)
+                    .HasColumnName("role_description");
+
+                entity.Property(e => e.RoleName)
+                    .IsRequired()
+                    .HasMaxLength(50)
+                    .IsUnicode(false)
+                    .HasColumnName("role_name");
             });
 
             modelBuilder.Entity<Room>(entity =>
@@ -268,13 +328,13 @@ namespace CMSFPTU_WebApi.Entities
                     .WithMany(p => p.Rooms)
                     .HasForeignKey(d => d.TypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__room__type_id__47DBAE45");
+                    .HasConstraintName("FK__room__type_id__46E78A0C");
             });
 
             modelBuilder.Entity<RoomType>(entity =>
             {
                 entity.HasKey(e => e.TypeId)
-                    .HasName("PK__roomType__2C000598B69CFE8C");
+                    .HasName("PK__roomType__2C00059882B0B73C");
 
                 entity.ToTable("roomType");
 
@@ -298,6 +358,49 @@ namespace CMSFPTU_WebApi.Entities
                     .HasColumnName("type_name");
             });
 
+            modelBuilder.Entity<Schedule>(entity =>
+            {
+                entity.ToTable("schedule");
+
+                entity.Property(e => e.ScheduleId).HasColumnName("schedule_id");
+
+                entity.Property(e => e.AccountId).HasColumnName("account_id");
+
+                entity.Property(e => e.ClassId).HasColumnName("class_id");
+
+                entity.Property(e => e.RoomId).HasColumnName("room_id");
+
+                entity.Property(e => e.ScheduleDate)
+                    .HasColumnType("date")
+                    .HasColumnName("schedule_date");
+
+                entity.Property(e => e.SlotId).HasColumnName("slot_id");
+
+                entity.HasOne(d => d.Account)
+                    .WithMany(p => p.Schedules)
+                    .HasForeignKey(d => d.AccountId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__schedule__accoun__5629CD9C");
+
+                entity.HasOne(d => d.Class)
+                    .WithMany(p => p.Schedules)
+                    .HasForeignKey(d => d.ClassId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__schedule__class___571DF1D5");
+
+                entity.HasOne(d => d.Room)
+                    .WithMany(p => p.Schedules)
+                    .HasForeignKey(d => d.RoomId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__schedule__room_i__5812160E");
+
+                entity.HasOne(d => d.Slot)
+                    .WithMany(p => p.Schedules)
+                    .HasForeignKey(d => d.SlotId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__schedule__slot_i__59063A47");
+            });
+
             modelBuilder.Entity<Slot>(entity =>
             {
                 entity.ToTable("slot");
@@ -311,41 +414,6 @@ namespace CMSFPTU_WebApi.Entities
                 entity.Property(e => e.StartTime)
                     .HasColumnType("time(0)")
                     .HasColumnName("start_time");
-            });
-
-            modelBuilder.Entity<Student>(entity =>
-            {
-                entity.ToTable("student");
-
-                entity.Property(e => e.StudentId).HasColumnName("student_id");
-
-                entity.Property(e => e.AccountId).HasColumnName("account_id");
-
-                entity.Property(e => e.ClassId).HasColumnName("class_id");
-
-                entity.Property(e => e.EnrollmentDate)
-                    .HasColumnType("date")
-                    .HasColumnName("enrollment_date");
-
-                entity.Property(e => e.StudentCode)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("student_code");
-
-                entity.Property(e => e.StudentStatus).HasColumnName("student_status");
-
-                entity.HasOne(d => d.Account)
-                    .WithMany(p => p.Students)
-                    .HasForeignKey(d => d.AccountId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__student__account__4AB81AF0");
-
-                entity.HasOne(d => d.Class)
-                    .WithMany(p => p.Students)
-                    .HasForeignKey(d => d.ClassId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__student__class_i__4BAC3F29");
             });
 
             modelBuilder.Entity<Subject>(entity =>
@@ -372,79 +440,6 @@ namespace CMSFPTU_WebApi.Entities
                     .HasColumnName("subject_name");
 
                 entity.Property(e => e.Unit).HasColumnName("unit");
-            });
-
-            modelBuilder.Entity<Teacher>(entity =>
-            {
-                entity.ToTable("teacher");
-
-                entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
-
-                entity.Property(e => e.AccountId).HasColumnName("account_id");
-
-                entity.Property(e => e.HiringDate)
-                    .HasColumnType("date")
-                    .HasColumnName("hiring_date");
-
-                entity.Property(e => e.TeacherCode)
-                    .IsRequired()
-                    .HasMaxLength(10)
-                    .IsUnicode(false)
-                    .HasColumnName("teacher_code");
-
-                entity.Property(e => e.TeacherStatus).HasColumnName("teacher_status");
-
-                entity.HasOne(d => d.Account)
-                    .WithMany(p => p.Teachers)
-                    .HasForeignKey(d => d.AccountId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__teacher__account__3B75D760");
-            });
-
-            modelBuilder.Entity<TeacherClass>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToTable("teacher_class");
-
-                entity.Property(e => e.ClassId).HasColumnName("class_id");
-
-                entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
-
-                entity.HasOne(d => d.Class)
-                    .WithMany()
-                    .HasForeignKey(d => d.ClassId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__teacher_c__class__6FE99F9F");
-
-                entity.HasOne(d => d.Teacher)
-                    .WithMany()
-                    .HasForeignKey(d => d.TeacherId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__teacher_c__teach__6EF57B66");
-            });
-
-            modelBuilder.Entity<TeacherSubject>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToTable("teacher_subject");
-
-                entity.Property(e => e.SubjectId).HasColumnName("subject_id");
-
-                entity.Property(e => e.TeacherId).HasColumnName("teacher_id");
-
-                entity.HasOne(d => d.Subject)
-                    .WithMany()
-                    .HasForeignKey(d => d.SubjectId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__teacher_s__subje__5812160E");
-
-                entity.HasOne(d => d.Teacher)
-                    .WithMany()
-                    .HasForeignKey(d => d.TeacherId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__teacher_s__teach__571DF1D5");
             });
 
             OnModelCreatingPartial(modelBuilder);

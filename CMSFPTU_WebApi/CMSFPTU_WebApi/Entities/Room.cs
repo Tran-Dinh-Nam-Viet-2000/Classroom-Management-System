@@ -10,6 +10,7 @@ namespace CMSFPTU_WebApi.Entities
         public Room()
         {
             Requests = new HashSet<Request>();
+            Schedules = new HashSet<Schedule>();
         }
 
         public long RoomId { get; set; }
@@ -19,5 +20,6 @@ namespace CMSFPTU_WebApi.Entities
 
         public virtual RoomType Type { get; set; }
         public virtual ICollection<Request> Requests { get; set; }
+        public virtual ICollection<Schedule> Schedules { get; set; }
     }
 }

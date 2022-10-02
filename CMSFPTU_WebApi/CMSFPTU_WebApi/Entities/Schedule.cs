@@ -5,16 +5,18 @@ using System.Collections.Generic;
 
 namespace CMSFPTU_WebApi.Entities
 {
-    public partial class Student
+    public partial class Schedule
     {
-        public long StudentId { get; set; }
+        public long ScheduleId { get; set; }
         public long AccountId { get; set; }
         public long ClassId { get; set; }
-        public string StudentCode { get; set; }
-        public bool StudentStatus { get; set; }
-        public DateTime EnrollmentDate { get; set; }
+        public long RoomId { get; set; }
+        public long SlotId { get; set; }
+        public DateTime ScheduleDate { get; set; }
 
         public virtual Account Account { get; set; }
         public virtual Class Class { get; set; }
+        public virtual Room Room { get; set; }
+        public virtual Slot Slot { get; set; }
     }
 }

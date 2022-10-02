@@ -5,14 +5,12 @@ using System.Collections.Generic;
 
 namespace CMSFPTU_WebApi.Entities
 {
-    public partial class Admin
+    public partial class AccountClass
     {
-        public long AdminId { get; set; }
         public long AccountId { get; set; }
-        public string AdminCode { get; set; }
-        public bool AdminStatus { get; set; }
-        public DateTime HiringDate { get; set; }
+        public long ClassId { get; set; }
 
         public virtual Account Account { get; set; }
+        public virtual Class Class { get; set; }
     }
 }

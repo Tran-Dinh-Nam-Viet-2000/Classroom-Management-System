@@ -10,7 +10,7 @@ namespace CMSFPTU_WebApi.Entities
         public long RequestId { get; set; }
         public long AccountId { get; set; }
         public string RequestName { get; set; }
-        public string Description { get; set; }
+        public string RequestDescription { get; set; }
         public bool RequestStatus { get; set; }
         public DateTime RequestDate { get; set; }
         public DateTime RequestTime { get; set; }
@@ -19,6 +19,7 @@ namespace CMSFPTU_WebApi.Entities
         public long SlotId { get; set; }
         public long RoomId { get; set; }
         public long ClassId { get; set; }
+        public bool Status { get; set; }
         public bool Active { get; set; }
 
         public virtual Account Account { get; set; }
