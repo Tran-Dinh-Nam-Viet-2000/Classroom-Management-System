@@ -1,4 +1,6 @@
 using CMSFPTU_WebApi.Entities;
+using CMSFPTU_WebApi.Services;
+using CMSFPTU_WebApi.Services.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -27,8 +29,10 @@ namespace CMSFPTU_WebApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            //Set connect Db
             services.AddDbContext<CMSFPTUContext>(options
                 => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IStatusServices, StatusService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

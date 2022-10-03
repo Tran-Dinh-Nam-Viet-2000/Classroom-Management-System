@@ -29,13 +29,13 @@ namespace CMSFPTU_WebApi.Entities
         public virtual DbSet<Schedule> Schedules { get; set; }
         public virtual DbSet<Slot> Slots { get; set; }
         public virtual DbSet<Subject> Subjects { get; set; }
+        public virtual DbSet<SystemStatus> SystemStatuses { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
             {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=TRANDINHNAMVIET\\SQLEXPRESS;Initial Catalog=CMSFPTU;Persist Security Info=True;User ID=sa;Password=123;");
+                optionsBuilder.UseSqlServer("Name=DefaultConnection");
             }
         }
 
@@ -130,6 +130,12 @@ namespace CMSFPTU_WebApi.Entities
                     .HasForeignKey(d => d.RoleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__account__role_id__38996AB5");
+
+                entity.HasOne(d => d.SystemStatus)
+                    .WithMany(p => p.Accounts)
+                    .HasForeignKey(d => d.SystemStatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__account__LK_Acco__71D1E811");
             });
 
             modelBuilder.Entity<AccountClass>(entity =>
@@ -440,6 +446,27 @@ namespace CMSFPTU_WebApi.Entities
                     .HasColumnName("subject_name");
 
                 entity.Property(e => e.Unit).HasColumnName("unit");
+            });
+
+            modelBuilder.Entity<SystemStatus>(entity =>
+            {
+                entity.ToTable("SystemStatus");
+
+                entity.Property(e => e.SystemStatusId).ValueGeneratedNever();
+
+                entity.Property(e => e.CreatedDate).HasColumnType("datetime");
+
+                entity.Property(e => e.Status)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))");
+
+                entity.Property(e => e.StatusCode)
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.StatusDescription)
+                    .HasMaxLength(255)
+                    .IsUnicode(false);
             });
 
             OnModelCreatingPartial(modelBuilder);

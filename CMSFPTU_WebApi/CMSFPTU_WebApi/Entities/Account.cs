@@ -32,8 +32,10 @@ namespace CMSFPTU_WebApi.Entities
         public DateTime? HiringDate { get; set; }
         public DateTime? EnrollmentYear { get; set; }
         public long RoleId { get; set; }
+        public int SystemStatusId { get; set; }
 
         public virtual Role Role { get; set; }
+        public virtual SystemStatus SystemStatus { get; set; }
         public virtual ICollection<Request> Requests { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
     }
