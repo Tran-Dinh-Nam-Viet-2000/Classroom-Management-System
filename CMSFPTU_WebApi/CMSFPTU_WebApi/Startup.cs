@@ -32,7 +32,10 @@ namespace CMSFPTU_WebApi
             //Set connect Db
             services.AddDbContext<CMSFPTUContext>(options
                 => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddScoped<IStatusServices, StatusService>();
+
+            //Register service
+            services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<IStatusService, StatusService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {

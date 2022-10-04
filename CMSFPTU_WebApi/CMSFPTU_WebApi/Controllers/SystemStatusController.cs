@@ -12,9 +12,9 @@ namespace CMSFPTU_WebApi.Controllers
     [ApiController]
     public class SystemStatusController : ControllerBase
     {
-        private readonly IStatusServices _statusServices;
+        private readonly IStatusService _statusServices;
 
-        public SystemStatusController(IStatusServices statusServices)
+        public SystemStatusController(IStatusService statusServices)
         {
             _statusServices = statusServices;
         }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CMSFPTU_WebApi.Services
 {
-    public class StatusService : IStatusServices
+    public class StatusService : IStatusService
     {
         private readonly CMSFPTUContext _dbContext;
 
