@@ -35,7 +35,6 @@ namespace CMSFPTU_WebApi
 
             //Register service
             services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<IStatusService, StatusService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
