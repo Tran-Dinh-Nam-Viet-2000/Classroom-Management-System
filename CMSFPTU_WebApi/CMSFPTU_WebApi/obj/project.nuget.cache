@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "3wmK8KuIJeVShzkpICjWG8Zrh/qP+gZndUlIuRj3ljUo+sNuSn5EkiLFjs47aUssaBJmmUpA+D9gpewKuff1lg==",
+  "dgSpecHash": "j1AmpGJMyEcZGs+e/1SjGmMiODvqnvg/jtecQC32lf/FwIA6vzBuKBoZFXiZKDBvSeSOb8ks+RE0Pjhv6Ha9fg==",
   "success": true,
   "projectFilePath": "C:\\Users\\Admin\\source\\repos\\CMSFPTU_BE\\CMSFPTU_WebApi\\CMSFPTU_WebApi\\CMSFPTU_WebApi.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Admin\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\Admin\\.nuget\\packages\\microsoft.data.sqlclient\\2.0.1\\microsoft.data.sqlclient.2.0.1.nupkg.sha512",

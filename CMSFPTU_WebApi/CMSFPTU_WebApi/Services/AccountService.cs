@@ -4,6 +4,7 @@ using CMSFPTU_WebApi.Models;
 using CMSFPTU_WebApi.Requests;
 using CMSFPTU_WebApi.Responses;
 using CMSFPTU_WebApi.Services.Interface;
+using CMSFPTU_WebApi.Utils;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -37,12 +38,11 @@ namespace CMSFPTU_WebApi.Services
                     RoleId = n.RoleId,
                     SystemStatusId = n.SystemStatusId,
                     UpdatedAt = n.UpdatedAt,
-                    Username = n.Username
                 }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).ToListAsync();
 
             return accounts;
         }
-        public async Task<ResponseApi> GetById(int id)
+        public async Task<ResponseApi> GetAccount(int id)
         {
             var getRecord = await _dbContext.Accounts
                 .Select(n => new AccountResponse
@@ -59,7 +59,6 @@ namespace CMSFPTU_WebApi.Services
                     RoleId = n.RoleId,
                     SystemStatusId = n.SystemStatusId,
                     UpdatedAt = n.UpdatedAt,
-                    Username = n.Username
                 }).FirstOrDefaultAsync(n => n.AccountId == id);
             if(getRecord == null || getRecord.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
@@ -81,21 +80,29 @@ namespace CMSFPTU_WebApi.Services
         }
         public async Task<ResponseApi> Create(AccountRequest account)
         {
+            var checkAccountCode = _dbContext.Accounts.FirstOrDefault(n => n.AccountCode == account.AccountCode);
+            var checkEmail = _dbContext.Accounts.FirstOrDefault(n => n.Email == account.Email);
             var createAccount = new Account
             {
                 AccountCode = account.AccountCode,
                 Email = account.Email,
                 Firstname = account.Firstname,
                 Lastname = account.Lastname,
-                Username = account.Username,
-                PasswordHash = account.PasswordHash,
+                PasswordHash = Md5.MD5Hash(account.PasswordHash),
                 RoleId = account.RoleId,
                 SystemStatusId = account.SystemStatusId,
                 Phone = account.Phone,
                 Gender = account.Gender,
                 CreatedAt = DateTime.Now,
             };
-
+            if (checkAccountCode != null || checkEmail != null)
+            {
+                return new ResponseApi
+                {
+                    Status = true,
+                    Message = "Account code or email is existed"
+                };
+            }
             _dbContext.Add(createAccount);
             await _dbContext.SaveChangesAsync();
 
@@ -124,7 +131,6 @@ namespace CMSFPTU_WebApi.Services
                 queryAccount.Email = updateAccount.Email;
                 queryAccount.Firstname = updateAccount.Firstname;
                 queryAccount.Lastname = updateAccount.Lastname;
-                queryAccount.Username = updateAccount.Username;
                 queryAccount.PasswordHash = updateAccount.PasswordHash;
                 queryAccount.RoleId = updateAccount.RoleId;
                 queryAccount.SystemStatusId = updateAccount.SystemStatusId;
@@ -204,7 +210,6 @@ namespace CMSFPTU_WebApi.Services
                     RoleId = n.RoleId,
                     SystemStatusId = n.SystemStatusId,
                     UpdatedAt = n.UpdatedAt,
-                    Username = n.Username
                 }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted).ToListAsync();
 
             return accounts;
@@ -227,7 +232,6 @@ namespace CMSFPTU_WebApi.Services
                     RoleId = n.RoleId,
                     SystemStatusId = n.SystemStatusId,
                     UpdatedAt = n.UpdatedAt,
-                    Username = n.Username
                 }).FirstOrDefaultAsync(n => n.AccountId == id);
             if (getRecordDeleted == null || getRecordDeleted.SystemStatusId == (int)LkSystemStatus.Active)
             {

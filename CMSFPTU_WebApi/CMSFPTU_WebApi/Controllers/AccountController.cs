@@ -28,10 +28,10 @@ namespace CMSFPTU_WebApi.Controllers
             return result;
         }
 
-        [HttpGet("get-by-id")]
-        public async Task<ResponseApi> GetById(int id)
+        [HttpGet("get-account")]
+        public async Task<ResponseApi> GetAccount(int id)
         {
-            var result = await _accountService.GetById(id);
+            var result = await _accountService.GetAccount(id);
             return result;
         }
 
@@ -54,7 +54,7 @@ namespace CMSFPTU_WebApi.Controllers
             var result = await _accountService.SoftDelete(id);
             return result;
         }
-        [HttpPost("retore")]
+        [HttpPost("restore")]
         public async Task<ResponseApi> Restore(int id)
         {
             var result = await _accountService.Restore(id);
