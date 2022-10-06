@@ -101,7 +101,7 @@ namespace CMSFPTU_WebApi.Entities
 
                 entity.Property(e => e.PasswordHash)
                     .IsRequired()
-                    .HasMaxLength(20)
+                    .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("password_hash");
 
@@ -118,12 +118,6 @@ namespace CMSFPTU_WebApi.Entities
                 entity.Property(e => e.UpdatedAt)
                     .HasColumnType("datetime")
                     .HasColumnName("updated_at");
-
-                entity.Property(e => e.Username)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false)
-                    .HasColumnName("username");
 
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Accounts)

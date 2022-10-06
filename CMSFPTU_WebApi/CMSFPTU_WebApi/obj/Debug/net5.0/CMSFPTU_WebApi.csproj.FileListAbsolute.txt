@@ -57,3 +57,4 @@ C:\Users\Admin\source\repos\CMSFPTU_BE\CMSFPTU_WebApi\CMSFPTU_WebApi\obj\Debug\n
 C:\Users\Admin\source\repos\CMSFPTU_BE\CMSFPTU_WebApi\CMSFPTU_WebApi\obj\Debug\net5.0\ref\CMSFPTU_WebApi.dll
 C:\Users\Admin\source\repos\CMSFPTU_BE\CMSFPTU_WebApi\CMSFPTU_WebApi\obj\Debug\net5.0\CMSFPTU_WebApi.pdb
 C:\Users\Admin\source\repos\CMSFPTU_BE\CMSFPTU_WebApi\CMSFPTU_WebApi\obj\Debug\net5.0\CMSFPTU_WebApi.genruntimeconfig.cache
+C:\Users\Admin\source\repos\CMSFPTU_BE\CMSFPTU_WebApi\CMSFPTU_WebApi\bin\Debug\net5.0\BCrypt.Net-Next.dll
