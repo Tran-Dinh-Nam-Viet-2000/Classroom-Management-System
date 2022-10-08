@@ -131,7 +131,7 @@ namespace CMSFPTU_WebApi.Services
                 queryAccount.Email = updateAccount.Email;
                 queryAccount.Firstname = updateAccount.Firstname;
                 queryAccount.Lastname = updateAccount.Lastname;
-                queryAccount.PasswordHash = updateAccount.PasswordHash;
+                queryAccount.PasswordHash = Md5.MD5Hash(updateAccount.PasswordHash);
                 queryAccount.RoleId = updateAccount.RoleId;
                 queryAccount.SystemStatusId = updateAccount.SystemStatusId;
                 queryAccount.Phone = updateAccount.Phone;

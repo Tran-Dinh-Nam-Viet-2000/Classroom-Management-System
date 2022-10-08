@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -18,7 +19,6 @@ namespace CMSFPTU_WebApi.Entities
         }
 
         public virtual DbSet<Account> Accounts { get; set; }
-        public virtual DbSet<AccountClass> AccountClasses { get; set; }
         public virtual DbSet<AccountSubject> AccountSubjects { get; set; }
         public virtual DbSet<Class> Classes { get; set; }
         public virtual DbSet<ClassSubject> ClassSubjects { get; set; }
@@ -100,7 +100,6 @@ namespace CMSFPTU_WebApi.Entities
                     .HasColumnName("lastname");
 
                 entity.Property(e => e.PasswordHash)
-                    .IsRequired()
                     .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("password_hash");
@@ -132,47 +131,27 @@ namespace CMSFPTU_WebApi.Entities
                     .HasConstraintName("FK__account__LK_Acco__71D1E811");
             });
 
-            modelBuilder.Entity<AccountClass>(entity =>
-            {
-                entity.HasNoKey();
-
-                entity.ToTable("account_class");
-
-                entity.Property(e => e.AccountId).HasColumnName("account_id");
-
-                entity.Property(e => e.ClassId).HasColumnName("class_id");
-
-                entity.HasOne(d => d.Account)
-                    .WithMany()
-                    .HasForeignKey(d => d.AccountId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__account_c__accou__3C69FB99");
-
-                entity.HasOne(d => d.Class)
-                    .WithMany()
-                    .HasForeignKey(d => d.ClassId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__account_c__class__3D5E1FD2");
-            });
-
             modelBuilder.Entity<AccountSubject>(entity =>
             {
-                entity.HasNoKey();
+                entity.HasKey(e => e.AccountSubjectId)
+                    .HasName("PK__account___C01C0CF110989F37");
 
                 entity.ToTable("account_subject");
+
+                entity.Property(e => e.AccountSubjectId).HasColumnName("account_subject_id");
 
                 entity.Property(e => e.AccountId).HasColumnName("account_id");
 
                 entity.Property(e => e.SubjectId).HasColumnName("subject_id");
 
                 entity.HasOne(d => d.Account)
-                    .WithMany()
+                    .WithMany(p => p.AccountSubjects)
                     .HasForeignKey(d => d.AccountId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__account_s__accou__52593CB8");
 
                 entity.HasOne(d => d.Subject)
-                    .WithMany()
+                    .WithMany(p => p.AccountSubjects)
                     .HasForeignKey(d => d.SubjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__account_s__subje__534D60F1");
@@ -184,11 +163,18 @@ namespace CMSFPTU_WebApi.Entities
 
                 entity.Property(e => e.ClassId).HasColumnName("class_id");
 
+                entity.Property(e => e.AccountId).HasColumnName("account_id");
+
                 entity.Property(e => e.ClassCode)
                     .IsRequired()
                     .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("class_code");
+
+                entity.HasOne(d => d.Account)
+                    .WithMany(p => p.Classes)
+                    .HasForeignKey(d => d.AccountId)
+                    .HasConstraintName("FK_AccountClass");
             });
 
             modelBuilder.Entity<ClassSubject>(entity =>
