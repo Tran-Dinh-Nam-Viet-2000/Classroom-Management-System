@@ -3,6 +3,7 @@ using CMSFPTU_WebApi.Services;
 using CMSFPTU_WebApi.Services.Interface;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -14,6 +15,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.IdentityModel.Logging;
 
 namespace CMSFPTU_WebApi
 {
@@ -33,8 +36,13 @@ namespace CMSFPTU_WebApi
             services.AddDbContext<CMSFPTUContext>(options
                 => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            //Register service
+            //Set Identity
+            IdentityModelEventSource.ShowPII = true;
+
+            //Register api service
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<ILoginService, LoginService>();
+
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
