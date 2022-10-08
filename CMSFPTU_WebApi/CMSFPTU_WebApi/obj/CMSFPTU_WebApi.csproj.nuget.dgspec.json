@@ -49,6 +49,14 @@
               "target": "Package",
               "version": "[4.0.3, )"
             },
+            "DotNetOpenAuth.InfoCard.UI": {
+              "target": "Package",
+              "version": "[4.3.4.13329, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[5.0.1, )"
+            },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
               "version": "[5.0.1, )"

@@ -9,6 +9,7 @@ namespace CMSFPTU_WebApi.Entities
     {
         public Subject()
         {
+            AccountSubjects = new HashSet<AccountSubject>();
             Requests = new HashSet<Request>();
         }
 
@@ -18,6 +19,7 @@ namespace CMSFPTU_WebApi.Entities
         public string Description { get; set; }
         public int Unit { get; set; }
 
+        public virtual ICollection<AccountSubject> AccountSubjects { get; set; }
         public virtual ICollection<Request> Requests { get; set; }
     }
 }
