@@ -73,7 +73,6 @@ namespace CMSFPTU_WebApi.Services
             var token = new JwtSecurityToken(_configuration["Tokens:Issuer"],
               _configuration["Tokens:Issuer"],
               claims,
-              expires: DateTime.Now.AddMinutes(120),
               signingCredentials: credentials);
             return new JwtSecurityTokenHandler().WriteToken(token);
         }

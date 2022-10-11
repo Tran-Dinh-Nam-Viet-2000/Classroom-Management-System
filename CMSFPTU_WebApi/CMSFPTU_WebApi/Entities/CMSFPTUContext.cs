@@ -1,5 +1,4 @@
 ﻿using System;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
@@ -33,10 +32,7 @@ namespace CMSFPTU_WebApi.Entities
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Name=DefaultConnection");
-            }
+            optionsBuilder.UseSqlServer("Name=DefaultConnection");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -133,9 +129,6 @@ namespace CMSFPTU_WebApi.Entities
 
             modelBuilder.Entity<AccountSubject>(entity =>
             {
-                entity.HasKey(e => e.AccountSubjectId)
-                    .HasName("PK__account___C01C0CF110989F37");
-
                 entity.ToTable("account_subject");
 
                 entity.Property(e => e.AccountSubjectId).HasColumnName("account_subject_id");
@@ -175,6 +168,12 @@ namespace CMSFPTU_WebApi.Entities
                     .WithMany(p => p.Classes)
                     .HasForeignKey(d => d.AccountId)
                     .HasConstraintName("FK_AccountClass");
+
+                entity.HasOne(d => d.SystemStatus)
+                    .WithMany(p => p.Classes)
+                    .HasForeignKey(d => d.SystemStatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__class__systemsta__2739D489");
             });
 
             modelBuilder.Entity<ClassSubject>(entity =>
@@ -306,9 +305,13 @@ namespace CMSFPTU_WebApi.Entities
 
                 entity.Property(e => e.RoomNumber).HasColumnName("room_number");
 
-                entity.Property(e => e.RoomStatus).HasColumnName("room_status");
-
                 entity.Property(e => e.TypeId).HasColumnName("type_id");
+
+                entity.HasOne(d => d.SystemStatus)
+                    .WithMany(p => p.Rooms)
+                    .HasForeignKey(d => d.SystemStatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__room__systemstat__282DF8C2");
 
                 entity.HasOne(d => d.Type)
                     .WithMany(p => p.Rooms)
@@ -326,10 +329,7 @@ namespace CMSFPTU_WebApi.Entities
 
                 entity.Property(e => e.TypeId).HasColumnName("type_id");
 
-                entity.Property(e => e.Description)
-                    .IsRequired()
-                    .IsUnicode(false)
-                    .HasColumnName("description");
+                entity.Property(e => e.Description).HasColumnName("description");
 
                 entity.Property(e => e.TypeCode)
                     .IsRequired()
@@ -338,9 +338,7 @@ namespace CMSFPTU_WebApi.Entities
                     .HasColumnName("type_code");
 
                 entity.Property(e => e.TypeName)
-                    .IsRequired()
-                    .HasMaxLength(20)
-                    .IsUnicode(false)
+                    .HasMaxLength(200)
                     .HasColumnName("type_name");
             });
 
@@ -426,6 +424,12 @@ namespace CMSFPTU_WebApi.Entities
                     .HasColumnName("subject_name");
 
                 entity.Property(e => e.Unit).HasColumnName("unit");
+
+                entity.HasOne(d => d.SystemStatus)
+                    .WithMany(p => p.Subjects)
+                    .HasForeignKey(d => d.SystemStatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__subject__systems__29221CFB");
             });
 
             modelBuilder.Entity<SystemStatus>(entity =>

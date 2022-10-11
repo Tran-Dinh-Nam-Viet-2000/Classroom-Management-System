@@ -10,6 +10,9 @@ namespace CMSFPTU_WebApi.Entities
         public SystemStatus()
         {
             Accounts = new HashSet<Account>();
+            Classes = new HashSet<Class>();
+            Rooms = new HashSet<Room>();
+            Subjects = new HashSet<Subject>();
         }
 
         public int SystemStatusId { get; set; }
@@ -19,5 +22,8 @@ namespace CMSFPTU_WebApi.Entities
         public DateTime CreatedDate { get; set; }
 
         public virtual ICollection<Account> Accounts { get; set; }
+        public virtual ICollection<Class> Classes { get; set; }
+        public virtual ICollection<Room> Rooms { get; set; }
+        public virtual ICollection<Subject> Subjects { get; set; }
     }
 }

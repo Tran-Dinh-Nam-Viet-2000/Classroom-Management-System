@@ -36,12 +36,22 @@ namespace CMSFPTU_WebApi
             services.AddDbContext<CMSFPTUContext>(options
                 => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            //Add Cors 
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000").AllowCredentials().AllowAnyHeader();
+                });
+            });
+
             //Set Identity
             IdentityModelEventSource.ShowPII = true;
 
             //Register api service
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ILoginService, LoginService>();
+            services.AddScoped<IRoomService, RoomService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -61,7 +71,7 @@ namespace CMSFPTU_WebApi
             }
 
             app.UseRouting();
-
+            app.UseCors();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

@@ -124,8 +124,7 @@ namespace CMSFPTU_WebApi.Services
                     Message = "Not found account with id " + id,
                 };
             }
-            //var queryAccount = await _dbContext.Accounts.FirstOrDefaultAsync(n => n.SystemStatus.StatusCode == "Active");
-            if (queryAccount != null)
+            else
             {
                 queryAccount.AccountCode = updateAccount.AccountCode;
                 queryAccount.Email = updateAccount.Email;
@@ -250,28 +249,6 @@ namespace CMSFPTU_WebApi.Services
                     Body = getRecordDeleted
                 };
             }
-        }
-
-        public async Task<ResponseApi> HardDelete(int id)
-        {
-            var data = _dbContext.Accounts.FirstOrDefault(n => n.AccountId == id);
-            if (data == null || data.SystemStatusId == (int)LkSystemStatus.Active)
-            {
-                return new ResponseApi
-                {
-                    Status = true,
-                    Message = "Account does not exist"
-                };
-            }
-            data.SystemStatusId = (int)LkSystemStatus.Deleted;
-            _dbContext.Remove(data);
-            await _dbContext.SaveChangesAsync();
-
-            return new ResponseApi
-            {
-                Status = true,
-                Message = "Hard deleted successfully"
-            };
         }
     }
 }

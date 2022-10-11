@@ -72,11 +72,5 @@ namespace CMSFPTU_WebApi.Controllers
             var result = await _accountService.GetRecordDeletedById(id);
             return result;
         }
-        [HttpDelete("hard-delete")]
-        public async Task<ResponseApi> HardDelete(int id)
-        {
-            var result = await _accountService.HardDelete(id);
-            return result;
-        }
     }
 }

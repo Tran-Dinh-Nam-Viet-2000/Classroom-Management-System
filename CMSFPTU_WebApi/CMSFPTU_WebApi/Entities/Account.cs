@@ -1,7 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -16,6 +14,7 @@ namespace CMSFPTU_WebApi.Entities
             Requests = new HashSet<Request>();
             Schedules = new HashSet<Schedule>();
         }
+
         public long AccountId { get; set; }
         public string AccountCode { get; set; }
         public string PasswordHash { get; set; }

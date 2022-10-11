@@ -20,6 +20,5 @@ namespace CMSFPTU_WebApi.Services.Interface
         //Function records deleted
         Task<IEnumerable<AccountResponse>> GetRecordDeleted();
         Task<ResponseApi> GetRecordDeletedById(int id);
-        Task<ResponseApi> HardDelete(int id);
     }
 }
