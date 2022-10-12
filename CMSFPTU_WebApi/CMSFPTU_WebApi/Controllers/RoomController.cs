@@ -59,16 +59,16 @@ namespace CMSFPTU_WebApi.Controllers
             var result = await _roomService.Restore(id);
             return result;
         }
-        [HttpGet("get-record-deleted")]
-        public async Task<IEnumerable<RoomResponse>> GetRecordDeleted()
+        [HttpGet("get-deleted")]
+        public async Task<IEnumerable<RoomResponse>> GetDeleted()
         {
-            var result = await _roomService.GetRecordDeleted();
+            var result = await _roomService.GetDeleted();
             return result;
         }
-        [HttpGet("get-record-deleted-by-id")]
-        public async Task<ResponseApi> GetRecordDeletedById(int id)
+        [HttpGet("get-room-deleted")]
+        public async Task<ResponseApi> GetRoomDeleted(int id)
         {
-            var result = await _roomService.RoomDetails(id);
+            var result = await _roomService.GetRoomDeleted(id);
             return result;
         }
     }

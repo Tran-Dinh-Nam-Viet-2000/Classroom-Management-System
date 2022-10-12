@@ -38,6 +38,7 @@ namespace CMSFPTU_WebApi.Services
                     RoleId = n.RoleId,
                     SystemStatusId = n.SystemStatusId,
                     UpdatedAt = n.UpdatedAt,
+                    ClassId = n.ClassId,
                 }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).ToListAsync();
 
             return accounts;
@@ -59,6 +60,7 @@ namespace CMSFPTU_WebApi.Services
                     RoleId = n.RoleId,
                     SystemStatusId = n.SystemStatusId,
                     UpdatedAt = n.UpdatedAt,
+                    ClassId = n.ClassId,
                 }).FirstOrDefaultAsync(n => n.AccountId == id);
             if(getRecord == null || getRecord.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
@@ -91,6 +93,7 @@ namespace CMSFPTU_WebApi.Services
                 PasswordHash = Md5.MD5Hash(account.PasswordHash),
                 RoleId = account.RoleId,
                 SystemStatusId = account.SystemStatusId,
+                ClassId = account.ClassId,
                 Phone = account.Phone,
                 Gender = account.Gender,
                 CreatedAt = DateTime.Now,
@@ -136,7 +139,7 @@ namespace CMSFPTU_WebApi.Services
                 queryAccount.Phone = updateAccount.Phone;
                 queryAccount.Gender = updateAccount.Gender;
                 queryAccount.UpdatedAt = DateTime.Now;
-
+                queryAccount.ClassId = updateAccount.ClassId;
                 await _dbContext.SaveChangesAsync();
             }
             
@@ -148,7 +151,7 @@ namespace CMSFPTU_WebApi.Services
             };
         }
 
-        public async Task<ResponseApi> SoftDelete(int id)
+        public async Task<ResponseApi> Delete(int id)
         {
             var data = _dbContext.Accounts.FirstOrDefault(n => n.AccountId == id);
             if (data == null || data.SystemStatusId == (int)LkSystemStatus.Deleted)
@@ -192,7 +195,7 @@ namespace CMSFPTU_WebApi.Services
             };
         }
 
-        public async Task<IEnumerable<AccountResponse>> GetRecordDeleted()
+        public async Task<IEnumerable<AccountResponse>> GetDeleted()
         {
             var accounts = await _dbContext.Accounts
                 .Select(n => new AccountResponse
@@ -209,12 +212,13 @@ namespace CMSFPTU_WebApi.Services
                     RoleId = n.RoleId,
                     SystemStatusId = n.SystemStatusId,
                     UpdatedAt = n.UpdatedAt,
+                    ClassId = n.ClassId,
                 }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted).ToListAsync();
 
             return accounts;
         }
 
-        public async Task<ResponseApi> GetRecordDeletedById(int id)
+        public async Task<ResponseApi> GetAccountDeleted(int id)
         {
             var getRecordDeleted = await _dbContext.Accounts
                 .Select(n => new AccountResponse
@@ -231,6 +235,7 @@ namespace CMSFPTU_WebApi.Services
                     RoleId = n.RoleId,
                     SystemStatusId = n.SystemStatusId,
                     UpdatedAt = n.UpdatedAt,
+                    ClassId = n.ClassId,
                 }).FirstOrDefaultAsync(n => n.AccountId == id);
             if (getRecordDeleted == null || getRecordDeleted.SystemStatusId == (int)LkSystemStatus.Active)
             {

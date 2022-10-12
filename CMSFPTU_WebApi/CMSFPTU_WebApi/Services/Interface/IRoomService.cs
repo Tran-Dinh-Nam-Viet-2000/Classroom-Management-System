@@ -15,8 +15,8 @@ namespace CMSFPTU_WebApi.Services.Interface
         Task<ResponseApi> Update(int id, RoomRequest roomRequest);
         Task<ResponseApi> Delete(int? id);
         //Record deleted
-        Task<IEnumerable<RoomResponse>> GetRecordDeleted();
-        Task<ResponseApi> RoomDetails(int id);
+        Task<IEnumerable<RoomResponse>> GetDeleted();
+        Task<ResponseApi> GetRoomDeleted(int id);
         Task<ResponseApi> Restore(int? id);
     }
 }

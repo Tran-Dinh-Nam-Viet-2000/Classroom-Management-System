@@ -134,7 +134,7 @@ namespace CMSFPTU_WebApi.Services
             };
         }
 
-        public async Task<IEnumerable<RoomResponse>> GetRecordDeleted()
+        public async Task<IEnumerable<RoomResponse>> GetDeleted()
         {
             var rooms = await _dbContext.Rooms
                 .Select(n => new RoomResponse
@@ -147,7 +147,7 @@ namespace CMSFPTU_WebApi.Services
 
             return rooms;
         }
-        public async Task<ResponseApi> RoomDetails(int id)
+        public async Task<ResponseApi> GetRoomDeleted(int id)
         {
             var getRoom = await _dbContext.Rooms
                 .Select(n => new RoomResponse
@@ -179,7 +179,7 @@ namespace CMSFPTU_WebApi.Services
         public async Task<ResponseApi> Restore(int? id)
         {
             var room = await _dbContext.Rooms.FirstOrDefaultAsync(n => n.RoomId == id);
-            if (id == null || room.SystemStatusId == (int)LkSystemStatus.Active)
+            if (room == null || room.SystemStatusId == (int)LkSystemStatus.Active)
             {
                 return new ResponseApi
                 {

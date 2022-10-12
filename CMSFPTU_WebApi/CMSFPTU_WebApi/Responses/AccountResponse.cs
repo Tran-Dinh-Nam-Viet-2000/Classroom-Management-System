@@ -19,5 +19,6 @@ namespace CMSFPTU_WebApi.Responses
         public DateTime? UpdatedAt { get; set; }
         public long RoleId { get; set; }
         public int SystemStatusId { get; set; }
+        public long? ClassId { get; set; }
     }
 }

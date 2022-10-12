@@ -15,10 +15,10 @@ namespace CMSFPTU_WebApi.Services.Interface
         Task<ResponseApi> GetAccount(int id);
         Task<ResponseApi> Create(AccountRequest accountRequest);
         Task<ResponseApi> Update(int id, AccountRequest updateAccount);
-        Task<ResponseApi> SoftDelete(int id);
+        Task<ResponseApi> Delete(int id);
         Task<ResponseApi> Restore(int id);
         //Function records deleted
-        Task<IEnumerable<AccountResponse>> GetRecordDeleted();
-        Task<ResponseApi> GetRecordDeletedById(int id);
+        Task<IEnumerable<AccountResponse>> GetDeleted();
+        Task<ResponseApi> GetAccountDeleted(int id);
     }
 }

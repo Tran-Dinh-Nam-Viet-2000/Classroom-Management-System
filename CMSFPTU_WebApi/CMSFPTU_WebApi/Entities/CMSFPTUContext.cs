@@ -32,7 +32,10 @@ namespace CMSFPTU_WebApi.Entities
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Name=DefaultConnection");
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer("Name=DefaultConnection");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -52,6 +55,8 @@ namespace CMSFPTU_WebApi.Entities
                     .HasColumnName("account_code");
 
                 entity.Property(e => e.AccountStatus).HasColumnName("account_status");
+
+                entity.Property(e => e.ClassId).HasColumnName("class_id");
 
                 entity.Property(e => e.CreatedAt)
                     .HasColumnType("datetime")
@@ -114,6 +119,11 @@ namespace CMSFPTU_WebApi.Entities
                     .HasColumnType("datetime")
                     .HasColumnName("updated_at");
 
+                entity.HasOne(d => d.Class)
+                    .WithMany(p => p.Accounts)
+                    .HasForeignKey(d => d.ClassId)
+                    .HasConstraintName("FK_AccountClass");
+
                 entity.HasOne(d => d.Role)
                     .WithMany(p => p.Accounts)
                     .HasForeignKey(d => d.RoleId)
@@ -156,18 +166,11 @@ namespace CMSFPTU_WebApi.Entities
 
                 entity.Property(e => e.ClassId).HasColumnName("class_id");
 
-                entity.Property(e => e.AccountId).HasColumnName("account_id");
-
                 entity.Property(e => e.ClassCode)
                     .IsRequired()
                     .HasMaxLength(10)
                     .IsUnicode(false)
                     .HasColumnName("class_code");
-
-                entity.HasOne(d => d.Account)
-                    .WithMany(p => p.Classes)
-                    .HasForeignKey(d => d.AccountId)
-                    .HasConstraintName("FK_AccountClass");
 
                 entity.HasOne(d => d.SystemStatus)
                     .WithMany(p => p.Classes)

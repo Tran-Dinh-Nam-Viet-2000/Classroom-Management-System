@@ -48,10 +48,10 @@ namespace CMSFPTU_WebApi.Controllers
             var result = await _accountService.Update(id, updateAccount);
             return result;
         }
-        [HttpDelete("soft-delete")]
-        public async Task<ResponseApi> SoftDelete(int id)
+        [HttpDelete("delete")]
+        public async Task<ResponseApi> Delete(int id)
         {
-            var result = await _accountService.SoftDelete(id);
+            var result = await _accountService.Delete(id);
             return result;
         }
         [HttpPost("restore")]
@@ -60,16 +60,16 @@ namespace CMSFPTU_WebApi.Controllers
             var result = await _accountService.Restore(id);
             return result;
         }
-        [HttpGet("is-deleted")]
-        public async Task<IEnumerable<AccountResponse>> GetRecordDeleted()
+        [HttpGet("get-deleted")]
+        public async Task<IEnumerable<AccountResponse>> GetDeleted()
         {
-            var result = await _accountService.GetRecordDeleted();
+            var result = await _accountService.GetDeleted();
             return result;
         }
-        [HttpGet("get-record-deleted-by-id")]
-        public async Task<ResponseApi> GetRecordDeletedById(int id)
+        [HttpGet("get-account-deleted")]
+        public async Task<ResponseApi> GetAccountDeleted(int id)
         {
-            var result = await _accountService.GetRecordDeletedById(id);
+            var result = await _accountService.GetAccountDeleted(id);
             return result;
         }
     }
