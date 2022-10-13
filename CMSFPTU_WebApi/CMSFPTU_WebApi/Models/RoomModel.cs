@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CMSFPTU_WebApi.Models
 {
-    public class RoomModels
+    public class RoomModel
     {
         public int RoomNumber { get; set; }
         public int SystemStatusId { get; set; }

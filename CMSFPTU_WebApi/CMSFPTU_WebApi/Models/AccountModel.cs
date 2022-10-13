@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CMSFPTU_WebApi.Models
 {
-    public class AccountModels
+    public class AccountModel
     {
         public string AccountCode { get; set; }
         public string PasswordHash { get; set; }

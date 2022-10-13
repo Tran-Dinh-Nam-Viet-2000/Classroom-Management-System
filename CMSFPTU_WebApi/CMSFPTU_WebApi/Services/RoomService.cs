@@ -46,7 +46,7 @@ namespace CMSFPTU_WebApi.Services
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Room does not exist"
                 };
             }
@@ -67,8 +67,8 @@ namespace CMSFPTU_WebApi.Services
             {
                 return new ResponseApi
                 {
-                    Status = true,
-                    Message = "Room is not correct"
+                    Status = false,
+                    Message = "Room already existed"
                 };
             }
             var createRoom = new Room
@@ -93,7 +93,7 @@ namespace CMSFPTU_WebApi.Services
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Room does not exist"
                 };
             } else
@@ -111,14 +111,14 @@ namespace CMSFPTU_WebApi.Services
                 Body = checkRoom
             };
         }
-        public async Task<ResponseApi> Delete(int? id)
+        public async Task<ResponseApi> Delete(int id)
         {
             var room = await _dbContext.Rooms.FirstOrDefaultAsync(n => n.RoomId == id);
-            if (id == null || room.SystemStatusId == (int)LkSystemStatus.Deleted)
+            if (room.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Room does not exist"
                 };
             }
@@ -161,7 +161,7 @@ namespace CMSFPTU_WebApi.Services
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Room does not exist"
                 };
             }
@@ -176,14 +176,14 @@ namespace CMSFPTU_WebApi.Services
             }
         }
 
-        public async Task<ResponseApi> Restore(int? id)
+        public async Task<ResponseApi> Restore(int id)
         {
             var room = await _dbContext.Rooms.FirstOrDefaultAsync(n => n.RoomId == id);
             if (room == null || room.SystemStatusId == (int)LkSystemStatus.Active)
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Room does not exist"
                 };
             }

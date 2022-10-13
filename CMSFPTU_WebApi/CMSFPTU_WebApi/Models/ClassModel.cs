@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CMSFPTU_WebApi.Models
 {
-    public class ClassModels
+    public class ClassModel
     {
         public string ClassCode { get; set; }
         public int SystemStatusId { get; set; }

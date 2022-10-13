@@ -409,10 +409,7 @@ namespace CMSFPTU_WebApi.Entities
 
                 entity.Property(e => e.SubjectId).HasColumnName("subject_id");
 
-                entity.Property(e => e.Description)
-                    .IsRequired()
-                    .IsUnicode(false)
-                    .HasColumnName("description");
+                entity.Property(e => e.Description).HasColumnName("description");
 
                 entity.Property(e => e.SubjectCode)
                     .IsRequired()

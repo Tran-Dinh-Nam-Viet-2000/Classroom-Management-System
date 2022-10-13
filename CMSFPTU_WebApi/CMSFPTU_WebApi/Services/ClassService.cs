@@ -46,7 +46,7 @@ namespace CMSFPTU_WebApi.Services
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Class does not exist"
                 };
             }
@@ -68,7 +68,7 @@ namespace CMSFPTU_WebApi.Services
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Class already exists"
                 };
             }
@@ -94,7 +94,7 @@ namespace CMSFPTU_WebApi.Services
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Class does not exist"
                 };
             }
@@ -112,14 +112,14 @@ namespace CMSFPTU_WebApi.Services
             };
         }
 
-        public async Task<ResponseApi> Delete(int? id)
+        public async Task<ResponseApi> Delete(int id)
         {
             var checkClass = await _dbContext.Classes.FirstOrDefaultAsync(n => n.ClassId == id);
-            if (id == null || checkClass == null || checkClass.SystemStatusId == (int)LkSystemStatus.Deleted)
+            if (checkClass == null || checkClass.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Class does not exist"
                 };
             }
@@ -162,7 +162,7 @@ namespace CMSFPTU_WebApi.Services
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Class does not exist"
                 };
             }
@@ -177,14 +177,14 @@ namespace CMSFPTU_WebApi.Services
             }
         }
 
-        public async Task<ResponseApi> Restore(int? id)
+        public async Task<ResponseApi> Restore(int id)
         {
             var checkClass = await _dbContext.Classes.FirstOrDefaultAsync(n => n.ClassId == id);
-            if (id == null || checkClass == null || checkClass.SystemStatusId == (int)LkSystemStatus.Active)
+            if (checkClass == null || checkClass.SystemStatusId == (int)LkSystemStatus.Active)
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Class does not exist"
                 };
             }

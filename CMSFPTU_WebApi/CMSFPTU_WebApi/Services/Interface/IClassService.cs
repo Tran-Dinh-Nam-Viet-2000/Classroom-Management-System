@@ -13,10 +13,10 @@ namespace CMSFPTU_WebApi.Services.Interface
         Task<ResponseApi> GetClass(int id);
         Task<ResponseApi> Create(ClassRequest classRequest);
         Task<ResponseApi> Update(int id, ClassRequest classRequest);
-        Task<ResponseApi> Delete(int? id);
+        Task<ResponseApi> Delete(int id);
         //Record deleted
         Task<IEnumerable<ClassResponse>> GetDeleted();
         Task<ResponseApi> GetClassDeleted(int id);
-        Task<ResponseApi> Restore(int? id);
+        Task<ResponseApi> Restore(int id);
     }
 }

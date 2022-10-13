@@ -66,7 +66,7 @@ namespace CMSFPTU_WebApi.Services
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Account does not exist"
                 };
             }
@@ -102,7 +102,7 @@ namespace CMSFPTU_WebApi.Services
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Account code or email is existed"
                 };
             }
@@ -123,7 +123,7 @@ namespace CMSFPTU_WebApi.Services
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Not found account with id " + id,
                 };
             }
@@ -158,7 +158,7 @@ namespace CMSFPTU_WebApi.Services
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Account does not exist"
                 };
             }
@@ -180,7 +180,7 @@ namespace CMSFPTU_WebApi.Services
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Account does not exist"
                 };
             }
@@ -241,7 +241,7 @@ namespace CMSFPTU_WebApi.Services
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = "Account does not exist"
                 };
             }
