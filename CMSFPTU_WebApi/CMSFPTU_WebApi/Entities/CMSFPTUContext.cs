@@ -54,8 +54,6 @@ namespace CMSFPTU_WebApi.Entities
                     .IsUnicode(false)
                     .HasColumnName("account_code");
 
-                entity.Property(e => e.AccountStatus).HasColumnName("account_status");
-
                 entity.Property(e => e.ClassId).HasColumnName("class_id");
 
                 entity.Property(e => e.CreatedAt)
@@ -230,8 +228,6 @@ namespace CMSFPTU_WebApi.Entities
                     .HasMaxLength(50)
                     .IsUnicode(false)
                     .HasColumnName("request_name");
-
-                entity.Property(e => e.RequestStatus).HasColumnName("request_status");
 
                 entity.Property(e => e.RequestTime)
                     .HasColumnType("datetime")

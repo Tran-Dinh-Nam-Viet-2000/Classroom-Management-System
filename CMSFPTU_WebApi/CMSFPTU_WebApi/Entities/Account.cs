@@ -28,7 +28,6 @@ namespace CMSFPTU_WebApi.Entities
         public DateTime? UpdatedAt { get; set; }
         public long? UpdateBy { get; set; }
         public DateTime? LastLogin { get; set; }
-        public bool AccountStatus { get; set; }
         public DateTime? HiringDate { get; set; }
         public DateTime? EnrollmentYear { get; set; }
         public long RoleId { get; set; }
