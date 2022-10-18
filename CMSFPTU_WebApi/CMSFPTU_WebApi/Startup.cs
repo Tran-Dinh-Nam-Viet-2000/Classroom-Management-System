@@ -39,15 +39,7 @@ namespace CMSFPTU_WebApi
             //Add Cors 
             services.AddCors(options =>
             {
-                options.AddDefaultPolicy(builder =>
-                {
-                    builder.WithOrigins("http://localhost:3000").AllowCredentials().AllowAnyHeader();
-                });
-            });
-            services.AddCors(options =>
-            {
-                options.AddPolicy("AllowAllOrigins",
-                    builder =>
+                options.AddDefaultPolicy( builder =>
                     {
                         builder.AllowAnyOrigin();
                         builder.AllowAnyHeader();
