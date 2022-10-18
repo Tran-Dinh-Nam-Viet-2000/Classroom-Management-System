@@ -38,15 +38,6 @@ namespace CMSFPTU_WebApi.Services
         
         public async Task<ResponseApi> GetSubject(int id)
         {
-            var checkSubject = await _dbContext.Subjects.FirstOrDefaultAsync(n => n.SubjectId == id);
-            if (checkSubject == null || checkSubject.SystemStatusId == (int)LkSystemStatus.Deleted)
-            {
-                return new ResponseApi
-                {
-                    Status = false,
-                    Message = Messages.SubjectIsNull
-                };
-            }
             var subject = await _dbContext.Subjects
                 .Select(n => new SubjectResponse
                 {
@@ -54,14 +45,24 @@ namespace CMSFPTU_WebApi.Services
                     SubjectCode = n.SubjectCode,
                     SubjectName = n.SubjectName,
                     SystemStatusId = n.SystemStatusId
-                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).ToListAsync();
-
-            return new ResponseApi
+                }).FirstOrDefaultAsync(n => n.SubjectId == id);
+            if (subject == null || subject.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
-                Status = true,
-                Message = Messages.DataIsNotNull,
-                Body = subject,
-            };
+                return new ResponseApi
+                {
+                    Status = false,
+                    Message = Messages.SubjectIsNull
+                };
+            }
+            else
+            {
+                return new ResponseApi
+                {
+                    Status = true,
+                    Message = Messages.DataIsNotNull,
+                    Body = subject
+                };
+            }
         }
 
         public async Task<ResponseApi> Create(SubjectRequest subjectRequest)
