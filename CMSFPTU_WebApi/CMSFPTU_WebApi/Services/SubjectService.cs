@@ -1,4 +1,5 @@
-﻿using CMSFPTU_WebApi.Entities;
+﻿using CMSFPTU_WebApi.Constants;
+using CMSFPTU_WebApi.Entities;
 using CMSFPTU_WebApi.Enums;
 using CMSFPTU_WebApi.Requests;
 using CMSFPTU_WebApi.Responses;
@@ -43,7 +44,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Subject does not exist"
+                    Message = Messages.SubjectIsNull
                 };
             }
             var subject = await _dbContext.Subjects
@@ -58,7 +59,7 @@ namespace CMSFPTU_WebApi.Services
             return new ResponseApi
             {
                 Status = true,
-                Message = "Success",
+                Message = Messages.DataIsNotNull,
                 Body = subject,
             };
         }
@@ -71,7 +72,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Subject already existed"
+                    Message = Messages.SubjectAlreadyExists
                 };
             }
             var create = new Subject
@@ -86,7 +87,7 @@ namespace CMSFPTU_WebApi.Services
             return new ResponseApi
             {
                 Status = true,
-                Message = "Successfully created",
+                Message = Messages.SuccessfullyAddedNew,
                 Body = create
             };
         }
@@ -99,7 +100,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Subject does not exist"
+                    Message = Messages.SubjectIsNull
                 };
             }
             else
@@ -112,7 +113,7 @@ namespace CMSFPTU_WebApi.Services
             return new ResponseApi
             {
                 Status = true,
-                Message = "Successfully updated",
+                Message = Messages.SuccessfullyUpdated,
             };
         }
 
@@ -124,7 +125,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Subject does not exist"
+                    Message = Messages.SubjectIsNull
                 };
             }
             else
@@ -136,7 +137,7 @@ namespace CMSFPTU_WebApi.Services
             return new ResponseApi
             {
                 Status = true,
-                Message = "Successfully deleted",
+                Message = Messages.SuccessfullyDeleted,
             };
         }
 
@@ -162,7 +163,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Subject does not exist"
+                    Message = Messages.SubjectIsNull
                 };
             }
             var subject = await _dbContext.Subjects
@@ -177,7 +178,7 @@ namespace CMSFPTU_WebApi.Services
             return new ResponseApi
             {
                 Status = true,
-                Message = "Success",
+                Message = Messages.DataIsNotNull,
                 Body = subject,
             };
         }
@@ -190,7 +191,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Subject does not exist"
+                    Message = Messages.SubjectIsNull
                 };
             }
             else
@@ -202,7 +203,7 @@ namespace CMSFPTU_WebApi.Services
             return new ResponseApi
             {
                 Status = true,
-                Message = "Successfully deleted",
+                Message = Messages.SuccessfullyRestored
             };
         }
     }

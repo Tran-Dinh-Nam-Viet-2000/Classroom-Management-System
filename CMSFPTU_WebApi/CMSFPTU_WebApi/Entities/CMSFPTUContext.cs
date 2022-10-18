@@ -339,6 +339,11 @@ namespace CMSFPTU_WebApi.Entities
                 entity.Property(e => e.TypeName)
                     .HasMaxLength(200)
                     .HasColumnName("type_name");
+
+                entity.HasOne(d => d.SystemStatus)
+                    .WithMany(p => p.RoomTypes)
+                    .HasForeignKey(d => d.SystemStatusId)
+                    .HasConstraintName("FK__roomType__system__4D5F7D71");
             });
 
             modelBuilder.Entity<Schedule>(entity =>

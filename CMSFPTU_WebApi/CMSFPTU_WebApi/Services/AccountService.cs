@@ -1,4 +1,5 @@
-﻿using CMSFPTU_WebApi.Entities;
+﻿using CMSFPTU_WebApi.Constants;
+using CMSFPTU_WebApi.Entities;
 using CMSFPTU_WebApi.Enums;
 using CMSFPTU_WebApi.Models;
 using CMSFPTU_WebApi.Requests;
@@ -67,7 +68,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Account does not exist"
+                    Message = Messages.AccountIsNull
                 };
             }
             else
@@ -75,7 +76,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = true,
-                    Message = "Success",
+                    Message = Messages.DataIsNotNull,
                     Body = getRecord
                 };
             }
@@ -103,7 +104,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Account code or email is existed"
+                    Message = Messages.AccountAlreadyExists,
                 };
             }
             _dbContext.Add(createAccount);
@@ -112,7 +113,7 @@ namespace CMSFPTU_WebApi.Services
             return new ResponseApi
             {
                 Status = true,
-                Message = "Account added successfully",
+                Message = Messages.SuccessfullyAddedNew,
                 Body = createAccount
             };
         }
@@ -124,7 +125,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Not found account with id " + id,
+                    Message = Messages.AccountIsNull,
                 };
             }
             else
@@ -146,7 +147,7 @@ namespace CMSFPTU_WebApi.Services
             return new ResponseApi
             {
                 Status = true,
-                Message = "Update account is success",
+                Message = Messages.SuccessfullyUpdated,
                 Body = queryAccount
             };
         }
@@ -159,7 +160,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Account does not exist"
+                    Message = Messages.AccountIsNull,
                 };
             }
             data.SystemStatusId = (int)LkSystemStatus.Deleted;
@@ -169,7 +170,7 @@ namespace CMSFPTU_WebApi.Services
             return new ResponseApi
             {
                 Status = true,
-                Message = "Delete account successfully",
+                Message = Messages.SuccessfullyDeleted,
             };
         }
 
@@ -181,7 +182,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Account does not exist"
+                    Message = Messages.AccountIsNull,
                 };
             }
             data.SystemStatusId = (int)LkSystemStatus.Active;
@@ -191,7 +192,7 @@ namespace CMSFPTU_WebApi.Services
             return new ResponseApi
             {
                 Status = true,
-                Message = "Restore account successfully",
+                Message = Messages.SuccessfullyRestored,
             };
         }
 
@@ -242,7 +243,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Account does not exist"
+                    Message = Messages.AccountIsNull,
                 };
             }
             else
@@ -250,7 +251,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = true,
-                    Message = "Success",
+                    Message = Messages.DataIsNotNull,
                     Body = getRecordDeleted
                 };
             }

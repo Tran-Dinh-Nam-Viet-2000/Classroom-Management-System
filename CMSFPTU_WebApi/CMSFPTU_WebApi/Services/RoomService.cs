@@ -1,4 +1,5 @@
-﻿using CMSFPTU_WebApi.Entities;
+﻿using CMSFPTU_WebApi.Constants;
+using CMSFPTU_WebApi.Entities;
 using CMSFPTU_WebApi.Enums;
 using CMSFPTU_WebApi.Requests;
 using CMSFPTU_WebApi.Responses;
@@ -34,7 +35,7 @@ namespace CMSFPTU_WebApi.Services
 
         public async Task<ResponseApi> GetRoom(int id)
         {
-            var getRoom = await _dbContext.Rooms
+            var room = await _dbContext.Rooms
                 .Select(n => new RoomResponse
                 {
                     RoomId = n.RoomId,
@@ -42,12 +43,12 @@ namespace CMSFPTU_WebApi.Services
                     SystemStatusId = n.SystemStatusId,
                     TypeId = n.TypeId
                 }).FirstOrDefaultAsync(n => n.RoomId == id);
-            if (getRoom == null || getRoom.SystemStatusId == (int)LkSystemStatus.Deleted)
+            if (room == null || room.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Room does not exist"
+                    Message = Messages.RoomIsNull,
                 };
             }
             else
@@ -55,8 +56,8 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = true,
-                    Message = "Success",
-                    Body = getRoom
+                    Message = Messages.DataIsNotNull,
+                    Body = room
                 };
             }
         }
@@ -68,7 +69,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Room already existed"
+                    Message = Messages.RoomAlreadyExists,
                 };
             }
             var createRoom = new Room
@@ -82,7 +83,7 @@ namespace CMSFPTU_WebApi.Services
             return new ResponseApi
             {
                 Status = true,
-                Message = "Successfully created",
+                Message = Messages.SuccessfullyAddedNew,
             };           
         }
 
@@ -94,7 +95,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Room does not exist"
+                    Message = Messages.RoomIsNull,
                 };
             } else
             {
@@ -107,7 +108,7 @@ namespace CMSFPTU_WebApi.Services
             return new ResponseApi
             {
                 Status = true,
-                Message = "Successfully updated",
+                Message = Messages.SuccessfullyUpdated,
                 Body = checkRoom
             };
         }
@@ -119,7 +120,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Room does not exist"
+                    Message = Messages.RoomIsNull,
                 };
             }
             else
@@ -130,7 +131,7 @@ namespace CMSFPTU_WebApi.Services
             return new ResponseApi
             {
                 Status = true,
-                Message = "Successfully delete",
+                Message = Messages.SuccessfullyDeleted,
             };
         }
 
@@ -157,12 +158,12 @@ namespace CMSFPTU_WebApi.Services
                     SystemStatusId = n.SystemStatusId,
                     TypeId = n.TypeId
                 }).FirstOrDefaultAsync(n => n.RoomId == id);
-            if (getRoom == null || getRoom.SystemStatusId == (int)LkSystemStatus.Deleted)
+            if (getRoom == null || getRoom.SystemStatusId == (int)LkSystemStatus.Active)
             {
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Room does not exist"
+                    Message = Messages.RoomIsNull,
                 };
             }
             else
@@ -170,7 +171,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = true,
-                    Message = "Success",
+                    Message = Messages.DataIsNotNull,
                     Body = getRoom
                 };
             }
@@ -184,7 +185,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Room does not exist"
+                    Message = Messages.RoomIsNull,
                 };
             }
             else
@@ -195,7 +196,7 @@ namespace CMSFPTU_WebApi.Services
             return new ResponseApi
             {
                 Status = true,
-                Message = "Successfully restore",
+                Message = Messages.SuccessfullyRestored,
             };
         }
     }

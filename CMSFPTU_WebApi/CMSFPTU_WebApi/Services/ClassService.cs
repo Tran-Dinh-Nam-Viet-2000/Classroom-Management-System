@@ -1,4 +1,5 @@
-﻿using CMSFPTU_WebApi.Entities;
+﻿using CMSFPTU_WebApi.Constants;
+using CMSFPTU_WebApi.Entities;
 using CMSFPTU_WebApi.Enums;
 using CMSFPTU_WebApi.Requests;
 using CMSFPTU_WebApi.Responses;
@@ -47,7 +48,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Class does not exist"
+                    Message = Messages.ClassIsNull,
                 };
             }
             else
@@ -55,7 +56,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = true,
-                    Message = "Success",
+                    Message = Messages.DataIsNotNull,
                     Body = getClass
                 };
             }
@@ -69,7 +70,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Class already exists"
+                    Message = Messages.ClassAlreadyExists,
                 };
             }
             var createClass = new Class
@@ -83,7 +84,7 @@ namespace CMSFPTU_WebApi.Services
             return new ResponseApi
             {
                 Status = true,
-                Message = "Successfully created",
+                Message = Messages.SuccessfullyAddedNew,
             };
         }
 
@@ -95,7 +96,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Class does not exist"
+                    Message = Messages.ClassIsNull,
                 };
             }
             else
@@ -108,7 +109,7 @@ namespace CMSFPTU_WebApi.Services
             return new ResponseApi
             {
                 Status = true,
-                Message = "Successfully updated",
+                Message = Messages.SuccessfullyUpdated,
             };
         }
 
@@ -120,7 +121,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Class does not exist"
+                    Message = Messages.ClassIsNull,
                 };
             }
             else
@@ -132,7 +133,7 @@ namespace CMSFPTU_WebApi.Services
             return new ResponseApi
             {
                 Status = true,
-                Message = "Successfully delete",
+                Message = Messages.SuccessfullyDeleted,
             };
         }
 
@@ -163,7 +164,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Class does not exist"
+                    Message = Messages.ClassIsNull,
                 };
             }
             else
@@ -171,7 +172,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = true,
-                    Message = "Success",
+                    Message = Messages.DataIsNotNull,
                     Body = getClass
                 };
             }
@@ -185,7 +186,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Class does not exist"
+                    Message = Messages.ClassIsNull,
                 };
             }
             else
@@ -197,7 +198,7 @@ namespace CMSFPTU_WebApi.Services
             return new ResponseApi
             {
                 Status = true,
-                Message = "Successfully restore",
+                Message = Messages.SuccessfullyRestored,
             };
         }
     }

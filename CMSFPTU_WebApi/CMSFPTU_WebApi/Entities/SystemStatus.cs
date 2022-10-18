@@ -11,6 +11,7 @@ namespace CMSFPTU_WebApi.Entities
         {
             Accounts = new HashSet<Account>();
             Classes = new HashSet<Class>();
+            RoomTypes = new HashSet<RoomType>();
             Rooms = new HashSet<Room>();
             Subjects = new HashSet<Subject>();
         }
@@ -23,6 +24,7 @@ namespace CMSFPTU_WebApi.Entities
 
         public virtual ICollection<Account> Accounts { get; set; }
         public virtual ICollection<Class> Classes { get; set; }
+        public virtual ICollection<RoomType> RoomTypes { get; set; }
         public virtual ICollection<Room> Rooms { get; set; }
         public virtual ICollection<Subject> Subjects { get; set; }
     }

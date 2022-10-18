@@ -1,4 +1,5 @@
-﻿using CMSFPTU_WebApi.Entities;
+﻿using CMSFPTU_WebApi.Constants;
+using CMSFPTU_WebApi.Entities;
 using CMSFPTU_WebApi.Enums;
 using CMSFPTU_WebApi.Models;
 using CMSFPTU_WebApi.Requests;
@@ -39,7 +40,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = false,
-                    Message = "Account is not correct",
+                    Message = Messages.AccountIsNull,
                 };
             }
             else
@@ -52,7 +53,7 @@ namespace CMSFPTU_WebApi.Services
                 return new ResponseApi
                 {
                     Status = true,
-                    Message = "Login successfully",
+                    Message = Messages.SuccessfullyLogined,
                     Body = body
                 };
             }
