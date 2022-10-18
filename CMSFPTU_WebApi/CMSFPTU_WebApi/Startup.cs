@@ -44,6 +44,16 @@ namespace CMSFPTU_WebApi
                     builder.WithOrigins("http://localhost:3000").AllowCredentials().AllowAnyHeader();
                 });
             });
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAllOrigins",
+                    builder =>
+                    {
+                        builder.AllowAnyOrigin();
+                        builder.AllowAnyHeader();
+                        builder.AllowAnyMethod();
+                    });
+            });
 
             //Set Identity
             IdentityModelEventSource.ShowPII = true;
