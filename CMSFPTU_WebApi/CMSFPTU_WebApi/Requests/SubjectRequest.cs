@@ -9,6 +9,5 @@ namespace CMSFPTU_WebApi.Requests
     {
         public string SubjectCode { get; set; }
         public string SubjectName { get; set; }
-        public int SystemStatusId { get; set; }
     }
 }

@@ -8,6 +8,5 @@ namespace CMSFPTU_WebApi.Requests
     public class ClassRequest
     {
         public string ClassCode { get; set; }
-        public int SystemStatusId { get; set; }
     }
 }

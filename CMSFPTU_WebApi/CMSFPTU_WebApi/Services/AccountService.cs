@@ -85,6 +85,7 @@ namespace CMSFPTU_WebApi.Services
         {
             var checkAccountCode = _dbContext.Accounts.FirstOrDefault(n => n.AccountCode == account.AccountCode);
             var checkEmail = _dbContext.Accounts.FirstOrDefault(n => n.Email == account.Email);
+            var statusIsActive = 1;
             var createAccount = new Account
             {
                 AccountCode = account.AccountCode,
@@ -93,7 +94,7 @@ namespace CMSFPTU_WebApi.Services
                 Lastname = account.Lastname,
                 PasswordHash = Md5.MD5Hash(account.PasswordHash),
                 RoleId = account.RoleId,
-                SystemStatusId = account.SystemStatusId,
+                SystemStatusId = statusIsActive,
                 ClassId = account.ClassId,
                 Phone = account.Phone,
                 Gender = account.Gender,
@@ -117,9 +118,10 @@ namespace CMSFPTU_WebApi.Services
                 Body = createAccount
             };
         }
-        public async Task<ResponseApi> Update(int id, AccountRequest updateAccount)
+        public async Task<ResponseApi> Update(int id, UpdateAccountRequest updateAccountRequest)
         {
             var queryAccount = _dbContext.Accounts.FirstOrDefault(n => n.AccountId == id);
+            var statusIsActive = 1;
             if (queryAccount == null || queryAccount.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
                 return new ResponseApi
@@ -130,17 +132,17 @@ namespace CMSFPTU_WebApi.Services
             }
             else
             {
-                queryAccount.AccountCode = updateAccount.AccountCode;
-                queryAccount.Email = updateAccount.Email;
-                queryAccount.Firstname = updateAccount.Firstname;
-                queryAccount.Lastname = updateAccount.Lastname;
-                queryAccount.PasswordHash = Md5.MD5Hash(updateAccount.PasswordHash);
-                queryAccount.RoleId = updateAccount.RoleId;
-                queryAccount.SystemStatusId = updateAccount.SystemStatusId;
-                queryAccount.Phone = updateAccount.Phone;
-                queryAccount.Gender = updateAccount.Gender;
+                queryAccount.AccountCode = updateAccountRequest.AccountCode;
+                queryAccount.Email = updateAccountRequest.Email;
+                queryAccount.Firstname = updateAccountRequest.Firstname;
+                queryAccount.Lastname = updateAccountRequest.Lastname;
+                queryAccount.PasswordHash = Md5.MD5Hash(updateAccountRequest.PasswordHash);
+                queryAccount.RoleId = updateAccountRequest.RoleId;
+                queryAccount.SystemStatusId = statusIsActive;
+                queryAccount.Phone = updateAccountRequest.Phone;
+                queryAccount.Gender = updateAccountRequest.Gender;
                 queryAccount.UpdatedAt = DateTime.Now;
-                queryAccount.ClassId = updateAccount.ClassId;
+                queryAccount.ClassId = updateAccountRequest.ClassId;
                 await _dbContext.SaveChangesAsync();
             }
             

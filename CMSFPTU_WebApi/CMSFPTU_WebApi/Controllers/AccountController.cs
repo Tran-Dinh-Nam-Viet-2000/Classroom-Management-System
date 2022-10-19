@@ -43,9 +43,9 @@ namespace CMSFPTU_WebApi.Controllers
         }
 
         [HttpPut("update")]
-        public async Task<ResponseApi> Update(int id, AccountRequest updateAccount)
+        public async Task<ResponseApi> Update(int id, UpdateAccountRequest updateAccountRequest)
         {
-            var result = await _accountService.Update(id, updateAccount);
+            var result = await _accountService.Update(id, updateAccountRequest);
             return result;
         }
         [HttpDelete("delete")]

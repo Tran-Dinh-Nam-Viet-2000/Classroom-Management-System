@@ -14,7 +14,7 @@ namespace CMSFPTU_WebApi.Services.Interface
         Task<IEnumerable<AccountResponse>> Get();
         Task<ResponseApi> GetAccount(int id);
         Task<ResponseApi> Create(AccountRequest accountRequest);
-        Task<ResponseApi> Update(int id, AccountRequest updateAccount);
+        Task<ResponseApi> Update(int id, UpdateAccountRequest updateAccountRequest);
         Task<ResponseApi> Delete(int id);
         Task<ResponseApi> Restore(int id);
         //Function records deleted

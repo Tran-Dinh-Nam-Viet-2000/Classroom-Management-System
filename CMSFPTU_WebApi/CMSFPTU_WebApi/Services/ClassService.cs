@@ -73,14 +73,14 @@ namespace CMSFPTU_WebApi.Services
                     Message = Messages.ClassAlreadyExists,
                 };
             }
+            var statusIsActive = 1;
             var createClass = new Class
             {
                 ClassCode = roomRequest.ClassCode,
-                SystemStatusId = roomRequest.SystemStatusId
+                SystemStatusId = statusIsActive
             };
             _dbContext.Add(createClass);
             await _dbContext.SaveChangesAsync();
-
             return new ResponseApi
             {
                 Status = true,
@@ -91,6 +91,7 @@ namespace CMSFPTU_WebApi.Services
         public async Task<ResponseApi> Update(int id, ClassRequest roomRequest)
         {
             var checkClass = await _dbContext.Classes.FirstOrDefaultAsync(n => n.ClassId == id);
+            var statusIsActive = 1;
             if (checkClass == null || checkClass.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
                 return new ResponseApi
@@ -102,7 +103,7 @@ namespace CMSFPTU_WebApi.Services
             else
             {
                 checkClass.ClassCode = roomRequest.ClassCode;
-                checkClass.SystemStatusId = roomRequest.SystemStatusId;
+                checkClass.SystemStatusId = statusIsActive;
                 await _dbContext.SaveChangesAsync();
             }
 

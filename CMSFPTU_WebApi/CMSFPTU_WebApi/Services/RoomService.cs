@@ -64,6 +64,7 @@ namespace CMSFPTU_WebApi.Services
         public async Task<ResponseApi> Create(RoomRequest roomRequest)
         {
             var checkRoomNumber = _dbContext.Rooms.FirstOrDefault(n => n.RoomNumber == roomRequest.RoomNumber);
+            var statusIsActive = 1;
             if (checkRoomNumber != null)
             {
                 return new ResponseApi
@@ -75,7 +76,7 @@ namespace CMSFPTU_WebApi.Services
             var createRoom = new Room
             {
                 RoomNumber = roomRequest.RoomNumber,
-                SystemStatusId = roomRequest.SystemStatusId,
+                SystemStatusId = statusIsActive,
                 TypeId = roomRequest.TypeId
             };
             _dbContext.Add(createRoom);
@@ -89,7 +90,8 @@ namespace CMSFPTU_WebApi.Services
 
         public async Task<ResponseApi> Update(int id, RoomRequest roomRequest)
         {
-            var checkRoom = _dbContext.Rooms.FirstOrDefault(n => n.RoomId == id); 
+            var checkRoom = _dbContext.Rooms.FirstOrDefault(n => n.RoomId == id);
+            var statusIsActive = 1;
             if (checkRoom == null || checkRoom.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
                 return new ResponseApi
@@ -100,7 +102,7 @@ namespace CMSFPTU_WebApi.Services
             } else
             {
                 checkRoom.RoomNumber = roomRequest.RoomNumber;
-                checkRoom.SystemStatusId = roomRequest.SystemStatusId;
+                checkRoom.SystemStatusId = statusIsActive;
                 checkRoom.TypeId = roomRequest.TypeId;
                 await _dbContext.SaveChangesAsync();
             }

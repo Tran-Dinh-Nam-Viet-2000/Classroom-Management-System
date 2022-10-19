@@ -9,7 +9,6 @@ namespace CMSFPTU_WebApi.Requests
     public class RoomRequest
     {
         public int RoomNumber { get; set; }
-        public int SystemStatusId { get; set; }
         public long TypeId { get; set; }
     }
 }

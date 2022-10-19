@@ -68,6 +68,7 @@ namespace CMSFPTU_WebApi.Services
         public async Task<ResponseApi> Create(SubjectRequest subjectRequest)
         {
             var checkSubject = await _dbContext.Subjects.FirstOrDefaultAsync(n => n.SubjectCode == subjectRequest.SubjectCode);
+            var statusIsActive = 1;
             if (checkSubject != null)
             {
                 return new ResponseApi
@@ -80,7 +81,7 @@ namespace CMSFPTU_WebApi.Services
             {
                 SubjectCode = subjectRequest.SubjectCode,
                 SubjectName = subjectRequest.SubjectName,
-                SystemStatusId = subjectRequest.SystemStatusId
+                SystemStatusId = statusIsActive
             };
             _dbContext.Add(create);
             await _dbContext.SaveChangesAsync();
@@ -96,6 +97,7 @@ namespace CMSFPTU_WebApi.Services
         public async Task<ResponseApi> Update(int id, SubjectRequest subjectRequest)
         {
             var checkSubject = await _dbContext.Subjects.FirstOrDefaultAsync(n => n.SubjectId == id);
+            var statusIsActive = 1;
             if (checkSubject == null || checkSubject.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
                 return new ResponseApi
@@ -108,7 +110,7 @@ namespace CMSFPTU_WebApi.Services
             {
                 checkSubject.SubjectCode = subjectRequest.SubjectCode;
                 checkSubject.SubjectName = subjectRequest.SubjectName;
-                checkSubject.SystemStatusId = subjectRequest.SystemStatusId;
+                checkSubject.SystemStatusId = statusIsActive;
                 await _dbContext.SaveChangesAsync();
             }
             return new ResponseApi

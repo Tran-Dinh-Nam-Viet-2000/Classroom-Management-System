@@ -10,7 +10,6 @@ namespace CMSFPTU_WebApi.Requests
         public string TypeCode { get; set; }
         public string TypeName { get; set; }
         public string Description { get; set; }
-        public int? SystemStatusId { get; set; }
     }
 }
 
