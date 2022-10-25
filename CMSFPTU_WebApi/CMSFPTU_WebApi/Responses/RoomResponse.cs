@@ -11,8 +11,6 @@ namespace CMSFPTU_WebApi.Responses
         public long RoomId { get; set; }
         public int RoomNumber { get; set; }
         public int SystemStatusId { get; set; }
-        public long TypeId { get; set; }
         public RoomType Type { get; set; }
-        public SystemStatus SystemStatus { get; set; }
     }
 }

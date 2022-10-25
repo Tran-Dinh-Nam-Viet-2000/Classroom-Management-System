@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CMSFPTU_WebApi.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,8 +18,8 @@ namespace CMSFPTU_WebApi.Responses
         public string Email { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
-        public long RoleId { get; set; }
         public int SystemStatusId { get; set; }
-        public long? ClassId { get; set; }
+        public Role Role { get; set; }
+        public Class Class { get; set; }
     }
 }

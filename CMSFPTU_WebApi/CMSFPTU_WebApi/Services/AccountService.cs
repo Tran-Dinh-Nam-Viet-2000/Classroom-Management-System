@@ -70,14 +70,49 @@ namespace CMSFPTU_WebApi.Services
                     Gender = n.Gender,
                     PasswordHash = n.PasswordHash,
                     Phone = n.Phone,
-                    RoleId = n.RoleId,
+                    Role = n.Role,
                     SystemStatusId = n.SystemStatusId,
                     UpdatedAt = n.UpdatedAt,
-                    ClassId = n.ClassId,
+                    Class = n.Class,
                 }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).ToListAsync();
 
             return accounts;
         }
+
+        public async Task<IEnumerable<AccountResponse>> Search(string keyword)
+        {
+            if ("".Equals(keyword))
+            {
+                return null;
+            }
+            var filter = await _dbContext.Accounts
+                .Where(n => n.SystemStatusId == (int)LkSystemStatus.Active && (n.AccountCode.ToLower().Contains(keyword)
+                                                                            || n.Email.ToLower().Contains(keyword)
+                                                                            || n.Firstname.ToLower().Contains(keyword)
+                                                                            || n.Lastname.ToLower().Contains(keyword)
+                                                                            || n.Phone.ToLower().Contains(keyword)
+                                                                            || n.Class.ClassCode.ToLower().Contains(keyword)
+                                                                            || n.Role.RoleCode.ToLower().Contains(keyword)))
+                .Select(n => new AccountResponse
+                {
+                    AccountId = n.AccountId,
+                    AccountCode = n.AccountCode,
+                    CreatedAt = n.CreatedAt,
+                    Email = n.Email,
+                    Firstname = n.Firstname,
+                    Lastname = n.Lastname,
+                    Gender = n.Gender,
+                    PasswordHash = n.PasswordHash,
+                    Phone = n.Phone,
+                    Role = n.Role,
+                    SystemStatusId = n.SystemStatusId,
+                    UpdatedAt = n.UpdatedAt,
+                    Class = n.Class,
+                }).ToListAsync();
+
+            return filter;
+        }
+
         public async Task<ResponseApi> GetAccount(int id)
         {
             var getRecord = await _dbContext.Accounts
@@ -92,10 +127,10 @@ namespace CMSFPTU_WebApi.Services
                     Gender = n.Gender,
                     PasswordHash = n.PasswordHash,
                     Phone = n.Phone,
-                    RoleId = n.RoleId,
+                    Role = n.Role,
                     SystemStatusId = n.SystemStatusId,
                     UpdatedAt = n.UpdatedAt,
-                    ClassId = n.ClassId,
+                    Class = n.Class,
                 }).FirstOrDefaultAsync(n => n.AccountId == id);
             if(getRecord == null || getRecord.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
@@ -246,10 +281,10 @@ namespace CMSFPTU_WebApi.Services
                     Gender = n.Gender,
                     PasswordHash = n.PasswordHash,
                     Phone = n.Phone,
-                    RoleId = n.RoleId,
+                    Role = n.Role,
                     SystemStatusId = n.SystemStatusId,
                     UpdatedAt = n.UpdatedAt,
-                    ClassId = n.ClassId,
+                    Class = n.Class,
                 }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted).ToListAsync();
 
             return accounts;
@@ -269,10 +304,10 @@ namespace CMSFPTU_WebApi.Services
                     Gender = n.Gender,
                     PasswordHash = n.PasswordHash,
                     Phone = n.Phone,
-                    RoleId = n.RoleId,
+                    Role = n.Role,
                     SystemStatusId = n.SystemStatusId,
                     UpdatedAt = n.UpdatedAt,
-                    ClassId = n.ClassId,
+                    Class = n.Class,
                 }).FirstOrDefaultAsync(n => n.AccountId == id);
             if (getRecordDeleted == null || getRecordDeleted.SystemStatusId == (int)LkSystemStatus.Active)
             {
