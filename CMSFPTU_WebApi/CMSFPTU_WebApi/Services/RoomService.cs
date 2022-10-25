@@ -27,7 +27,7 @@ namespace CMSFPTU_WebApi.Services
                     RoomId = n.RoomId,
                     RoomNumber = n.RoomNumber,
                     SystemStatusId = n.SystemStatusId,
-                    TypeId = n.TypeId
+                    Type = n.Type
                 }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).ToListAsync();
             return rooms;
         }
@@ -40,7 +40,7 @@ namespace CMSFPTU_WebApi.Services
                     RoomId = n.RoomId,
                     RoomNumber = n.RoomNumber,
                     SystemStatusId = n.SystemStatusId,
-                    TypeId = n.TypeId
+                    Type = n.Type
                 }).FirstOrDefaultAsync(n => n.RoomId == id);
             if (room == null || room.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
@@ -144,7 +144,7 @@ namespace CMSFPTU_WebApi.Services
                     RoomId = n.RoomId,
                     RoomNumber = n.RoomNumber,
                     SystemStatusId = n.SystemStatusId,
-                    TypeId = n.TypeId
+                    Type = n.Type
                 }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted).ToListAsync();
 
             return rooms;
@@ -157,7 +157,7 @@ namespace CMSFPTU_WebApi.Services
                     RoomId = n.RoomId,
                     RoomNumber = n.RoomNumber,
                     SystemStatusId = n.SystemStatusId,
-                    TypeId = n.TypeId
+                    Type = n.Type
                 }).FirstOrDefaultAsync(n => n.RoomId == id);
             if (getRoom == null || getRoom.SystemStatusId == (int)LkSystemStatus.Active)
             {

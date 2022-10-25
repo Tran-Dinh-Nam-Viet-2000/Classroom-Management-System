@@ -34,6 +34,24 @@ namespace CMSFPTU_WebApi.Services
             return classes;
         }
 
+        public async Task<IEnumerable<ClassResponse>> Search(string keyword)
+        {
+            if ("".Equals(keyword))
+            {
+                return null;
+            }
+            var filter = await _dbContext.Classes
+                .Where(n => n.SystemStatusId == (int)LkSystemStatus.Active && (n.ClassCode.ToLower().Contains(keyword)))
+                .Select(n => new ClassResponse
+                {
+                    ClassId = n.ClassId,
+                    ClassCode = n.ClassCode,
+                    SystemStatusId = n.SystemStatusId
+                }).ToListAsync();
+
+            return filter;
+        }
+
         //public async Task<IEnumerable<ClassResponse>> GetClassAutoComplete(string search)
         //{
         //    var query = _dbContext.Set<Class>().Where(r => r.SystemStatusId == (int)LkSystemStatus.Active);
@@ -51,7 +69,7 @@ namespace CMSFPTU_WebApi.Services
         //        ClassCode = n.ClassCode,
         //        SystemStatusId = n.SystemStatusId
         //    }).ToListAsync());
-    
+
         public async Task<ResponseApi> GetClass(int id)
         {
             var getClass = await _dbContext.Classes
