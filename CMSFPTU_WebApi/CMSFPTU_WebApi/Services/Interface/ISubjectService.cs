@@ -10,6 +10,7 @@ namespace CMSFPTU_WebApi.Services.Interface
     public interface ISubjectService
     {
         Task<IEnumerable<SubjectResponse>> Get();
+        Task<IEnumerable<SubjectResponse>> Search(string keyword);
         Task<ResponseApi> GetSubject(int id);
         Task<ResponseApi> Create(SubjectRequest subjectRequest);
         Task<ResponseApi> Update(int id, SubjectRequest subjectRequest);

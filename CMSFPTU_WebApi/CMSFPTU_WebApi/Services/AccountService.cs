@@ -22,6 +22,40 @@ namespace CMSFPTU_WebApi.Services
         {
             _dbContext = dbContext;
         }
+
+        //public async Task<IEnumerable<AccountResponse>> GetAccountAutoComplete(string search)
+        //{
+        //    var query = _dbContext.Set<Account>().Where(r => r.SystemStatusId == (int)LkSystemStatus.Active);
+        //    if (!string.IsNullOrEmpty(search))
+        //    {
+        //        var filters = search.Split(' ');
+        //        foreach (var kw in filters)
+        //        {
+        //            query = query.Where(n => n.AccountCode.ToLower().Contains(kw)
+        //                                  || n.Email.ToLower().Contains(kw)
+        //                                  || n.Firstname.ToLower().Contains(kw)
+        //                                  || n.Lastname.ToLower().Contains(kw)
+        //                                  || n.Phone.ToLower().Contains(kw));
+        //        }
+        //    }
+        //    return (await query.Select(n => new AccountResponse
+        //    {
+        //        AccountId = n.AccountId,
+        //        AccountCode = n.AccountCode,
+        //        CreatedAt = n.CreatedAt,
+        //        Email = n.Email,
+        //        Firstname = n.Firstname,
+        //        Lastname = n.Lastname,
+        //        Gender = n.Gender,
+        //        PasswordHash = n.PasswordHash,
+        //        Phone = n.Phone,
+        //        RoleId = n.RoleId,
+        //        SystemStatusId = n.SystemStatusId,
+        //        UpdatedAt = n.UpdatedAt,
+        //        ClassId = n.ClassId,
+        //    }).ToListAsync());
+        //}
+
         public async Task<IEnumerable<AccountResponse>> Get()
         {
             var accounts = await _dbContext.Accounts
@@ -85,7 +119,7 @@ namespace CMSFPTU_WebApi.Services
         {
             var checkAccountCode = _dbContext.Accounts.FirstOrDefault(n => n.AccountCode == account.AccountCode);
             var checkEmail = _dbContext.Accounts.FirstOrDefault(n => n.Email == account.Email);
-            var statusIsActive = 1;
+            var statusIsActive = (int)LkSystemStatus.Active;
             var createAccount = new Account
             {
                 AccountCode = account.AccountCode,
@@ -121,7 +155,7 @@ namespace CMSFPTU_WebApi.Services
         public async Task<ResponseApi> Update(int id, UpdateAccountRequest updateAccountRequest)
         {
             var queryAccount = _dbContext.Accounts.FirstOrDefault(n => n.AccountId == id);
-            var statusIsActive = 1;
+            var statusIsActive = (int)LkSystemStatus.Active;
             if (queryAccount == null || queryAccount.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
                 return new ResponseApi
@@ -258,5 +292,10 @@ namespace CMSFPTU_WebApi.Services
                 };
             }
         }
+
+        //public async Task<IEnumerable<AccountResponse>> GetAccountByClassId(int id)
+        //{
+        //    var getClass = _dbContext.Accounts.Where(n => n.ClassId == id).ToList();
+        //}
     }
 }

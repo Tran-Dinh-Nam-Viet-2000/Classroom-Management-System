@@ -13,6 +13,7 @@ namespace CMSFPTU_WebApi.Constants
         public const string RoomIsNull = "Room does not exist";
         public const string AccountIsNull = "Account does not exist";
         public const string SubjectIsNull = "Subject does not exist";
+        public const string RecordIsNull = "Record does not exist";
 
         //Is not null
         public const string DataIsNotNull = "Success";

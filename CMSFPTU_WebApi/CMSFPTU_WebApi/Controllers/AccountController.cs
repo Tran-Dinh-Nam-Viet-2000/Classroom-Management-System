@@ -1,12 +1,9 @@
-﻿using CMSFPTU_WebApi.Entities;
+﻿using CMSFPTU_WebApi.Models;
 using CMSFPTU_WebApi.Requests;
 using CMSFPTU_WebApi.Responses;
 using CMSFPTU_WebApi.Services.Interface;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CMSFPTU_WebApi.Controllers

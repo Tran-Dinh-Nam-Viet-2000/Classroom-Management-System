@@ -28,6 +28,13 @@ namespace CMSFPTU_WebApi.Controllers
             return result;
         }
 
+        [HttpGet("search")]
+        public async Task<IEnumerable<SubjectResponse>> Search(string keyword)
+        {
+            var result = await _subjectService.Search(keyword);
+            return result;
+        }
+
         [HttpGet("get-subject")]
         public async Task<ResponseApi> GetSubject(int id)
         {

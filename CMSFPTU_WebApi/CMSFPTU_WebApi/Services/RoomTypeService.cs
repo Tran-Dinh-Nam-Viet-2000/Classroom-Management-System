@@ -69,7 +69,7 @@ namespace CMSFPTU_WebApi.Services
         {
             var checkRoomType = await _dbContext.RoomTypes.FirstOrDefaultAsync(n => n.TypeCode == roomTypeRequest.TypeCode 
                                                                                  || n.TypeName == roomTypeRequest.TypeName);
-            var statusIsActive = 1;
+            var statusIsActive = (int)LkSystemStatus.Active;
             if (checkRoomType != null)
             {
                 return new ResponseApi
@@ -97,7 +97,7 @@ namespace CMSFPTU_WebApi.Services
         public async Task<ResponseApi> Update(int id, RoomTypeRequest roomTypeRequest)
         {
             var roomType = await _dbContext.RoomTypes.FirstOrDefaultAsync(n => n.TypeId == id);
-            var statusIsActive = 1;
+            var statusIsActive = (int)LkSystemStatus.Active;
             if (roomType == null || roomType.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
                 return new ResponseApi

@@ -35,7 +35,28 @@ namespace CMSFPTU_WebApi.Services
 
             return subjects;
         }
-        
+
+        public async Task<IEnumerable<SubjectResponse>> Search(string keyword)
+        {
+            if ("".Equals(keyword))
+            {
+                return null;
+            }
+            var filter = await _dbContext.Subjects
+                .Where(n => n.SystemStatusId == (int)LkSystemStatus.Active && (n.SubjectCode.ToLower().Contains(keyword)
+                                                                            || n.SubjectName.ToLower().Contains(keyword)
+                                                                            || n.Description.ToLower().Contains(keyword)))
+                .Select(n => new SubjectResponse
+                {
+                    SubjectId = n.SubjectId,
+                    SubjectCode = n.SubjectCode,
+                    SubjectName = n.SubjectName,
+                    SystemStatusId = n.SystemStatusId
+                }).ToListAsync();
+
+            return filter;
+        }
+
         public async Task<ResponseApi> GetSubject(int id)
         {
             var subject = await _dbContext.Subjects
@@ -68,7 +89,7 @@ namespace CMSFPTU_WebApi.Services
         public async Task<ResponseApi> Create(SubjectRequest subjectRequest)
         {
             var checkSubject = await _dbContext.Subjects.FirstOrDefaultAsync(n => n.SubjectCode == subjectRequest.SubjectCode);
-            var statusIsActive = 1;
+            var statusIsActive = (int)LkSystemStatus.Active;
             if (checkSubject != null)
             {
                 return new ResponseApi
@@ -97,7 +118,7 @@ namespace CMSFPTU_WebApi.Services
         public async Task<ResponseApi> Update(int id, SubjectRequest subjectRequest)
         {
             var checkSubject = await _dbContext.Subjects.FirstOrDefaultAsync(n => n.SubjectId == id);
-            var statusIsActive = 1;
+            var statusIsActive = (int)LkSystemStatus.Active;
             if (checkSubject == null || checkSubject.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
                 return new ResponseApi
@@ -160,15 +181,6 @@ namespace CMSFPTU_WebApi.Services
 
         public async Task<ResponseApi> GetSubjectDeleted(int id)
         {
-            var checkSubject = await _dbContext.Subjects.FirstOrDefaultAsync(n => n.SubjectId == id);
-            if (checkSubject == null || checkSubject.SystemStatusId == (int)LkSystemStatus.Active)
-            {
-                return new ResponseApi
-                {
-                    Status = false,
-                    Message = Messages.SubjectIsNull
-                };
-            }
             var subject = await _dbContext.Subjects
                 .Select(n => new SubjectResponse
                 {
@@ -176,7 +188,15 @@ namespace CMSFPTU_WebApi.Services
                     SubjectCode = n.SubjectCode,
                     SubjectName = n.SubjectName,
                     SystemStatusId = n.SystemStatusId
-                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted).ToListAsync();
+                }).FirstOrDefaultAsync(n => n.SubjectId == id);
+            if (subject == null || subject.SystemStatusId == (int)LkSystemStatus.Active)
+            {
+                return new ResponseApi
+                {
+                    Status = false,
+                    Message = Messages.SubjectIsNull
+                };
+            }
 
             return new ResponseApi
             {

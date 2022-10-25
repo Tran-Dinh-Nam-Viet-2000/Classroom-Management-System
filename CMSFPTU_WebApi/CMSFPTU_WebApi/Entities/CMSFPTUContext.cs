@@ -156,6 +156,12 @@ namespace CMSFPTU_WebApi.Entities
                     .HasForeignKey(d => d.SubjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__account_s__subje__534D60F1");
+
+                entity.HasOne(d => d.SystemStatus)
+                    .WithMany(p => p.AccountSubjects)
+                    .HasForeignKey(d => d.SystemStatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK__account_s__syste__607251E5");
             });
 
             modelBuilder.Entity<Class>(entity =>

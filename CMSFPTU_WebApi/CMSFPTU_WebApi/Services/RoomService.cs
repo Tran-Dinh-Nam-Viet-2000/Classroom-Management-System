@@ -5,7 +5,6 @@ using CMSFPTU_WebApi.Requests;
 using CMSFPTU_WebApi.Responses;
 using CMSFPTU_WebApi.Services.Interface;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -64,7 +63,7 @@ namespace CMSFPTU_WebApi.Services
         public async Task<ResponseApi> Create(RoomRequest roomRequest)
         {
             var checkRoomNumber = _dbContext.Rooms.FirstOrDefault(n => n.RoomNumber == roomRequest.RoomNumber);
-            var statusIsActive = 1;
+            var statusIsActive = (int)LkSystemStatus.Active;
             if (checkRoomNumber != null)
             {
                 return new ResponseApi
@@ -91,7 +90,7 @@ namespace CMSFPTU_WebApi.Services
         public async Task<ResponseApi> Update(int id, RoomRequest roomRequest)
         {
             var checkRoom = _dbContext.Rooms.FirstOrDefault(n => n.RoomId == id);
-            var statusIsActive = 1;
+            var statusIsActive = (int)LkSystemStatus.Active;
             if (checkRoom == null || checkRoom.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
                 return new ResponseApi

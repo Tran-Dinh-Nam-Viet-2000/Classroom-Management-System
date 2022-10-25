@@ -10,6 +10,7 @@ namespace CMSFPTU_WebApi.Services.Interface
     public interface IClassService
     {
         Task<IEnumerable<ClassResponse>> Get();
+        //Task<IEnumerable<ClassResponse>> GetClassAutoComplete(string search);
         Task<ResponseApi> GetClass(int id);
         Task<ResponseApi> Create(ClassRequest classRequest);
         Task<ResponseApi> Update(int id, ClassRequest classRequest);
