@@ -27,6 +27,14 @@ namespace CMSFPTU_WebApi.Controllers
             var result = await _roomTypeService.Get();
             return result;
         }
+
+        [HttpGet("search")]
+        public async Task<IEnumerable<RoomTypeResponse>> Search(string keyword)
+        {
+            var result = await _roomTypeService.Search(keyword);
+            return result;
+        }
+
         [HttpGet("get-room-type")]
         public async Task<ResponseApi> GetRoomType(int id)
         {

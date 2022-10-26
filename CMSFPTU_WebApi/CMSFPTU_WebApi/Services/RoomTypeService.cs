@@ -35,6 +35,25 @@ namespace CMSFPTU_WebApi.Services
             return roomTypes;
         }
 
+        public async Task<IEnumerable<RoomTypeResponse>> Search(string keyword)
+        {
+            if ("".Equals(keyword))
+            {
+                return null;
+            }
+            var filter = await _dbContext.RoomTypes
+                .Where(n => n.SystemStatusId == (int)LkSystemStatus.Active && (n.TypeCode.ToLower().Contains(keyword)
+                                                                            || n.TypeName.ToLower().Contains(keyword)))
+                .Select(n => new RoomTypeResponse
+                {
+                    TypeCode = n.TypeCode,
+                    TypeName = n.TypeName,
+                    SystemStatusId = n.SystemStatusId
+                }).ToListAsync();
+
+            return filter;
+        }
+
         public async Task<ResponseApi> GetRoomType(int id)
         {
             var roomType = await _dbContext.RoomTypes

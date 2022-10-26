@@ -32,6 +32,27 @@ namespace CMSFPTU_WebApi.Services
             return rooms;
         }
 
+        public async Task<IEnumerable<RoomResponse>> Search(string keyword)
+        {
+            if ("".Equals(keyword))
+            {
+                return null;
+            }
+            var filter = await _dbContext.Rooms
+                .Where(n => n.SystemStatusId == (int)LkSystemStatus.Active && (n.RoomNumber.ToString().Contains(keyword)
+                                                                            || n.Type.TypeCode.ToLower().Contains(keyword)
+                                                                            || n.Type.TypeName.ToLower().Contains(keyword)))
+                .Select(n => new RoomResponse
+                {
+                    RoomId = n.RoomId,
+                    RoomNumber = n.RoomNumber,
+                    Type = n.Type,
+                    SystemStatusId = n.SystemStatusId
+                }).ToListAsync();
+
+            return filter;
+        }
+
         public async Task<ResponseApi> GetRoom(int id)
         {
             var room = await _dbContext.Rooms
@@ -200,5 +221,6 @@ namespace CMSFPTU_WebApi.Services
                 Message = Messages.SuccessfullyRestored,
             };
         }
+
     }
 }

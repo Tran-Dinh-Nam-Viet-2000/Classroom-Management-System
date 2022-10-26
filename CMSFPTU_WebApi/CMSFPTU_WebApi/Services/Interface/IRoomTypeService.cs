@@ -10,6 +10,7 @@ namespace CMSFPTU_WebApi.Services.Interface
     public interface IRoomTypeService
     {
         Task<IEnumerable<RoomTypeResponse>> Get();
+        Task<IEnumerable<RoomTypeResponse>> Search(string keyword);
         Task<ResponseApi> GetRoomType(int id);
         Task<ResponseApi> Create(RoomTypeRequest roomTypeRequest);
         Task<ResponseApi> Update(int id, RoomTypeRequest roomTypeRequest);
