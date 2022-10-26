@@ -79,7 +79,7 @@ namespace CMSFPTU_WebApi.Services
             return accounts;
         }
 
-        public async Task<IEnumerable<AccountResponse>> Search(string keyword)
+        public async Task<IEnumerable<AccountResponse>> SearchAccount(string keyword)
         {
             if ("".Equals(keyword))
             {
@@ -87,6 +87,40 @@ namespace CMSFPTU_WebApi.Services
             }
             var filter = await _dbContext.Accounts
                 .Where(n => n.SystemStatusId == (int)LkSystemStatus.Active && (n.AccountCode.ToLower().Contains(keyword)
+                                                                            || n.Email.ToLower().Contains(keyword)
+                                                                            || n.Firstname.ToLower().Contains(keyword)
+                                                                            || n.Lastname.ToLower().Contains(keyword)
+                                                                            || n.Phone.ToLower().Contains(keyword)
+                                                                            || n.Class.ClassCode.ToLower().Contains(keyword)
+                                                                            || n.Role.RoleCode.ToLower().Contains(keyword)))
+                .Select(n => new AccountResponse
+                {
+                    AccountId = n.AccountId,
+                    AccountCode = n.AccountCode,
+                    CreatedAt = n.CreatedAt,
+                    Email = n.Email,
+                    Firstname = n.Firstname,
+                    Lastname = n.Lastname,
+                    Gender = n.Gender,
+                    PasswordHash = n.PasswordHash,
+                    Phone = n.Phone,
+                    Role = n.Role,
+                    SystemStatusId = n.SystemStatusId,
+                    UpdatedAt = n.UpdatedAt,
+                    Class = n.Class,
+                }).ToListAsync();
+
+            return filter;
+        }
+
+        public async Task<IEnumerable<AccountResponse>> SearchAccountDeleted(string keyword)
+        {
+            if ("".Equals(keyword))
+            {
+                return null;
+            }
+            var filter = await _dbContext.Accounts
+                .Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted && (n.AccountCode.ToLower().Contains(keyword)
                                                                             || n.Email.ToLower().Contains(keyword)
                                                                             || n.Firstname.ToLower().Contains(keyword)
                                                                             || n.Lastname.ToLower().Contains(keyword)
@@ -327,6 +361,7 @@ namespace CMSFPTU_WebApi.Services
                 };
             }
         }
+
 
         //public async Task<IEnumerable<AccountResponse>> GetAccountByClassId(int id)
         //{

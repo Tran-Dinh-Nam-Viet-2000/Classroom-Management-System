@@ -35,7 +35,7 @@ namespace CMSFPTU_WebApi.Services
             return roomTypes;
         }
 
-        public async Task<IEnumerable<RoomTypeResponse>> Search(string keyword)
+        public async Task<IEnumerable<RoomTypeResponse>> SearchRoomType(string keyword)
         {
             if ("".Equals(keyword))
             {
@@ -46,6 +46,27 @@ namespace CMSFPTU_WebApi.Services
                                                                             || n.TypeName.ToLower().Contains(keyword)))
                 .Select(n => new RoomTypeResponse
                 {
+                    TypeId = n.TypeId,
+                    TypeCode = n.TypeCode,
+                    TypeName = n.TypeName,
+                    SystemStatusId = n.SystemStatusId
+                }).ToListAsync();
+
+            return filter;
+        }
+
+        public async Task<IEnumerable<RoomTypeResponse>> SearchRoomTypeDeleted(string keyword)
+        {
+            if ("".Equals(keyword))
+            {
+                return null;
+            }
+            var filter = await _dbContext.RoomTypes
+                .Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted && (n.TypeCode.ToLower().Contains(keyword)
+                                                                            || n.TypeName.ToLower().Contains(keyword)))
+                .Select(n => new RoomTypeResponse
+                {
+                    TypeId = n.TypeId,
                     TypeCode = n.TypeCode,
                     TypeName = n.TypeName,
                     SystemStatusId = n.SystemStatusId

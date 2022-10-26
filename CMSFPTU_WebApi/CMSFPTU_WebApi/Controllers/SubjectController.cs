@@ -28,10 +28,17 @@ namespace CMSFPTU_WebApi.Controllers
             return result;
         }
 
-        [HttpGet("search")]
-        public async Task<IEnumerable<SubjectResponse>> Search(string keyword)
+        [HttpGet("search-subject")]
+        public async Task<IEnumerable<SubjectResponse>> SearchSubject(string keyword)
         {
-            var result = await _subjectService.Search(keyword);
+            var result = await _subjectService.SearchSubject(keyword);
+            return result;
+        }
+
+        [HttpGet("search-subject-deleted")]
+        public async Task<IEnumerable<SubjectResponse>> SearchSubjectDeleted(string keyword)
+        {
+            var result = await _subjectService.SearchSubjectDeleted(keyword);
             return result;
         }
 

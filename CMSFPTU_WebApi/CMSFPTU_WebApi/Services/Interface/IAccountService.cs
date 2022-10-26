@@ -13,7 +13,8 @@ namespace CMSFPTU_WebApi.Services.Interface
     {
         //Task<IEnumerable<AccountResponse>> GetAccountAutoComplete(string search);
         Task<IEnumerable<AccountResponse>> Get();
-        Task<IEnumerable<AccountResponse>> Search(string keyword);
+        Task<IEnumerable<AccountResponse>> SearchAccount(string keyword);
+        Task<IEnumerable<AccountResponse>> SearchAccountDeleted(string keyword);
         //Task<IEnumerable<AccountSubjectResponse>> GetAccountByClassId(int id);
         Task<ResponseApi> GetAccount(int id);
         Task<ResponseApi> Create(AccountRequest accountRequest);

@@ -34,7 +34,7 @@ namespace CMSFPTU_WebApi.Services
             return classes;
         }
 
-        public async Task<IEnumerable<ClassResponse>> Search(string keyword)
+        public async Task<IEnumerable<ClassResponse>> SearchClass(string keyword)
         {
             if ("".Equals(keyword))
             {
@@ -42,6 +42,24 @@ namespace CMSFPTU_WebApi.Services
             }
             var filter = await _dbContext.Classes
                 .Where(n => n.SystemStatusId == (int)LkSystemStatus.Active && (n.ClassCode.ToLower().Contains(keyword)))
+                .Select(n => new ClassResponse
+                {
+                    ClassId = n.ClassId,
+                    ClassCode = n.ClassCode,
+                    SystemStatusId = n.SystemStatusId
+                }).ToListAsync();
+
+            return filter;
+        }
+
+        public async Task<IEnumerable<ClassResponse>> SearchClassDeleted(string keyword)
+        {
+            if ("".Equals(keyword))
+            {
+                return null;
+            }
+            var filter = await _dbContext.Classes
+                .Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted && (n.ClassCode.ToLower().Contains(keyword)))
                 .Select(n => new ClassResponse
                 {
                     ClassId = n.ClassId,

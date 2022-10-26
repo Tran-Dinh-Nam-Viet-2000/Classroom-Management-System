@@ -36,7 +36,7 @@ namespace CMSFPTU_WebApi.Services
             return subjects;
         }
 
-        public async Task<IEnumerable<SubjectResponse>> Search(string keyword)
+        public async Task<IEnumerable<SubjectResponse>> SearchSubject(string keyword)
         {
             if ("".Equals(keyword))
             {
@@ -44,6 +44,27 @@ namespace CMSFPTU_WebApi.Services
             }
             var filter = await _dbContext.Subjects
                 .Where(n => n.SystemStatusId == (int)LkSystemStatus.Active && (n.SubjectCode.ToLower().Contains(keyword)
+                                                                            || n.SubjectName.ToLower().Contains(keyword)
+                                                                            || n.Description.ToLower().Contains(keyword)))
+                .Select(n => new SubjectResponse
+                {
+                    SubjectId = n.SubjectId,
+                    SubjectCode = n.SubjectCode,
+                    SubjectName = n.SubjectName,
+                    SystemStatusId = n.SystemStatusId
+                }).ToListAsync();
+
+            return filter;
+        }
+
+        public async Task<IEnumerable<SubjectResponse>> SearchSubjectDeleted(string keyword)
+        {
+            if ("".Equals(keyword))
+            {
+                return null;
+            }
+            var filter = await _dbContext.Subjects
+                .Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted && (n.SubjectCode.ToLower().Contains(keyword)
                                                                             || n.SubjectName.ToLower().Contains(keyword)
                                                                             || n.Description.ToLower().Contains(keyword)))
                 .Select(n => new SubjectResponse
