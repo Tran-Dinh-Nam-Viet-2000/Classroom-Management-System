@@ -184,23 +184,32 @@ namespace CMSFPTU_WebApi.Services
                 };
             }
         }
-        public async Task<ResponseApi> Create(AccountRequest account)
+        public async Task<ResponseApi> Create(AccountRequest accountRequest)
         {
-            var checkAccountCode = _dbContext.Accounts.FirstOrDefault(n => n.AccountCode == account.AccountCode);
-            var checkEmail = _dbContext.Accounts.FirstOrDefault(n => n.Email == account.Email);
-            var statusIsActive = (int)LkSystemStatus.Active;
+            if ("".Equals(accountRequest.AccountCode) || "".Equals(accountRequest.Firstname) || "".Equals(accountRequest.Lastname)
+                || "".Equals(accountRequest.PasswordHash) || "".Equals(accountRequest.RoleId) || "".Equals(accountRequest.ClassId)
+                || "".Equals(accountRequest.Phone) || "".Equals(accountRequest.Gender))
+            {
+                return new ResponseApi
+                {
+                    Status = false,
+                    Message = Messages.Fail,
+                };
+            }
+            var checkAccountCode = _dbContext.Accounts.FirstOrDefault(n => n.AccountCode == accountRequest.AccountCode);
+            var checkEmail = _dbContext.Accounts.FirstOrDefault(n => n.Email == accountRequest.Email);
             var createAccount = new Account
             {
-                AccountCode = account.AccountCode,
-                Email = account.Email,
-                Firstname = account.Firstname,
-                Lastname = account.Lastname,
-                PasswordHash = Md5.MD5Hash(account.PasswordHash),
-                RoleId = account.RoleId,
-                SystemStatusId = statusIsActive,
-                ClassId = account.ClassId,
-                Phone = account.Phone,
-                Gender = account.Gender,
+                AccountCode = accountRequest.AccountCode,
+                Email = accountRequest.Email,
+                Firstname = accountRequest.Firstname,
+                Lastname = accountRequest.Lastname,
+                PasswordHash = Md5.MD5Hash(accountRequest.PasswordHash),
+                RoleId = accountRequest.RoleId,
+                SystemStatusId = (int)LkSystemStatus.Active,
+                ClassId = accountRequest.ClassId,
+                Phone = accountRequest.Phone,
+                Gender = accountRequest.Gender,
                 CreatedAt = DateTime.Now,
             };
             if (checkAccountCode != null || checkEmail != null)
@@ -224,7 +233,6 @@ namespace CMSFPTU_WebApi.Services
         public async Task<ResponseApi> Update(int id, UpdateAccountRequest updateAccountRequest)
         {
             var queryAccount = _dbContext.Accounts.FirstOrDefault(n => n.AccountId == id);
-            var statusIsActive = (int)LkSystemStatus.Active;
             if (queryAccount == null || queryAccount.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
                 return new ResponseApi
@@ -241,7 +249,7 @@ namespace CMSFPTU_WebApi.Services
                 queryAccount.Lastname = updateAccountRequest.Lastname;
                 queryAccount.PasswordHash = Md5.MD5Hash(updateAccountRequest.PasswordHash);
                 queryAccount.RoleId = updateAccountRequest.RoleId;
-                queryAccount.SystemStatusId = statusIsActive;
+                queryAccount.SystemStatusId = (int)LkSystemStatus.Active;
                 queryAccount.Phone = updateAccountRequest.Phone;
                 queryAccount.Gender = updateAccountRequest.Gender;
                 queryAccount.UpdatedAt = DateTime.Now;

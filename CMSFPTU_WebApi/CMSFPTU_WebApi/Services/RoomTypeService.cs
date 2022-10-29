@@ -107,9 +107,16 @@ namespace CMSFPTU_WebApi.Services
 
         public async Task<ResponseApi> Create(RoomTypeRequest roomTypeRequest)
         {
+            if ("".Equals(roomTypeRequest.TypeCode) || "".Equals(roomTypeRequest.TypeName))
+            {
+                return new ResponseApi
+                {
+                    Status = false,
+                    Message = Messages.Fail,
+                };
+            }
             var checkRoomType = await _dbContext.RoomTypes.FirstOrDefaultAsync(n => n.TypeCode == roomTypeRequest.TypeCode 
                                                                                  || n.TypeName == roomTypeRequest.TypeName);
-            var statusIsActive = (int)LkSystemStatus.Active;
             if (checkRoomType != null)
             {
                 return new ResponseApi
@@ -121,7 +128,7 @@ namespace CMSFPTU_WebApi.Services
             var createRoomType = new RoomType
             {
                 TypeName = roomTypeRequest.TypeName,
-                SystemStatusId = statusIsActive,
+                SystemStatusId = (int)LkSystemStatus.Active,
                 TypeCode = roomTypeRequest.TypeCode,
                 Description = roomTypeRequest.Description,
             };
@@ -137,7 +144,6 @@ namespace CMSFPTU_WebApi.Services
         public async Task<ResponseApi> Update(int id, RoomTypeRequest roomTypeRequest)
         {
             var roomType = await _dbContext.RoomTypes.FirstOrDefaultAsync(n => n.TypeId == id);
-            var statusIsActive = (int)LkSystemStatus.Active;
             if (roomType == null || roomType.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
                 return new ResponseApi
@@ -149,7 +155,7 @@ namespace CMSFPTU_WebApi.Services
             else
             {
                 roomType.TypeCode = roomTypeRequest.TypeCode;
-                roomType.SystemStatusId = statusIsActive;
+                roomType.SystemStatusId = (int)LkSystemStatus.Active;
                 roomType.TypeName = roomTypeRequest.TypeName;
                 roomType.Description = roomTypeRequest.Description;
                 await _dbContext.SaveChangesAsync();

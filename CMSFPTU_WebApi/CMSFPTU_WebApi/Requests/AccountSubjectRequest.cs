@@ -7,7 +7,7 @@ namespace CMSFPTU_WebApi.Requests
 {
     public class AccountSubjectRequest
     {
-        public long AccountId { get; set; }
+        public long ClassId { get; set; }
         public long SubjectId { get; set; }
     }
 }

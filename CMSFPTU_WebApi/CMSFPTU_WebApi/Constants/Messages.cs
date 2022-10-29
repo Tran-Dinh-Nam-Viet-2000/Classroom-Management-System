@@ -15,8 +15,11 @@ namespace CMSFPTU_WebApi.Constants
         public const string SubjectIsNull = "Subject does not exist";
         public const string RecordIsNull = "Record does not exist";
 
-        //Is not null
+        //Success
         public const string DataIsNotNull = "Success";
+
+        //Fail
+        public const string Fail = "Please enter full information";
 
         //Successfully(Add,Update,Delete,Restore)
         public const string SuccessfullyAddedNew = "Successfully added new";

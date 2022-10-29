@@ -70,24 +70,6 @@ namespace CMSFPTU_WebApi.Services
             return filter;
         }
 
-        //public async Task<IEnumerable<ClassResponse>> GetClassAutoComplete(string search)
-        //{
-        //    var query = _dbContext.Set<Class>().Where(r => r.SystemStatusId == (int)LkSystemStatus.Active);
-        //    if (!string.IsNullOrEmpty(search))
-        //    {
-        //        var filters = search.Split(' ');
-        //        foreach (var kw in filters)
-        //        {
-        //            query = query.Where(n => n.ClassCode.ToLower().Contains(kw));
-        //        }
-        //    }
-        //    return (await query.Select(n => new ClassResponse
-        //    {
-        //        ClassId = n.ClassId,
-        //        ClassCode = n.ClassCode,
-        //        SystemStatusId = n.SystemStatusId
-        //    }).ToListAsync());
-
         public async Task<ResponseApi> GetClass(int id)
         {
             var getClass = await _dbContext.Classes
@@ -118,6 +100,14 @@ namespace CMSFPTU_WebApi.Services
 
         public async Task<ResponseApi> Create(ClassRequest roomRequest)
         {
+            if ("".Equals(roomRequest.ClassCode))
+            {
+                return new ResponseApi
+                {
+                    Status = false,
+                    Message = Messages.Fail,
+                };
+            }
             var checkClass = await _dbContext.Classes.FirstOrDefaultAsync(n => n.ClassCode == roomRequest.ClassCode);
             if (checkClass != null)
             {
@@ -127,11 +117,10 @@ namespace CMSFPTU_WebApi.Services
                     Message = Messages.ClassAlreadyExists,
                 };
             }
-            var statusIsActive = (int)LkSystemStatus.Active;
             var createClass = new Class
             {
                 ClassCode = roomRequest.ClassCode,
-                SystemStatusId = statusIsActive
+                SystemStatusId = (int)LkSystemStatus.Active
             };
             _dbContext.Add(createClass);
             await _dbContext.SaveChangesAsync();
@@ -145,7 +134,6 @@ namespace CMSFPTU_WebApi.Services
         public async Task<ResponseApi> Update(int id, ClassRequest roomRequest)
         {
             var checkClass = await _dbContext.Classes.FirstOrDefaultAsync(n => n.ClassId == id);
-            var statusIsActive = (int)LkSystemStatus.Active;
             if (checkClass == null || checkClass.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
                 return new ResponseApi
@@ -157,7 +145,7 @@ namespace CMSFPTU_WebApi.Services
             else
             {
                 checkClass.ClassCode = roomRequest.ClassCode;
-                checkClass.SystemStatusId = statusIsActive;
+                checkClass.SystemStatusId = (int)LkSystemStatus.Active;
                 await _dbContext.SaveChangesAsync();
             }
 
