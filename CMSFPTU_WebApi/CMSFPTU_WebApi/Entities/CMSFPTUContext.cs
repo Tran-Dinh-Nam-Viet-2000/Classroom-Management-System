@@ -214,20 +214,15 @@ namespace CMSFPTU_WebApi.Entities
 
                 entity.Property(e => e.AccountId).HasColumnName("account_id");
 
-                entity.Property(e => e.Active).HasColumnName("active");
-
                 entity.Property(e => e.ClassId).HasColumnName("class_id");
 
                 entity.Property(e => e.RequestBy).HasColumnName("request_by");
 
                 entity.Property(e => e.RequestDate)
-                    .HasColumnType("date")
+                    .HasColumnType("datetime")
                     .HasColumnName("request_date");
 
-                entity.Property(e => e.RequestDescription)
-                    .IsRequired()
-                    .IsUnicode(false)
-                    .HasColumnName("request_description");
+                entity.Property(e => e.RequestDescription).HasColumnName("request_description");
 
                 entity.Property(e => e.RequestName)
                     .IsRequired()
@@ -235,22 +230,17 @@ namespace CMSFPTU_WebApi.Entities
                     .IsUnicode(false)
                     .HasColumnName("request_name");
 
-                entity.Property(e => e.RequestTime)
-                    .HasColumnType("datetime")
-                    .HasColumnName("request_time");
+                entity.Property(e => e.RequestTime).HasColumnName("request_time");
 
                 entity.Property(e => e.RoomId).HasColumnName("room_id");
 
                 entity.Property(e => e.SlotId).HasColumnName("slot_id");
-
-                entity.Property(e => e.Status).HasColumnName("status");
 
                 entity.Property(e => e.SubjectId).HasColumnName("subject_id");
 
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.Requests)
                     .HasForeignKey(d => d.AccountId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__request__account__49C3F6B7");
 
                 entity.HasOne(d => d.Class)
@@ -276,6 +266,12 @@ namespace CMSFPTU_WebApi.Entities
                     .HasForeignKey(d => d.SubjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__request__subject__4AB81AF0");
+
+                entity.HasOne(d => d.SystemStatus)
+                    .WithMany(p => p.Requests)
+                    .HasForeignKey(d => d.SystemStatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_RequestStatus");
             });
 
             modelBuilder.Entity<Role>(entity =>

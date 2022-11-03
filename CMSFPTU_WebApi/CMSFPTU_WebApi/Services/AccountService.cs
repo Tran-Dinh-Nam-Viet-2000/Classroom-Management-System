@@ -23,39 +23,6 @@ namespace CMSFPTU_WebApi.Services
             _dbContext = dbContext;
         }
 
-        //public async Task<IEnumerable<AccountResponse>> GetAccountAutoComplete(string search)
-        //{
-        //    var query = _dbContext.Set<Account>().Where(r => r.SystemStatusId == (int)LkSystemStatus.Active);
-        //    if (!string.IsNullOrEmpty(search))
-        //    {
-        //        var filters = search.Split(' ');
-        //        foreach (var kw in filters)
-        //        {
-        //            query = query.Where(n => n.AccountCode.ToLower().Contains(kw)
-        //                                  || n.Email.ToLower().Contains(kw)
-        //                                  || n.Firstname.ToLower().Contains(kw)
-        //                                  || n.Lastname.ToLower().Contains(kw)
-        //                                  || n.Phone.ToLower().Contains(kw));
-        //        }
-        //    }
-        //    return (await query.Select(n => new AccountResponse
-        //    {
-        //        AccountId = n.AccountId,
-        //        AccountCode = n.AccountCode,
-        //        CreatedAt = n.CreatedAt,
-        //        Email = n.Email,
-        //        Firstname = n.Firstname,
-        //        Lastname = n.Lastname,
-        //        Gender = n.Gender,
-        //        PasswordHash = n.PasswordHash,
-        //        Phone = n.Phone,
-        //        RoleId = n.RoleId,
-        //        SystemStatusId = n.SystemStatusId,
-        //        UpdatedAt = n.UpdatedAt,
-        //        ClassId = n.ClassId,
-        //    }).ToListAsync());
-        //}
-
         public async Task<IEnumerable<AccountResponse>> Get()
         {
             var accounts = await _dbContext.Accounts
@@ -277,7 +244,6 @@ namespace CMSFPTU_WebApi.Services
                 };
             }
             data.SystemStatusId = (int)LkSystemStatus.Deleted;
-            //_dbContext.Entry(data).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
 
             return new ResponseApi

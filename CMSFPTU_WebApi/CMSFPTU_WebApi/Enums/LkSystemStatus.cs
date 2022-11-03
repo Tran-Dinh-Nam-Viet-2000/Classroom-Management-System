@@ -8,6 +8,9 @@ namespace CMSFPTU_WebApi.Enums
     public enum LkSystemStatus
     {
         Active = 1,
-        Deleted,
+        Deleted = 2,
+        WaitingForApproval = 3,
+        Approved = 4,
+        Rejected = 5
     }
 }

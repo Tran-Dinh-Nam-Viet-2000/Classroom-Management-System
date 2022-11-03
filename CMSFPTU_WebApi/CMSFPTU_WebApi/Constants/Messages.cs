@@ -19,7 +19,7 @@ namespace CMSFPTU_WebApi.Constants
         public const string DataIsNotNull = "Success";
 
         //Fail
-        public const string Fail = "Please enter full information";
+        public const string Fail = "Please enter correctly";
 
         //Successfully(Add,Update,Delete,Restore)
         public const string SuccessfullyAddedNew = "Successfully added new";
@@ -27,6 +27,8 @@ namespace CMSFPTU_WebApi.Constants
         public const string SuccessfullyDeleted = "Successfully deleted";
         public const string SuccessfullyUpdated = "Successfully updated";
         public const string SuccessfullyLogined = "Successfully logined in";
+        public const string SuccessfullyApproved = "Successfully approved";
+        public const string SuccessfullyRejected = "Successfully rejected";
 
         //Already exists
         public const string ClassAlreadyExists = "Class already exists";
