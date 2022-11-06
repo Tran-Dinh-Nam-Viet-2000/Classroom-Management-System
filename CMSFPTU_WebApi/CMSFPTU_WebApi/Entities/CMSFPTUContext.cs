@@ -22,6 +22,7 @@ namespace CMSFPTU_WebApi.Entities
         public virtual DbSet<Class> Classes { get; set; }
         public virtual DbSet<ClassSubject> ClassSubjects { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
+        public virtual DbSet<RequestType> RequestTypes { get; set; }
         public virtual DbSet<Role> Roles { get; set; }
         public virtual DbSet<Room> Rooms { get; set; }
         public virtual DbSet<RoomType> RoomTypes { get; set; }
@@ -34,7 +35,8 @@ namespace CMSFPTU_WebApi.Entities
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer("Name=DefaultConnection");
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+                optionsBuilder.UseSqlServer("Data Source=TRANDINHNAMVIET\\SQLEXPRESS;Initial Catalog=CMSFPTU;Persist Security Info=True;User ID=sa;Password=123;");
             }
         }
 
@@ -185,8 +187,6 @@ namespace CMSFPTU_WebApi.Entities
 
             modelBuilder.Entity<ClassSubject>(entity =>
             {
-                entity.HasNoKey();
-
                 entity.ToTable("class_subject");
 
                 entity.Property(e => e.ClassId).HasColumnName("class_id");
@@ -194,16 +194,21 @@ namespace CMSFPTU_WebApi.Entities
                 entity.Property(e => e.SubjectId).HasColumnName("subject_id");
 
                 entity.HasOne(d => d.Class)
-                    .WithMany()
+                    .WithMany(p => p.ClassSubjects)
                     .HasForeignKey(d => d.ClassId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__class_sub__class__4F7CD00D");
 
                 entity.HasOne(d => d.Subject)
-                    .WithMany()
+                    .WithMany(p => p.ClassSubjects)
                     .HasForeignKey(d => d.SubjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__class_sub__subje__5070F446");
+
+                entity.HasOne(d => d.SystemStatus)
+                    .WithMany(p => p.ClassSubjects)
+                    .HasForeignKey(d => d.SystemStatusId)
+                    .HasConstraintName("FK_ClassSubjectStatus");
             });
 
             modelBuilder.Entity<Request>(entity =>
@@ -249,6 +254,11 @@ namespace CMSFPTU_WebApi.Entities
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__request__class_i__4D94879B");
 
+                entity.HasOne(d => d.RequestType)
+                    .WithMany(p => p.Requests)
+                    .HasForeignKey(d => d.RequestTypeId)
+                    .HasConstraintName("FK_RequestTypeReq");
+
                 entity.HasOne(d => d.Room)
                     .WithMany(p => p.Requests)
                     .HasForeignKey(d => d.RoomId)
@@ -272,6 +282,15 @@ namespace CMSFPTU_WebApi.Entities
                     .HasForeignKey(d => d.SystemStatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_RequestStatus");
+            });
+
+            modelBuilder.Entity<RequestType>(entity =>
+            {
+                entity.ToTable("RequestType");
+
+                entity.Property(e => e.RequestName)
+                    .IsRequired()
+                    .HasMaxLength(300);
             });
 
             modelBuilder.Entity<Role>(entity =>

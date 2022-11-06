@@ -9,17 +9,11 @@ namespace CMSFPTU_WebApi.Responses
     public class RequestTeacherResponse
     {
         public long RequestId { get; set; }
-        public string RequestName { get; set; }
-        public string RequestDescription { get; set; }
         public DateTime RequestDate { get; set; }
-        public DateTime RequestTime { get; set; }
         public long RequestBy { get; set; }
-        public long SubjectId { get; set; }
-        public long SlotId { get; set; }
-        public long RoomId { get; set; }
-        public long ClassId { get; set; }
         public int SystemStatusId { get; set; }
-
+        
+        public RequestType RequestType { get; set; }
         public Account Account { get; set; }
         public Class Class { get; set; }
         public Room Room { get; set; }

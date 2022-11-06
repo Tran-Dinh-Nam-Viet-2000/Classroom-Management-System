@@ -10,6 +10,7 @@ namespace CMSFPTU_WebApi.Entities
         public Class()
         {
             Accounts = new HashSet<Account>();
+            ClassSubjects = new HashSet<ClassSubject>();
             Requests = new HashSet<Request>();
             Schedules = new HashSet<Schedule>();
         }
@@ -20,6 +21,7 @@ namespace CMSFPTU_WebApi.Entities
 
         public virtual SystemStatus SystemStatus { get; set; }
         public virtual ICollection<Account> Accounts { get; set; }
+        public virtual ICollection<ClassSubject> ClassSubjects { get; set; }
         public virtual ICollection<Request> Requests { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
     }

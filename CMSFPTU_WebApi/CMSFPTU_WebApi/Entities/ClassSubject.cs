@@ -9,8 +9,11 @@ namespace CMSFPTU_WebApi.Entities
     {
         public long ClassId { get; set; }
         public long SubjectId { get; set; }
+        public int? SystemStatusId { get; set; }
+        public long ClassSubjectId { get; set; }
 
         public virtual Class Class { get; set; }
         public virtual Subject Subject { get; set; }
+        public virtual SystemStatus SystemStatus { get; set; }
     }
 }

@@ -29,12 +29,12 @@ namespace CMSFPTU_WebApi.Controllers
             return result;
         }
 
-        //[HttpPost]
-        //public async Task<ResponseApi> Create([FromForm] RequestTeacherRequest teacherRequest)
-        //{
-        //    var result = await _requestTeacher.Create(teacherRequest);
-        //    return result;
-        //}
+        [HttpPost]
+        public async Task<ResponseApi> Create([FromForm] RequestTeacherRequest teacherRequest)
+        {
+            var result = await _requestTeacher.Create(teacherRequest);
+            return result;
+        }
 
         [HttpGet("search-teacher-request")]
         public async Task<IEnumerable<RequestTeacherResponse>> SearchTeacherRequest(string keyword)
@@ -85,6 +85,29 @@ namespace CMSFPTU_WebApi.Controllers
         public async Task<ResponseApi> RequestReject(int id)
         {
             var result = await _requestTeacher.RequestReject(id);
+            return result;
+        }
+
+
+        //Filter
+        [HttpGet("get-request-type")]
+        public async Task<IEnumerable<RequestTypeResponse>> GetRequestType()
+        {
+            var result = await _requestTeacher.GetRequestType();
+            return result;
+        }
+
+        [HttpGet("get-subject")]
+        public async Task<IEnumerable<ClassSubjectForRequestResponse>> GetSubject(int classId)
+        {
+            var result = await _requestTeacher.GetSubject(classId);
+            return result;
+        }
+
+        [HttpGet("get-room")]
+        public async Task<IEnumerable<RoomResponse>> GetRoom(int slotId, DateTime requestDate)
+        {
+            var result = await _requestTeacher.GetRoom(slotId, requestDate);
             return result;
         }
     }

@@ -37,9 +37,6 @@ namespace CMSFPTU_WebApi
                 });
             });
 
-            //Set Identity
-            IdentityModelEventSource.ShowPII = true;
-
             //Register api service
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ILoginService, LoginService>();

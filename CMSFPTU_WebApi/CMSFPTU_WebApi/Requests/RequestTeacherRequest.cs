@@ -8,7 +8,7 @@ namespace CMSFPTU_WebApi.Requests
 {
     public class RequestTeacherRequest
     {
-        public string RequestName { get; set; }
+        public long RequestTypeId { get; set; }
         public DateTime RequestDate { get; set; }
         public long SubjectId { get; set; }
         public long SlotId { get; set; }

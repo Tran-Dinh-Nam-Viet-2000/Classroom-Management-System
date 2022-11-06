@@ -27,7 +27,7 @@ namespace CMSFPTU_WebApi.Services
                 .Select(n => new RequestTeacherResponse
                 {
                     RequestId = n.RequestId,
-                    RequestName = n.RequestName,
+                    RequestType = n.RequestType,
                     Class = n.Class,
                     Room = n.Room,
                     Slot = n.Slot,
@@ -87,13 +87,13 @@ namespace CMSFPTU_WebApi.Services
             var filter = await _dbContext.Requests.Where(n => n.SystemStatusId == (int)LkSystemStatus.WaitingForApproval
                                                            && n.SystemStatusId == (int)LkSystemStatus.Approved
                                                            && n.SystemStatusId == (int)LkSystemStatus.Rejected
-                                                           && (n.Class.ClassCode.ToLower().Contains(keyword) || n.RequestName.ToLower().Contains(keyword)
+                                                           && (n.Class.ClassCode.ToLower().Contains(keyword) || n.RequestType.RequestName.ToLower().Contains(keyword)
                                                                                                              || n.Room.RoomNumber.ToString().ToLower().Contains(keyword)
                                                                                                              || n.Subject.SubjectCode.ToLower().Contains(keyword)))
                 .Select(n => new RequestTeacherResponse
                 {
                     RequestId = n.RequestId,
-                    RequestName = n.RequestName,
+                    RequestType = n.RequestType,
                     Class = n.Class,
                     Room = n.Room,
                     Slot = n.Slot,
@@ -114,13 +114,13 @@ namespace CMSFPTU_WebApi.Services
             }
 
             var filter = await _dbContext.Requests.Where(n => n.SystemStatusId == (int)LkSystemStatus.WaitingForApproval
-                                                          && (n.Class.ClassCode.ToLower().Contains(keyword) || n.RequestName.ToLower().Contains(keyword)
+                                                          && (n.Class.ClassCode.ToLower().Contains(keyword) || n.RequestType.RequestName.ToLower().Contains(keyword)
                                                                                                             || n.Room.RoomNumber.ToString().ToLower().Contains(keyword)
                                                                                                             || n.Subject.SubjectCode.ToLower().Contains(keyword)))
                 .Select(n => new RequestTeacherResponse
                 {
                     RequestId = n.RequestId,
-                    RequestName = n.RequestName,
+                    RequestType = n.RequestType,
                     Class = n.Class,
                     Room = n.Room,
                     Slot = n.Slot,
@@ -133,29 +133,37 @@ namespace CMSFPTU_WebApi.Services
             return filter;
         }
 
-        //public async Task<ResponseApi> Create(RequestTeacherRequest teacherRequest)
-        //{
-        //    var createRequest = new Request
-        //    {
-        //        RequestName = teacherRequest.RequestName,
-        //        ClassId = teacherRequest.ClassId,
-        //        RoomId = teacherRequest.RoomId,
-        //        SlotId = teacherRequest.SlotId,
-        //        SubjectId = teacherRequest.SubjectId,
-        //        RequestBy = teacherRequest.AccountId,
-        //        SystemStatusId = (int)LkSystemStatus.WaitingForApproval,
-        //        RequestDate = teacherRequest.RequestDate
-        //    };
+        public async Task<ResponseApi> Create(RequestTeacherRequest teacherRequest)
+        {
+            var createRequest = new Request
+            {
+                RequestTypeId = teacherRequest.RequestTypeId,
+                ClassId = teacherRequest.ClassId,
+                RoomId = teacherRequest.RoomId,
+                SlotId = teacherRequest.SlotId,
+                SubjectId = teacherRequest.SubjectId,
+                RequestBy = teacherRequest.AccountId,
+                SystemStatusId = (int)LkSystemStatus.WaitingForApproval,
+                RequestDate = teacherRequest.RequestDate
+            };
 
-        //    _dbContext.Add(createRequest);
-        //    await _dbContext.SaveChangesAsync();
+            if (teacherRequest.RequestDate < DateTime.Now)
+            {
+                return new ResponseApi
+                {
+                    Status = true,
+                    Message = Messages.Fail
+                };
+            }
+            _dbContext.Add(createRequest);
+            await _dbContext.SaveChangesAsync();
 
-        //    return new ResponseApi
-        //    {
-        //        Status = true,
-        //        Message = Messages.SuccessfullyAddedNew
-        //    };
-        //}
+            return new ResponseApi
+            {
+                Status = true,
+                Message = Messages.SuccessfullyAddedNew
+            };
+        }
 
         public async Task<ResponseApi> Delete(int id)
         {
@@ -187,7 +195,7 @@ namespace CMSFPTU_WebApi.Services
                 .Select(n => new RequestTeacherResponse
                 {
                     RequestId = n.RequestId,
-                    RequestName = n.RequestName,
+                    RequestType = n.RequestType,
                     Class = n.Class,
                     Room = n.Room,
                     Slot = n.Slot,
@@ -221,6 +229,7 @@ namespace CMSFPTU_WebApi.Services
                 Message = Messages.SuccessfullyApproved,
             };
         }
+
         public async Task<ResponseApi> RequestReject(int id)
         {
             var request = _dbContext.Requests.FirstOrDefault(n => n.RequestId == id);
@@ -241,6 +250,50 @@ namespace CMSFPTU_WebApi.Services
                 Status = true,
                 Message = Messages.SuccessfullyRejected,
             };
+        }
+
+
+        //Filter
+        public async Task<IEnumerable<RequestTypeResponse>> GetRequestType()
+        {
+            var requestTypes =  await _dbContext.RequestTypes
+                .Select(n => new RequestTypeResponse
+                {
+                    RequestTypeId = n.RequestTypeId,
+                    RequestName = n.RequestName
+                }).ToListAsync();
+
+            return requestTypes;
+        }
+
+        public async Task<IEnumerable<ClassSubjectForRequestResponse>> GetSubject(int classId)
+        {
+            var classes = await _dbContext.ClassSubjects
+                .Select(n => new ClassSubjectForRequestResponse
+                {
+                    ClassId = n.ClassId,
+                    ClassSubjectId = n.ClassSubjectId,
+                    //Subject = n.Subject,
+                    SubjectId = n.SubjectId,
+                    SystemStatusId = n.SystemStatusId
+                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active && n.ClassId == classId).ToListAsync();
+
+            return classes;
+        }
+
+        public async Task<IEnumerable<RoomResponse>> GetRoom(int slotId, DateTime requestDate)
+        {
+            var requests = await _dbContext.Requests.Where(x => x.SlotId == slotId && x.RequestDate == requestDate)
+                .Select(x => x.Room.RoomId).ToListAsync();
+            var rooms = await _dbContext.Rooms.Where(x => !requests.Contains(x.RoomId))
+                .Select(n => new RoomResponse 
+                {
+                    RoomId = n.RoomId,
+                    RoomNumber = n.RoomNumber,
+                    SystemStatusId = n.SystemStatusId
+                }).ToListAsync();
+
+            return rooms;
         }
     }
 }

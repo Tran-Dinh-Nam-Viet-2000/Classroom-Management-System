@@ -19,9 +19,11 @@ namespace CMSFPTU_WebApi.Entities
         public long RoomId { get; set; }
         public long ClassId { get; set; }
         public int SystemStatusId { get; set; }
+        public long? RequestTypeId { get; set; }
 
         public virtual Account Account { get; set; }
         public virtual Class Class { get; set; }
+        public virtual RequestType RequestType { get; set; }
         public virtual Room Room { get; set; }
         public virtual Slot Slot { get; set; }
         public virtual Subject Subject { get; set; }
