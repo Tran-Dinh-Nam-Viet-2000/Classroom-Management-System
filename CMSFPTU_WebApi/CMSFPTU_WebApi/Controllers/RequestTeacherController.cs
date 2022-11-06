@@ -29,7 +29,7 @@ namespace CMSFPTU_WebApi.Controllers
             return result;
         }
 
-        [HttpPost]
+        [HttpPost("create")]
         public async Task<ResponseApi> Create([FromForm] RequestTeacherRequest teacherRequest)
         {
             var result = await _requestTeacher.Create(teacherRequest);
