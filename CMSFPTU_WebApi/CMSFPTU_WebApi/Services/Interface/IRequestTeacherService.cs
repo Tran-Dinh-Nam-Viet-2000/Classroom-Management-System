@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CMSFPTU_WebApi.Services.Interface
 {
-    public interface IRequestTeacher
+    public interface IRequestTeacherService
     {
         //Request from Teacher
         Task<IEnumerable<RequestTeacherResponse>> Get();

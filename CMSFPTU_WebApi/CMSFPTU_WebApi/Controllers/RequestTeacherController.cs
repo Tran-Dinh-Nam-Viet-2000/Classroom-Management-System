@@ -14,9 +14,9 @@ namespace CMSFPTU_WebApi.Controllers
     [ApiController]
     public class RequestTeacherController : ControllerBase
     {
-        private readonly IRequestTeacher _requestTeacher;
+        private readonly IRequestTeacherService _requestTeacher;
 
-        public RequestTeacherController(IRequestTeacher requestTeacher)
+        public RequestTeacherController(IRequestTeacherService requestTeacher)
         {
             _requestTeacher = requestTeacher;
         }

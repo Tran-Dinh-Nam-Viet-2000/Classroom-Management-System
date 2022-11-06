@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CMSFPTU_WebApi.Services
 {
-    public class RequestTeacherService : IRequestTeacher
+    public class RequestTeacherService : IRequestTeacherService
     {
         private readonly CMSFPTUContext _dbContext;
 

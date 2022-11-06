@@ -44,8 +44,8 @@ namespace CMSFPTU_WebApi
             services.AddScoped<IClassService, ClassService>();
             services.AddScoped<ISubjectService, SubjectService>();
             services.AddScoped<IRoomTypeService, RoomTypeService>();
-            services.AddScoped<IAccountSubjectService, AccountSubjectService>();
-            services.AddScoped<IRequestTeacher, RequestTeacherService>();
+            services.AddScoped<IClassSubjectService, ClassSubjectService>();
+            services.AddScoped<IRequestTeacherService, RequestTeacherService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
