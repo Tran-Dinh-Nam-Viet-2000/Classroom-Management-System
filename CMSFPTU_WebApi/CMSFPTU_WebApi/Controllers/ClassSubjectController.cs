@@ -87,5 +87,13 @@ namespace CMSFPTU_WebApi.Controllers
             var result = await _classSubjectService.GetClassSubjectDeleted(id);
             return result;
         }
+
+        //Get list account by class
+        [HttpGet("get-accounts")]
+        public async Task<IEnumerable<AccountsResponse>> GetAccounts(int classId)
+        {
+            var result = await _classSubjectService.GetAccounts(classId);
+            return result;
+        }
     }
 }

@@ -19,5 +19,7 @@ namespace CMSFPTU_WebApi.Services.Interface
         Task<ResponseApi> Restore(int id);
         Task<IEnumerable<ClassSubjectResponse>> GetDeleted();
         Task<ResponseApi> GetClassSubjectDeleted(int id);
+        //Get list account by class
+        Task<IEnumerable<AccountsResponse>> GetAccounts(int classId);
     }
 }

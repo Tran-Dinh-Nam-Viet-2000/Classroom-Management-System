@@ -251,5 +251,24 @@ namespace CMSFPTU_WebApi.Services
                 };
             }
         }
+
+        //Get list account by class
+        public async Task<IEnumerable<AccountsResponse>> GetAccounts(int classId)
+        {
+            var accounts = await _dbContext.Accounts
+                .Select(n => new AccountsResponse
+                {
+                    AccountId = n.AccountId,
+                    AccountCode = n.AccountCode,
+                    Email = n.Email,
+                    Firstname = n.Firstname,
+                    Lastname = n.Lastname,
+                    Gender = n.Gender,
+                    SystemStatusId = n.SystemStatusId,
+                    ClassId = (long)n.ClassId
+                }).Where(x => x.SystemStatusId == (int)LkSystemStatus.Active && x.ClassId == classId).ToListAsync();
+
+            return accounts;
+        }
     }
 }

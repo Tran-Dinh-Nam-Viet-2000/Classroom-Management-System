@@ -273,8 +273,7 @@ namespace CMSFPTU_WebApi.Services
                 {
                     ClassId = n.ClassId,
                     ClassSubjectId = n.ClassSubjectId,
-                    //Subject = n.Subject,
-                    SubjectId = n.SubjectId,
+                    Subject = n.Subject,
                     SystemStatusId = n.SystemStatusId
                 }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active && n.ClassId == classId).ToListAsync();
 

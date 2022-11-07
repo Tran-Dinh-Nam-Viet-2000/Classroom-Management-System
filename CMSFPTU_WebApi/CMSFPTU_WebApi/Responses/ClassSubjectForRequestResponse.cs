@@ -9,8 +9,7 @@ namespace CMSFPTU_WebApi.Responses
     public class ClassSubjectForRequestResponse
     {
         public long ClassId { get; set; }
-        public long SubjectId { get; set; }
-        //public Subject Subject { get; set; }
+        public Subject Subject { get; set; }
         public int? SystemStatusId { get; set; }
         public long ClassSubjectId { get; set; }
     }
