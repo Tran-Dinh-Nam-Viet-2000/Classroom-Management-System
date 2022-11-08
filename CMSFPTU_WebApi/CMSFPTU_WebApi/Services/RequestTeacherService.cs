@@ -48,7 +48,6 @@ namespace CMSFPTU_WebApi.Services
                 .Select(n => new Request
                 {
                     RequestId = n.RequestId,
-                    RequestName = n.RequestName,
                     Class = n.Class,
                     Room = n.Room,
                     Slot = n.Slot,
