@@ -9,7 +9,6 @@ namespace CMSFPTU_WebApi.Entities
     {
         public long RequestId { get; set; }
         public long? AccountId { get; set; }
-        public string RequestName { get; set; }
         public string RequestDescription { get; set; }
         public DateTime RequestDate { get; set; }
         public TimeSpan? RequestTime { get; set; }

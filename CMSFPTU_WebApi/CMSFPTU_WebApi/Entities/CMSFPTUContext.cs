@@ -229,12 +229,6 @@ namespace CMSFPTU_WebApi.Entities
 
                 entity.Property(e => e.RequestDescription).HasColumnName("request_description");
 
-                entity.Property(e => e.RequestName)
-                    .IsRequired()
-                    .HasMaxLength(50)
-                    .IsUnicode(false)
-                    .HasColumnName("request_name");
-
                 entity.Property(e => e.RequestTime).HasColumnName("request_time");
 
                 entity.Property(e => e.RoomId).HasColumnName("room_id");
