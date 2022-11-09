@@ -22,10 +22,10 @@ namespace CMSFPTU_WebApi.Controllers
         }
 
         //Request from Teacher
-        [HttpGet]
-        public async Task<IEnumerable<RequestTeacherResponse>> Get()
+        [HttpGet("get-by-accountId")]
+        public async Task<IEnumerable<RequestTeacherResponse>> Get(int accountId)
         {
-            var result = await _requestTeacher.Get();
+            var result = await _requestTeacher.Get(accountId);
             return result;
         }
 

@@ -21,7 +21,7 @@ namespace CMSFPTU_WebApi.Services
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<RequestTeacherResponse>> Get()
+        public async Task<IEnumerable<RequestTeacherResponse>> Get(int accountId)
         {
             var request = await _dbContext.Requests
                 .Select(n => new RequestTeacherResponse
@@ -35,9 +35,9 @@ namespace CMSFPTU_WebApi.Services
                     RequestBy = n.RequestBy,
                     RequestDate = n.RequestDate,
                     SystemStatusId = n.SystemStatusId
-                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.WaitingForApproval
-                           || n.SystemStatusId == (int)LkSystemStatus.Approved
-                           || n.SystemStatusId == (int)LkSystemStatus.Rejected).ToListAsync();
+                }).Where(n => (n.SystemStatusId == (int)LkSystemStatus.WaitingForApproval
+                            || n.SystemStatusId == (int)LkSystemStatus.Approved
+                            || n.SystemStatusId == (int)LkSystemStatus.Rejected) && n.RequestBy == accountId).ToListAsync();
 
             return request;
         }
@@ -48,6 +48,7 @@ namespace CMSFPTU_WebApi.Services
                 .Select(n => new Request
                 {
                     RequestId = n.RequestId,
+                    RequestType = n.RequestType,
                     Class = n.Class,
                     Room = n.Room,
                     Slot = n.Slot,
@@ -83,9 +84,9 @@ namespace CMSFPTU_WebApi.Services
                 return null;
             }
 
-            var filter = await _dbContext.Requests.Where(n => n.SystemStatusId == (int)LkSystemStatus.WaitingForApproval
-                                                           && n.SystemStatusId == (int)LkSystemStatus.Approved
-                                                           && n.SystemStatusId == (int)LkSystemStatus.Rejected
+            var filter = await _dbContext.Requests.Where(n => (n.SystemStatusId == (int)LkSystemStatus.WaitingForApproval
+                                                           || n.SystemStatusId == (int)LkSystemStatus.Approved
+                                                           || n.SystemStatusId == (int)LkSystemStatus.Rejected)
                                                            && (n.Class.ClassCode.ToLower().Contains(keyword) || n.RequestType.RequestName.ToLower().Contains(keyword)
                                                                                                              || n.Room.RoomNumber.ToString().ToLower().Contains(keyword)
                                                                                                              || n.Subject.SubjectCode.ToLower().Contains(keyword)))
