@@ -110,8 +110,8 @@ namespace CMSFPTU_WebApi.Services
 
         public async Task<ResponseApi> Create(ClassSubjectRequest classSubjectRequest)
         {
-            var query = _dbContext.ClassSubjects.Where(n => n.ClassId == classSubjectRequest.ClassId && n.SubjectId == classSubjectRequest.SubjectId);
-            if (query == null)
+            var query = await _dbContext.ClassSubjects.FirstOrDefaultAsync(n => n.ClassId == classSubjectRequest.ClassId && n.SubjectId == classSubjectRequest.SubjectId);
+            if (query != null)
             {
                 return new ResponseApi
                 {
