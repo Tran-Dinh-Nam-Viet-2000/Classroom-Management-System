@@ -111,7 +111,7 @@ namespace CMSFPTU_WebApi.Services
         public async Task<ResponseApi> Create(ClassSubjectRequest classSubjectRequest)
         {
             var query = _dbContext.ClassSubjects.Where(n => n.ClassId == classSubjectRequest.ClassId && n.SubjectId == classSubjectRequest.SubjectId);
-            if (query != null)
+            if (query == null)
             {
                 return new ResponseApi
                 {
@@ -123,7 +123,7 @@ namespace CMSFPTU_WebApi.Services
             {
                 ClassId = classSubjectRequest.ClassId,
                 SubjectId = classSubjectRequest.SubjectId,
-                SystemStatusId = classSubjectRequest.SystemStatusId
+                SystemStatusId = (int)LkSystemStatus.Active
             };
 
             _dbContext.ClassSubjects.AddRange(classSubject);
