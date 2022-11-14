@@ -268,8 +268,8 @@ namespace CMSFPTU_WebApi.Services
                     SystemStatusId = n.SystemStatusId,
                     ClassId = (long)n.ClassId,
                     RoleId = n.RoleId
-                }).Where(x => x.SystemStatusId == (int)LkSystemStatus.Active && x.ClassId == classId 
-                          && x.RoleId != (int)LkRoles.Teacher && x.RoleId != (int)LkRoles.Admin).ToListAsync();
+                }).Where(x => x.ClassId == classId && x.RoleId != (int)LkRoles.Teacher && x.RoleId != (int)LkRoles.Admin
+                           && x.SystemStatusId == (int)LkSystemStatus.Active).ToListAsync();
 
             return accounts;
         }
