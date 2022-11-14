@@ -90,7 +90,7 @@ namespace CMSFPTU_WebApi.Controllers
 
         //Get list account by class
         [HttpGet("get-accounts")]
-        public async Task<IEnumerable<AccountsResponse>> GetAccounts(int classId)
+        public async Task<IEnumerable<AccountInClassResponse>> GetAccounts(int classId)
         {
             var result = await _classSubjectService.GetAccounts(classId);
             return result;

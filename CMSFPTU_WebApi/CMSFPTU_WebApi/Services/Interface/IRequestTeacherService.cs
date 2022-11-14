@@ -11,7 +11,7 @@ namespace CMSFPTU_WebApi.Services.Interface
     {
         //Request from Teacher
         Task<IEnumerable<RequestTeacherResponse>> Get(int accountId);
-        Task<IEnumerable<RequestTeacherResponse>> SearchTeacherRequest(string keyword);
+        Task<IEnumerable<RequestTeacherResponse>> SearchTeacherRequest(string keyword, long accountId);
         Task<ResponseApi> GetRequestTeacher(int id);
         Task<ResponseApi> Create(RequestTeacherRequest teacherRequest);
         Task<ResponseApi> Delete(int id);

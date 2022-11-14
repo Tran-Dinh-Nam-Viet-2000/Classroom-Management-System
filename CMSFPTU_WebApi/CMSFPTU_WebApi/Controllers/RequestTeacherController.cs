@@ -37,9 +37,9 @@ namespace CMSFPTU_WebApi.Controllers
         }
 
         [HttpGet("search-teacher-request")]
-        public async Task<IEnumerable<RequestTeacherResponse>> SearchTeacherRequest(string keyword)
+        public async Task<IEnumerable<RequestTeacherResponse>> SearchTeacherRequest(string keyword, long accountId)
         {
-            var result = await _requestTeacher.SearchTeacherRequest(keyword);
+            var result = await _requestTeacher.SearchTeacherRequest(keyword, accountId);
             return result;
         }
 

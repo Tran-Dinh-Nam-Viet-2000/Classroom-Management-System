@@ -20,6 +20,6 @@ namespace CMSFPTU_WebApi.Services.Interface
         Task<IEnumerable<ClassSubjectResponse>> GetDeleted();
         Task<ResponseApi> GetClassSubjectDeleted(int id);
         //Get list account by class
-        Task<IEnumerable<AccountsResponse>> GetAccounts(int classId);
+        Task<IEnumerable<AccountInClassResponse>> GetAccounts(int classId);
     }
 }

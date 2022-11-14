@@ -253,10 +253,10 @@ namespace CMSFPTU_WebApi.Services
         }
 
         //Get list account by class
-        public async Task<IEnumerable<AccountsResponse>> GetAccounts(int classId)
+        public async Task<IEnumerable<AccountInClassResponse>> GetAccounts(int classId)
         {
             var accounts = await _dbContext.Accounts
-                .Select(n => new AccountsResponse
+                .Select(n => new AccountInClassResponse
                 {
                     AccountId = n.AccountId,
                     AccountCode = n.AccountCode,
@@ -264,9 +264,12 @@ namespace CMSFPTU_WebApi.Services
                     Firstname = n.Firstname,
                     Lastname = n.Lastname,
                     Gender = n.Gender,
+                    Phone = n.Phone,
                     SystemStatusId = n.SystemStatusId,
-                    ClassId = (long)n.ClassId
-                }).Where(x => x.SystemStatusId == (int)LkSystemStatus.Active && x.ClassId == classId).ToListAsync();
+                    ClassId = (long)n.ClassId,
+                    RoleId = n.RoleId
+                }).Where(x => x.SystemStatusId == (int)LkSystemStatus.Active && x.ClassId == classId 
+                          && x.RoleId != (int)LkRoles.Teacher && x.RoleId != (int)LkRoles.Admin).ToListAsync();
 
             return accounts;
         }

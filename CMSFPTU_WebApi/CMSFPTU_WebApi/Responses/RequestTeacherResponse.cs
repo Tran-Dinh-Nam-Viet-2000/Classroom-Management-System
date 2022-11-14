@@ -12,7 +12,8 @@ namespace CMSFPTU_WebApi.Responses
         public DateTime RequestDate { get; set; }
         public long RequestBy { get; set; }
         public int SystemStatusId { get; set; }
-        
+        public long AccountId { get; set; }
+
         public RequestType RequestType { get; set; }
         public Account Account { get; set; }
         public Class Class { get; set; }

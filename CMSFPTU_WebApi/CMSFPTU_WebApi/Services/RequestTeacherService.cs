@@ -77,14 +77,13 @@ namespace CMSFPTU_WebApi.Services
             };
         }
 
-        public async Task<IEnumerable<RequestTeacherResponse>> SearchTeacherRequest(string keyword)
+        public async Task<IEnumerable<RequestTeacherResponse>> SearchTeacherRequest(string keyword, long accountId)
         {
             if ("".Equals(keyword))
             {
                 return null;
             }
-
-            var filter = await _dbContext.Requests.Where(n => (n.SystemStatusId == (int)LkSystemStatus.WaitingForApproval
+            var filter = await _dbContext.Requests.Where(n => n.RequestBy == accountId && (n.SystemStatusId == (int)LkSystemStatus.WaitingForApproval
                                                            || n.SystemStatusId == (int)LkSystemStatus.Approved
                                                            || n.SystemStatusId == (int)LkSystemStatus.Rejected)
                                                            && (n.Class.ClassCode.ToLower().Contains(keyword) || n.RequestType.RequestName.ToLower().Contains(keyword)
@@ -92,6 +91,7 @@ namespace CMSFPTU_WebApi.Services
                                                                                                              || n.Subject.SubjectCode.ToLower().Contains(keyword)))
                 .Select(n => new RequestTeacherResponse
                 {
+
                     RequestId = n.RequestId,
                     RequestType = n.RequestType,
                     Class = n.Class,
@@ -284,7 +284,7 @@ namespace CMSFPTU_WebApi.Services
         {
             var requests = await _dbContext.Requests.Where(x => x.SlotId == slotId && x.RequestDate == requestDate)
                 .Select(x => x.Room.RoomId).ToListAsync();
-            var rooms = await _dbContext.Rooms.Where(x => !requests.Contains(x.RoomId))
+            var rooms = await _dbContext.Rooms.Where(x => x.SystemStatusId == (int)LkSystemStatus.Active && !requests.Contains(x.RoomId))
                 .Select(n => new RoomResponse 
                 {
                     RoomId = n.RoomId,
