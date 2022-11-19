@@ -20,6 +20,8 @@ namespace CMSFPTU_WebApi.Entities
         public virtual DbSet<Account> Accounts { get; set; }
         public virtual DbSet<AccountSubject> AccountSubjects { get; set; }
         public virtual DbSet<Class> Classes { get; set; }
+        public virtual DbSet<ClassRoom> ClassRooms { get; set; }
+        public virtual DbSet<ClassSlot> ClassSlots { get; set; }
         public virtual DbSet<ClassSubject> ClassSubjects { get; set; }
         public virtual DbSet<Request> Requests { get; set; }
         public virtual DbSet<RequestType> RequestTypes { get; set; }
@@ -124,13 +126,13 @@ namespace CMSFPTU_WebApi.Entities
                     .WithMany(p => p.Accounts)
                     .HasForeignKey(d => d.RoleId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__account__role_id__38996AB5");
+                    .HasConstraintName("FK__account__role_id__4E88ABD4");
 
                 entity.HasOne(d => d.SystemStatus)
                     .WithMany(p => p.Accounts)
                     .HasForeignKey(d => d.SystemStatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__account__LK_Acco__71D1E811");
+                    .HasConstraintName("FK__account__SystemS__4F7CD00D");
             });
 
             modelBuilder.Entity<AccountSubject>(entity =>
@@ -147,19 +149,19 @@ namespace CMSFPTU_WebApi.Entities
                     .WithMany(p => p.AccountSubjects)
                     .HasForeignKey(d => d.AccountId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__account_s__accou__52593CB8");
+                    .HasConstraintName("FK__account_s__accou__5165187F");
 
                 entity.HasOne(d => d.Subject)
                     .WithMany(p => p.AccountSubjects)
                     .HasForeignKey(d => d.SubjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__account_s__subje__534D60F1");
+                    .HasConstraintName("FK__account_s__subje__52593CB8");
 
                 entity.HasOne(d => d.SystemStatus)
                     .WithMany(p => p.AccountSubjects)
                     .HasForeignKey(d => d.SystemStatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__account_s__syste__607251E5");
+                    .HasConstraintName("FK__account_s__Syste__534D60F1");
             });
 
             modelBuilder.Entity<Class>(entity =>
@@ -178,7 +180,61 @@ namespace CMSFPTU_WebApi.Entities
                     .WithMany(p => p.Classes)
                     .HasForeignKey(d => d.SystemStatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__class__systemsta__2739D489");
+                    .HasConstraintName("FK__class__SystemSta__5441852A");
+            });
+
+            modelBuilder.Entity<ClassRoom>(entity =>
+            {
+                entity.ToTable("ClassRoom");
+
+                entity.Property(e => e.ClassId).HasColumnName("class_id");
+
+                entity.Property(e => e.RoomId).HasColumnName("room_id");
+
+                entity.HasOne(d => d.Class)
+                    .WithMany(p => p.ClassRooms)
+                    .HasForeignKey(d => d.ClassId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ClassRoomClass");
+
+                entity.HasOne(d => d.Room)
+                    .WithMany(p => p.ClassRooms)
+                    .HasForeignKey(d => d.RoomId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ClassRoomRoom");
+
+                entity.HasOne(d => d.SystemStatus)
+                    .WithMany(p => p.ClassRooms)
+                    .HasForeignKey(d => d.SystemStatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ClassRoomStatus");
+            });
+
+            modelBuilder.Entity<ClassSlot>(entity =>
+            {
+                entity.ToTable("ClassSlot");
+
+                entity.Property(e => e.ClassId).HasColumnName("class_id");
+
+                entity.Property(e => e.SlotId).HasColumnName("slot_id");
+
+                entity.HasOne(d => d.Class)
+                    .WithMany(p => p.ClassSlots)
+                    .HasForeignKey(d => d.ClassId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ClassSlotClass");
+
+                entity.HasOne(d => d.Slot)
+                    .WithMany(p => p.ClassSlots)
+                    .HasForeignKey(d => d.SlotId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ClassSlotSlot");
+
+                entity.HasOne(d => d.SystemStatus)
+                    .WithMany(p => p.ClassSlots)
+                    .HasForeignKey(d => d.SystemStatusId)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_ClassSlotStatus");
             });
 
             modelBuilder.Entity<ClassSubject>(entity =>
@@ -187,19 +243,23 @@ namespace CMSFPTU_WebApi.Entities
 
                 entity.Property(e => e.ClassId).HasColumnName("class_id");
 
+                entity.Property(e => e.EndDate).HasColumnType("datetime");
+
+                entity.Property(e => e.StartDate).HasColumnType("datetime");
+
                 entity.Property(e => e.SubjectId).HasColumnName("subject_id");
 
                 entity.HasOne(d => d.Class)
                     .WithMany(p => p.ClassSubjects)
                     .HasForeignKey(d => d.ClassId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__class_sub__class__4F7CD00D");
+                    .HasConstraintName("FK__class_sub__class__5535A963");
 
                 entity.HasOne(d => d.Subject)
                     .WithMany(p => p.ClassSubjects)
                     .HasForeignKey(d => d.SubjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__class_sub__subje__5070F446");
+                    .HasConstraintName("FK__class_sub__subje__5629CD9C");
 
                 entity.HasOne(d => d.SystemStatus)
                     .WithMany(p => p.ClassSubjects)
@@ -236,13 +296,13 @@ namespace CMSFPTU_WebApi.Entities
                 entity.HasOne(d => d.Account)
                     .WithMany(p => p.Requests)
                     .HasForeignKey(d => d.AccountId)
-                    .HasConstraintName("FK__request__account__49C3F6B7");
+                    .HasConstraintName("FK__request__account__5812160E");
 
                 entity.HasOne(d => d.Class)
                     .WithMany(p => p.Requests)
                     .HasForeignKey(d => d.ClassId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__request__class_i__4D94879B");
+                    .HasConstraintName("FK__request__class_i__5BE2A6F2");
 
                 entity.HasOne(d => d.RequestType)
                     .WithMany(p => p.Requests)
@@ -253,19 +313,19 @@ namespace CMSFPTU_WebApi.Entities
                     .WithMany(p => p.Requests)
                     .HasForeignKey(d => d.RoomId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__request__room_id__4CA06362");
+                    .HasConstraintName("FK__request__room_id__5AEE82B9");
 
                 entity.HasOne(d => d.Slot)
                     .WithMany(p => p.Requests)
                     .HasForeignKey(d => d.SlotId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__request__slot_id__4BAC3F29");
+                    .HasConstraintName("FK__request__slot_id__59FA5E80");
 
                 entity.HasOne(d => d.Subject)
                     .WithMany(p => p.Requests)
                     .HasForeignKey(d => d.SubjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__request__subject__4AB81AF0");
+                    .HasConstraintName("FK__request__subject__59063A47");
 
                 entity.HasOne(d => d.SystemStatus)
                     .WithMany(p => p.Requests)
@@ -321,19 +381,19 @@ namespace CMSFPTU_WebApi.Entities
                     .WithMany(p => p.Rooms)
                     .HasForeignKey(d => d.SystemStatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__room__systemstat__282DF8C2");
+                    .HasConstraintName("FK__room__SystemStat__5EBF139D");
 
                 entity.HasOne(d => d.Type)
                     .WithMany(p => p.Rooms)
                     .HasForeignKey(d => d.TypeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__room__type_id__46E78A0C");
+                    .HasConstraintName("FK__room__type_id__5FB337D6");
             });
 
             modelBuilder.Entity<RoomType>(entity =>
             {
                 entity.HasKey(e => e.TypeId)
-                    .HasName("PK__roomType__2C00059882B0B73C");
+                    .HasName("PK__roomType__2C000598946129D7");
 
                 entity.ToTable("roomType");
 
@@ -354,7 +414,7 @@ namespace CMSFPTU_WebApi.Entities
                 entity.HasOne(d => d.SystemStatus)
                     .WithMany(p => p.RoomTypes)
                     .HasForeignKey(d => d.SystemStatusId)
-                    .HasConstraintName("FK__roomType__system__4D5F7D71");
+                    .HasConstraintName("FK__roomType__System__60A75C0F");
             });
 
             modelBuilder.Entity<Schedule>(entity =>
@@ -379,25 +439,25 @@ namespace CMSFPTU_WebApi.Entities
                     .WithMany(p => p.Schedules)
                     .HasForeignKey(d => d.AccountId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__schedule__accoun__5629CD9C");
+                    .HasConstraintName("FK__schedule__accoun__619B8048");
 
                 entity.HasOne(d => d.Class)
                     .WithMany(p => p.Schedules)
                     .HasForeignKey(d => d.ClassId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__schedule__class___571DF1D5");
+                    .HasConstraintName("FK__schedule__class___628FA481");
 
                 entity.HasOne(d => d.Room)
                     .WithMany(p => p.Schedules)
                     .HasForeignKey(d => d.RoomId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__schedule__room_i__5812160E");
+                    .HasConstraintName("FK__schedule__room_i__6383C8BA");
 
                 entity.HasOne(d => d.Slot)
                     .WithMany(p => p.Schedules)
                     .HasForeignKey(d => d.SlotId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__schedule__slot_i__59063A47");
+                    .HasConstraintName("FK__schedule__slot_i__6477ECF3");
             });
 
             modelBuilder.Entity<Slot>(entity =>
@@ -441,7 +501,7 @@ namespace CMSFPTU_WebApi.Entities
                     .WithMany(p => p.Subjects)
                     .HasForeignKey(d => d.SystemStatusId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__subject__systems__29221CFB");
+                    .HasConstraintName("FK__subject__SystemS__656C112C");
             });
 
             modelBuilder.Entity<SystemStatus>(entity =>

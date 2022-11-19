@@ -11,6 +11,8 @@ namespace CMSFPTU_WebApi.Entities
         public long SubjectId { get; set; }
         public int? SystemStatusId { get; set; }
         public long ClassSubjectId { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
 
         public virtual Class Class { get; set; }
         public virtual Subject Subject { get; set; }
