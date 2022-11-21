@@ -12,84 +12,80 @@ using System.Threading.Tasks;
 
 namespace CMSFPTU_WebApi.Services
 {
-    public class ClassSubjectService : IClassSubjectService
+    public class ClassRoomService : IClassRoomService
     {
         private readonly CMSFPTUContext _dbContext;
 
-        public ClassSubjectService(CMSFPTUContext dbContext)
+        public ClassRoomService(CMSFPTUContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<ClassSubjectResponse>> Get()
+        public async Task<IEnumerable<ClassRoomResponse>> Get()
         {
-            var classSubjects = await _dbContext.ClassSubjects
-                .Select(n => new ClassSubjectResponse
+            var classRooms = await _dbContext.ClassRooms
+                .Select(n => new ClassRoomResponse
                 {
-                    ClassSubjectId = n.ClassSubjectId,
-                    ClassId = n.ClassId,
-                    ClassCode = n.Class.ClassCode,
-                    Subject = n.Subject,
-                    SystemStatusId = (int)n.SystemStatusId
+                    ClassRoomId = n.ClassRoomId,
+                    Class = n.Class,
+                    Room = n.Room,
+                    SystemStatusId = n.SystemStatusId
                 }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).ToListAsync();
 
-            return classSubjects;
+            return classRooms;
         }
 
-        public async Task<IEnumerable<ClassSubjectResponse>> SearchClassSubject(string keyword)
+        public async Task<IEnumerable<ClassRoomResponse>> SearchClassRoom(string keyword)
         {
             if ("".Equals(keyword))
             {
                 return null;
             }
-            var filter = await _dbContext.ClassSubjects
+            var filter = await _dbContext.ClassRooms
                 .Where(n => n.SystemStatusId == (int)LkSystemStatus.Active && (n.Class.ClassCode.ToLower().Contains(keyword)
-                                                                            || n.Subject.SubjectCode.ToLower().Contains(keyword)))
-                .Select(n => new ClassSubjectResponse
+                                                                            || n.Room.RoomNumber.ToString().ToLower().Contains(keyword)))
+                .Select(n => new ClassRoomResponse
                 {
-                    ClassSubjectId = n.ClassSubjectId,
-                    ClassId = n.ClassId,
-                    ClassCode = n.Class.ClassCode,
-                    Subject = n.Subject,
-                    SystemStatusId = (int)n.SystemStatusId
+                    ClassRoomId = n.ClassRoomId,
+                    Class = n.Class,
+                    Room = n.Room,
+                    SystemStatusId = n.SystemStatusId
                 }).ToListAsync();
 
             return filter;
         }
 
-        public async Task<IEnumerable<ClassSubjectResponse>> SearchClassSubjectDeleted(string keyword)
+        public async Task<IEnumerable<ClassRoomResponse>> SearchClassRoomDeleted(string keyword)
         {
             if ("".Equals(keyword))
             {
                 return null;
             }
-            var filter = await _dbContext.ClassSubjects
+            var filter = await _dbContext.ClassRooms
                 .Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted && (n.Class.ClassCode.ToLower().Contains(keyword)
-                                                                            || n.Subject.SubjectCode.ToLower().Contains(keyword)))
-                .Select(n => new ClassSubjectResponse
+                                                                            || n.Room.RoomNumber.ToString().ToLower().Contains(keyword)))
+                .Select(n => new ClassRoomResponse
                 {
-                    ClassSubjectId = n.ClassSubjectId,
-                    ClassId = n.ClassId,
-                    ClassCode = n.Class.ClassCode,
-                    Subject = n.Subject,
-                    SystemStatusId = (int)n.SystemStatusId
+                    ClassRoomId = n.ClassRoomId,
+                    Class = n.Class,
+                    Room = n.Room,
+                    SystemStatusId = n.SystemStatusId
                 }).ToListAsync();
 
             return filter;
         }
 
-        public async Task<ResponseApi> GetClassSubject(int id)
+        public async Task<ResponseApi> GetClassRoom(int id)
         {
-            var classSubject = await _dbContext.ClassSubjects
-                .Select(n => new ClassSubjectResponse
+            var classRoom = await _dbContext.ClassRooms
+                .Select(n => new ClassRoomResponse
                 {
-                    ClassSubjectId = n.ClassSubjectId,
-                    ClassId = n.ClassId,
-                    ClassCode = n.Class.ClassCode,
-                    Subject = n.Subject,
-                    SystemStatusId = (int)n.SystemStatusId
-                }).FirstOrDefaultAsync(n => n.ClassSubjectId == id);
-            if (classSubject == null || classSubject.SystemStatusId == (int)LkSystemStatus.Deleted)
+                    ClassRoomId = n.ClassRoomId,
+                    Class = n.Class,
+                    Room = n.Room,
+                    SystemStatusId = n.SystemStatusId
+                }).FirstOrDefaultAsync(n => n.ClassRoomId == id);
+            if (classRoom == null || classRoom.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
                 return new ResponseApi
                 {
@@ -103,15 +99,15 @@ namespace CMSFPTU_WebApi.Services
                 {
                     Status = true,
                     Message = Messages.DataIsNotNull,
-                    Body = classSubject
+                    Body = classRoom
                 };
             }
         }
 
-        public async Task<ResponseApi> Create(ClassSubjectRequest classSubjectRequest)
+        public async Task<ResponseApi> Create(ClassRoomRequest classSubjectRequest)
         {
-            var query = await _dbContext.ClassSubjects.FirstOrDefaultAsync(n => n.ClassId == classSubjectRequest.ClassId 
-                                                                             && n.SubjectId == classSubjectRequest.SubjectId);
+            var query = await _dbContext.ClassRooms.FirstOrDefaultAsync(n => n.ClassId == classSubjectRequest.ClassId 
+                                                                          && n.RoomId == classSubjectRequest.RoomId);
             if (query != null)
             {
                 return new ResponseApi
@@ -120,14 +116,14 @@ namespace CMSFPTU_WebApi.Services
                     Message = Messages.RecordAlreadyExists,
                 };
             }
-            var classSubject = new ClassSubject
+            var classRoom = new ClassRoom
             {
                 ClassId = classSubjectRequest.ClassId,
-                SubjectId = classSubjectRequest.SubjectId,
+                RoomId = classSubjectRequest.RoomId,
                 SystemStatusId = (int)LkSystemStatus.Active
             };
 
-            _dbContext.ClassSubjects.AddRange(classSubject);
+            _dbContext.ClassRooms.AddRange(classRoom);
             await _dbContext.SaveChangesAsync();
 
             return new ResponseApi
@@ -137,11 +133,11 @@ namespace CMSFPTU_WebApi.Services
             };
         }
 
-        public async Task<ResponseApi> Update(int id, ClassSubjectRequest classSubjectRequest)
+        public async Task<ResponseApi> Update(int id, ClassRoomRequest classSubjectRequest)
         {
-            var classSubject = await _dbContext.ClassSubjects.FirstOrDefaultAsync(n => n.ClassSubjectId == id);
+            var classRoom = await _dbContext.ClassRooms.FirstOrDefaultAsync(n => n.ClassRoomId == id);
 
-            if (classSubject == null || classSubject.SystemStatusId == (int)LkSystemStatus.Deleted)
+            if (classRoom == null || classRoom.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
                 return new ResponseApi
                 {
@@ -149,8 +145,8 @@ namespace CMSFPTU_WebApi.Services
                     Message = Messages.RecordIsNull,
                 };
             }
-            classSubject.SubjectId = classSubjectRequest.SubjectId;
-            classSubject.SystemStatusId = (int)LkSystemStatus.Active;
+            classRoom.RoomId = classSubjectRequest.RoomId;
+            classRoom.SystemStatusId = (int)LkSystemStatus.Active;
             await _dbContext.SaveChangesAsync();
 
             return new ResponseApi
@@ -162,8 +158,8 @@ namespace CMSFPTU_WebApi.Services
 
         public async Task<ResponseApi> Delete(int id)
         {
-            var classSubject = await _dbContext.ClassSubjects.FirstOrDefaultAsync(n => n.ClassSubjectId == id);
-            if (classSubject == null || classSubject.SystemStatusId == (int)LkSystemStatus.Deleted)
+            var classRoom = await _dbContext.ClassRooms.FirstOrDefaultAsync(n => n.ClassRoomId == id);
+            if (classRoom == null || classRoom.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
                 return new ResponseApi
                 {
@@ -171,9 +167,9 @@ namespace CMSFPTU_WebApi.Services
                     Message = Messages.RecordIsNull,
                 };
             }
-            classSubject.SystemStatusId = (int)LkSystemStatus.Deleted;
+            classRoom.SystemStatusId = (int)LkSystemStatus.Deleted;
             await _dbContext.SaveChangesAsync();
-
+            
             return new ResponseApi
             {
                 Status = true,
@@ -183,8 +179,8 @@ namespace CMSFPTU_WebApi.Services
 
         public async Task<ResponseApi> Restore(int id)
         {
-            var classSubject = await _dbContext.ClassSubjects.FirstOrDefaultAsync(n => n.ClassSubjectId == id);
-            if (classSubject == null || classSubject.SystemStatusId == (int)LkSystemStatus.Active)
+            var classRoom = await _dbContext.ClassRooms.FirstOrDefaultAsync(n => n.ClassRoomId == id);
+            if (classRoom == null || classRoom.SystemStatusId == (int)LkSystemStatus.Active)
             {
                 return new ResponseApi
                 {
@@ -194,7 +190,7 @@ namespace CMSFPTU_WebApi.Services
             }
             else
             {
-                classSubject.SystemStatusId = (int)LkSystemStatus.Active;
+                classRoom.SystemStatusId = (int)LkSystemStatus.Active;
                 await _dbContext.SaveChangesAsync();
 
                 return new ResponseApi
@@ -203,35 +199,33 @@ namespace CMSFPTU_WebApi.Services
                     Message = Messages.SuccessfullyDeleted,
                 };
             }
-        }
+        }        
 
-        public async Task<IEnumerable<ClassSubjectResponse>> GetDeleted()
+        public async Task<IEnumerable<ClassRoomResponse>> GetDeleted()
         {
-            var classSubject = await _dbContext.ClassSubjects
-                .Select(n => new ClassSubjectResponse
+            var classRooms = await _dbContext.ClassRooms
+                .Select(n => new ClassRoomResponse
                 {
-                    ClassSubjectId = n.ClassSubjectId,
-                    ClassId = n.ClassId,
-                    ClassCode = n.Class.ClassCode,
-                    Subject = n.Subject,
-                    SystemStatusId = (int)n.SystemStatusId
+                    ClassRoomId = n.ClassRoomId,
+                    Class = n.Class,
+                    Room = n.Room,
+                    SystemStatusId = n.SystemStatusId
                 }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted).ToListAsync();
 
-            return classSubject;
+            return classRooms;
         }
 
-        public async Task<ResponseApi> GetClassSubjectDeleted(int id)
+        public async Task<ResponseApi> GetClassRoomDeleted(int id)
         {
-            var classSubject = await _dbContext.ClassSubjects
-                .Select(n => new ClassSubjectResponse
+            var classRoom = await _dbContext.ClassRooms
+                .Select(n => new ClassRoomResponse
                 {
-                    ClassSubjectId = n.ClassSubjectId,
-                    ClassId = n.ClassId,
-                    ClassCode = n.Class.ClassCode,
-                    Subject = n.Subject,
-                    SystemStatusId = (int)n.SystemStatusId
-                }).FirstOrDefaultAsync(n => n.ClassSubjectId == id);
-            if (classSubject == null || classSubject.SystemStatusId == (int)LkSystemStatus.Active)
+                    ClassRoomId = n.ClassRoomId,
+                    Class = n.Class,
+                    Room = n.Room,
+                    SystemStatusId = n.SystemStatusId
+                }).FirstOrDefaultAsync(n => n.ClassRoomId == id);
+            if (classRoom == null || classRoom.SystemStatusId == (int)LkSystemStatus.Active)
             {
                 return new ResponseApi
                 {
@@ -245,7 +239,7 @@ namespace CMSFPTU_WebApi.Services
                 {
                     Status = true,
                     Message = Messages.DataIsNotNull,
-                    Body = classSubject
+                    Body = classRoom
                 };
             }
         }

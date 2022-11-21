@@ -8,12 +8,12 @@ namespace CMSFPTU_WebApi.Constants
     public class Messages
     {
         //Is null
-        public const string RoomTypeIsNull = "Room type does not exist";
-        public const string ClassIsNull = "Class does not exist";
-        public const string RoomIsNull = "Room does not exist";
-        public const string AccountIsNull = "Account does not exist";
-        public const string SubjectIsNull = "Subject does not exist";
-        public const string RecordIsNull = "Record does not exist";
+        public const string RoomTypeIsNull = "Room type does not exist, please try again";
+        public const string ClassIsNull = "Class does not exist, please try again";
+        public const string RoomIsNull = "Room does not exist, please try again";
+        public const string AccountIsNull = "Account does not exist, please try again";
+        public const string SubjectIsNull = "Subject does not exist, please try again";
+        public const string RecordIsNull = "Record does not exist, please try again";
 
         //Success
         public const string DataIsNotNull = "Success";
@@ -31,11 +31,12 @@ namespace CMSFPTU_WebApi.Constants
         public const string SuccessfullyRejected = "Successfully rejected";
 
         //Already exists
-        public const string ClassAlreadyExists = "Class already exists";
-        public const string RoomAlreadyExists = "Room already exists";
-        public const string RoomTypeAlreadyExists = "RoomType already exists";
-        public const string AccountAlreadyExists = "Account already exists";
-        public const string SubjectAlreadyExists = "Subject already exists";
+        public const string RecordAlreadyExists = "Record already exists, please try again";
+        public const string ClassAlreadyExists = "Class already exists, please try again";
+        public const string RoomAlreadyExists = "Room already exists, please try again";
+        public const string RoomTypeAlreadyExists = "RoomType already exists, please try again";
+        public const string AccountAlreadyExists = "Account already exists, please try again";
+        public const string SubjectAlreadyExists = "Subject already exists, please try again";
     }
 }
 
