@@ -30,6 +30,8 @@ namespace CMSFPTU_WebApi.Services
                     ClassId = n.ClassId,
                     ClassCode = n.Class.ClassCode,
                     Subject = n.Subject,
+                    StartDate = n.StartDate,
+                    EndDate = n.EndDate,
                     SystemStatusId = (int)n.SystemStatusId
                 }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).ToListAsync();
 
@@ -50,6 +52,8 @@ namespace CMSFPTU_WebApi.Services
                     ClassSubjectId = n.ClassSubjectId,
                     ClassId = n.ClassId,
                     ClassCode = n.Class.ClassCode,
+                    StartDate = n.StartDate,
+                    EndDate = n.EndDate,
                     Subject = n.Subject,
                     SystemStatusId = (int)n.SystemStatusId
                 }).ToListAsync();
@@ -71,6 +75,8 @@ namespace CMSFPTU_WebApi.Services
                     ClassSubjectId = n.ClassSubjectId,
                     ClassId = n.ClassId,
                     ClassCode = n.Class.ClassCode,
+                    StartDate = n.StartDate,
+                    EndDate = n.EndDate,
                     Subject = n.Subject,
                     SystemStatusId = (int)n.SystemStatusId
                 }).ToListAsync();
@@ -87,6 +93,8 @@ namespace CMSFPTU_WebApi.Services
                     ClassId = n.ClassId,
                     ClassCode = n.Class.ClassCode,
                     Subject = n.Subject,
+                    StartDate = n.StartDate,
+                    EndDate = n.EndDate,
                     SystemStatusId = (int)n.SystemStatusId
                 }).FirstOrDefaultAsync(n => n.ClassSubjectId == id);
             if (classSubject == null || classSubject.SystemStatusId == (int)LkSystemStatus.Deleted)
@@ -124,6 +132,8 @@ namespace CMSFPTU_WebApi.Services
             {
                 ClassId = classSubjectRequest.ClassId,
                 SubjectId = classSubjectRequest.SubjectId,
+                StartDate = classSubjectRequest.StartDate,
+                EndDate = classSubjectRequest.EndDate,
                 SystemStatusId = (int)LkSystemStatus.Active
             };
 
@@ -150,6 +160,8 @@ namespace CMSFPTU_WebApi.Services
                 };
             }
             classSubject.SubjectId = classSubjectRequest.SubjectId;
+            classSubject.StartDate = classSubjectRequest.StartDate;
+            classSubject.EndDate = classSubjectRequest.EndDate;
             classSubject.SystemStatusId = (int)LkSystemStatus.Active;
             await _dbContext.SaveChangesAsync();
 
@@ -213,6 +225,8 @@ namespace CMSFPTU_WebApi.Services
                     ClassSubjectId = n.ClassSubjectId,
                     ClassId = n.ClassId,
                     ClassCode = n.Class.ClassCode,
+                    StartDate = n.StartDate,
+                    EndDate = n.EndDate,
                     Subject = n.Subject,
                     SystemStatusId = (int)n.SystemStatusId
                 }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted).ToListAsync();
@@ -229,6 +243,8 @@ namespace CMSFPTU_WebApi.Services
                     ClassId = n.ClassId,
                     ClassCode = n.Class.ClassCode,
                     Subject = n.Subject,
+                    StartDate = n.StartDate,
+                    EndDate = n.EndDate,
                     SystemStatusId = (int)n.SystemStatusId
                 }).FirstOrDefaultAsync(n => n.ClassSubjectId == id);
             if (classSubject == null || classSubject.SystemStatusId == (int)LkSystemStatus.Active)

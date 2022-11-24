@@ -32,12 +32,13 @@ namespace CMSFPTU_WebApi.Services
                     Room = n.Room,
                     Slot = n.Slot,
                     Subject = n.Subject,
-                    RequestBy = n.RequestBy,
+                    AccountId = (long)n.AccountId,
+                    RequestByUser = n.Account.AccountCode,
                     RequestDate = n.RequestDate,
                     SystemStatusId = n.SystemStatusId
                 }).Where(n => (n.SystemStatusId == (int)LkSystemStatus.WaitingForApproval
                             || n.SystemStatusId == (int)LkSystemStatus.Approved
-                            || n.SystemStatusId == (int)LkSystemStatus.Rejected) && n.RequestBy == accountId).ToListAsync();
+                            || n.SystemStatusId == (int)LkSystemStatus.Rejected) && n.AccountId == accountId).ToListAsync();
 
             return request;
         }
@@ -53,18 +54,19 @@ namespace CMSFPTU_WebApi.Services
                     Room = n.Room,
                     Slot = n.Slot,
                     Subject = n.Subject,
-                    RequestBy = n.RequestBy,
+                    AccountId = (long)n.AccountId,
+                    RequestByUser = n.Account.AccountCode,
                     RequestDate = n.RequestDate,
                     SystemStatusId = n.SystemStatusId
-                }).FirstOrDefaultAsync(n => n.RequestId == id || n.SystemStatusId == (int)LkSystemStatus.WaitingForApproval
-                                                              || n.SystemStatusId == (int)LkSystemStatus.Approved
-                                                              || n.SystemStatusId == (int)LkSystemStatus.Rejected);
+                }).FirstOrDefaultAsync(n => n.RequestId == id && (n.SystemStatusId == (int)LkSystemStatus.WaitingForApproval
+                                                               || n.SystemStatusId == (int)LkSystemStatus.Approved
+                                                               || n.SystemStatusId == (int)LkSystemStatus.Rejected));
 
             if (request == null || request.SystemStatusId == (int)LkSystemStatus.Deleted)
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = Messages.RecordIsNull,
                 };
             }
@@ -83,7 +85,7 @@ namespace CMSFPTU_WebApi.Services
             {
                 return null;
             }
-            var filter = await _dbContext.Requests.Where(n => n.RequestBy == accountId && (n.SystemStatusId == (int)LkSystemStatus.WaitingForApproval
+            var filter = await _dbContext.Requests.Where(n => n.AccountId == accountId && (n.SystemStatusId == (int)LkSystemStatus.WaitingForApproval
                                                            || n.SystemStatusId == (int)LkSystemStatus.Approved
                                                            || n.SystemStatusId == (int)LkSystemStatus.Rejected)
                                                            && (n.Class.ClassCode.ToLower().Contains(keyword) || n.RequestType.RequestName.ToLower().Contains(keyword)
@@ -91,14 +93,14 @@ namespace CMSFPTU_WebApi.Services
                                                                                                              || n.Subject.SubjectCode.ToLower().Contains(keyword)))
                 .Select(n => new RequestTeacherResponse
                 {
-
                     RequestId = n.RequestId,
                     RequestType = n.RequestType,
                     Class = n.Class,
                     Room = n.Room,
                     Slot = n.Slot,
                     Subject = n.Subject,
-                    RequestBy = n.RequestBy,
+                    AccountId = (long)n.AccountId,
+                    RequestByUser = n.Account.AccountCode,
                     RequestDate = n.RequestDate,
                     SystemStatusId = n.SystemStatusId
                 }).ToListAsync();
@@ -125,7 +127,8 @@ namespace CMSFPTU_WebApi.Services
                     Room = n.Room,
                     Slot = n.Slot,
                     Subject = n.Subject,
-                    RequestBy = n.RequestBy,
+                    AccountId = (long)n.AccountId,
+                    RequestByUser = n.Account.AccountCode,
                     RequestDate = n.RequestDate,
                     SystemStatusId = n.SystemStatusId
                 }).ToListAsync();
@@ -142,7 +145,7 @@ namespace CMSFPTU_WebApi.Services
                 RoomId = teacherRequest.RoomId,
                 SlotId = teacherRequest.SlotId,
                 SubjectId = teacherRequest.SubjectId,
-                RequestBy = teacherRequest.AccountId,
+                AccountId = teacherRequest.AccountId,
                 SystemStatusId = (int)LkSystemStatus.WaitingForApproval,
                 RequestDate = teacherRequest.RequestDate
             };
@@ -151,7 +154,7 @@ namespace CMSFPTU_WebApi.Services
             {
                 return new ResponseApi
                 {
-                    Status = true,
+                    Status = false,
                     Message = Messages.Fail
                 };
             }
@@ -200,7 +203,8 @@ namespace CMSFPTU_WebApi.Services
                     Room = n.Room,
                     Slot = n.Slot,
                     Subject = n.Subject,
-                    RequestBy = n.RequestBy,
+                    AccountId = (long)n.AccountId,
+                    RequestByUser = n.Account.AccountCode,
                     RequestDate = n.RequestDate,
                     SystemStatusId = n.SystemStatusId
                 }).Where(n => n.SystemStatusId == (int)LkSystemStatus.WaitingForApproval).ToListAsync();

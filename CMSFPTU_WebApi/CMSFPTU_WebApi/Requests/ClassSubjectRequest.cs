@@ -9,6 +9,7 @@ namespace CMSFPTU_WebApi.Requests
     {
         public long ClassId { get; set; }
         public long SubjectId { get; set; }
-        public int SystemStatusId { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
     }
 }

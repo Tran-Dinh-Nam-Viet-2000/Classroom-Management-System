@@ -11,7 +11,6 @@ namespace CMSFPTU_WebApi.Entities
         {
             AccountSubjects = new HashSet<AccountSubject>();
             Requests = new HashSet<Request>();
-            Schedules = new HashSet<Schedule>();
         }
 
         public long AccountId { get; set; }
@@ -39,6 +38,5 @@ namespace CMSFPTU_WebApi.Entities
         public virtual SystemStatus SystemStatus { get; set; }
         public virtual ICollection<AccountSubject> AccountSubjects { get; set; }
         public virtual ICollection<Request> Requests { get; set; }
-        public virtual ICollection<Schedule> Schedules { get; set; }
     }
 }

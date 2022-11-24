@@ -14,7 +14,6 @@ namespace CMSFPTU_WebApi.Entities
             ClassSlots = new HashSet<ClassSlot>();
             ClassSubjects = new HashSet<ClassSubject>();
             Requests = new HashSet<Request>();
-            Schedules = new HashSet<Schedule>();
         }
 
         public long ClassId { get; set; }
@@ -27,6 +26,5 @@ namespace CMSFPTU_WebApi.Entities
         public virtual ICollection<ClassSlot> ClassSlots { get; set; }
         public virtual ICollection<ClassSubject> ClassSubjects { get; set; }
         public virtual ICollection<Request> Requests { get; set; }
-        public virtual ICollection<Schedule> Schedules { get; set; }
     }
 }

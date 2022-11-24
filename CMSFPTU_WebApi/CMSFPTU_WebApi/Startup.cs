@@ -49,6 +49,7 @@ namespace CMSFPTU_WebApi
             services.AddScoped<ICalendarService, CalendarService>();
             services.AddScoped<IClassRoomService, ClassRoomService>();
             services.AddScoped<IClassSlotService, ClassSlotService>();
+            services.AddScoped<IScheduleService, ScheduleService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

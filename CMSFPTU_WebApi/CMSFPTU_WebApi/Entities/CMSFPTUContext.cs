@@ -279,6 +279,11 @@ namespace CMSFPTU_WebApi.Entities
 
                 entity.Property(e => e.RequestBy).HasColumnName("request_by");
 
+                entity.Property(e => e.RequestByUser)
+                    .HasMaxLength(100)
+                    .IsUnicode(false)
+                    .HasColumnName("request_by_user");
+
                 entity.Property(e => e.RequestDate)
                     .HasColumnType("datetime")
                     .HasColumnName("request_date");
@@ -423,10 +428,6 @@ namespace CMSFPTU_WebApi.Entities
 
                 entity.Property(e => e.ScheduleId).HasColumnName("schedule_id");
 
-                entity.Property(e => e.AccountId).HasColumnName("account_id");
-
-                entity.Property(e => e.ClassId).HasColumnName("class_id");
-
                 entity.Property(e => e.RoomId).HasColumnName("room_id");
 
                 entity.Property(e => e.ScheduleDate)
@@ -435,17 +436,11 @@ namespace CMSFPTU_WebApi.Entities
 
                 entity.Property(e => e.SlotId).HasColumnName("slot_id");
 
-                entity.HasOne(d => d.Account)
+                entity.HasOne(d => d.ClassSubject)
                     .WithMany(p => p.Schedules)
-                    .HasForeignKey(d => d.AccountId)
+                    .HasForeignKey(d => d.ClassSubjectId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__schedule__accoun__619B8048");
-
-                entity.HasOne(d => d.Class)
-                    .WithMany(p => p.Schedules)
-                    .HasForeignKey(d => d.ClassId)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK__schedule__class___628FA481");
+                    .HasConstraintName("FK_Schedule_ClassSubject");
 
                 entity.HasOne(d => d.Room)
                     .WithMany(p => p.Schedules)
