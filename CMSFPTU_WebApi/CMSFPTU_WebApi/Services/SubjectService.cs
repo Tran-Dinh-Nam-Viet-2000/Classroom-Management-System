@@ -31,7 +31,7 @@ namespace CMSFPTU_WebApi.Services
                     SubjectCode = n.SubjectCode,
                     SubjectName = n.SubjectName,
                     SystemStatusId = n.SystemStatusId
-                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).ToListAsync();
+                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).OrderByDescending(x => x.SubjectId).ToListAsync();
 
             return subjects;
         }
@@ -201,7 +201,7 @@ namespace CMSFPTU_WebApi.Services
                     SubjectCode = n.SubjectCode,
                     SubjectName = n.SubjectName,
                     SystemStatusId = n.SystemStatusId
-                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted).ToListAsync();
+                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted).OrderByDescending(x => x.SubjectId).ToListAsync();
 
             return subjects;
         }

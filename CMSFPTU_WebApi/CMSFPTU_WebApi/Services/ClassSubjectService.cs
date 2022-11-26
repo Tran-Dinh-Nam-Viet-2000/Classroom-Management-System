@@ -33,7 +33,7 @@ namespace CMSFPTU_WebApi.Services
                     StartDate = n.StartDate,
                     EndDate = n.EndDate,
                     SystemStatusId = (int)n.SystemStatusId
-                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).ToListAsync();
+                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).OrderByDescending(x => x.ClassSubjectId).ToListAsync();
 
             return classSubjects;
         }
@@ -229,7 +229,7 @@ namespace CMSFPTU_WebApi.Services
                     EndDate = n.EndDate,
                     Subject = n.Subject,
                     SystemStatusId = (int)n.SystemStatusId
-                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted).ToListAsync();
+                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted).OrderByDescending(x => x.ClassSubjectId).ToListAsync();
 
             return classSubject;
         }

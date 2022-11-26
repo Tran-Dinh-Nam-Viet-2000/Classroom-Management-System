@@ -30,7 +30,7 @@ namespace CMSFPTU_WebApi.Services
                     Class = n.Class,
                     Room = n.Room,
                     SystemStatusId = n.SystemStatusId
-                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).ToListAsync();
+                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).OrderByDescending(x => x.ClassRoomId).ToListAsync();
 
             return classRooms;
         }
@@ -210,7 +210,7 @@ namespace CMSFPTU_WebApi.Services
                     Class = n.Class,
                     Room = n.Room,
                     SystemStatusId = n.SystemStatusId
-                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted).ToListAsync();
+                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted).OrderByDescending(x => x.ClassRoomId).ToListAsync();
 
             return classRooms;
         }

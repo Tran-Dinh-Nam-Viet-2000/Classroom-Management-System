@@ -10,6 +10,8 @@ namespace CMSFPTU_WebApi.Services.Interface
     public interface IScheduleService
     {
         Task<IEnumerable<ScheduleResponse>> Get(int accountId);
+        Task<IEnumerable<ScheduleResponse>> GetForAdmin();
         Task<ResponseApi> Create(ScheduleRequest scheduleRequest);
+        //Task<ResponseApi> Delete(int id);
     }
 }

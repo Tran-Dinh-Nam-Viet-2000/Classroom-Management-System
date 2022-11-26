@@ -453,6 +453,11 @@ namespace CMSFPTU_WebApi.Entities
                     .HasForeignKey(d => d.SlotId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__schedule__slot_i__6477ECF3");
+
+                entity.HasOne(d => d.SystemStatus)
+                    .WithMany(p => p.Schedules)
+                    .HasForeignKey(d => d.SystemStatusId)
+                    .HasConstraintName("FK_Schedule_Status");
             });
 
             modelBuilder.Entity<Slot>(entity =>

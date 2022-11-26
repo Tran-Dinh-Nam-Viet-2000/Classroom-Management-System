@@ -11,7 +11,7 @@ namespace CMSFPTU_WebApi.Responses
         public long ScheduleId { get; set; }
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
-
+        public int SystemStatusId { get; set; }
         public ClassSubject ClassSubject { get; set; }
         public Room Room { get; set; }
         public Slot Slot { get; set; }

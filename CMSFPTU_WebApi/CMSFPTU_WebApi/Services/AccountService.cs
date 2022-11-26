@@ -41,7 +41,7 @@ namespace CMSFPTU_WebApi.Services
                     SystemStatusId = n.SystemStatusId,
                     UpdatedAt = n.UpdatedAt,
                     Class = n.Class,
-                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).ToListAsync();
+                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).OrderByDescending(x => x.AccountId).ToListAsync();
 
             return accounts;
         }
@@ -293,7 +293,7 @@ namespace CMSFPTU_WebApi.Services
                     SystemStatusId = n.SystemStatusId,
                     UpdatedAt = n.UpdatedAt,
                     Class = n.Class,
-                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted).ToListAsync();
+                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted).OrderByDescending(x => x.AccountId).ToListAsync();
 
             return accounts;
         }

@@ -27,11 +27,25 @@ namespace CMSFPTU_WebApi.Controllers
             return result; 
         }
 
+        [HttpGet("get-for-admin")]
+        public async Task<IEnumerable<ScheduleResponse>> GetForAdmin()
+        {
+            var result = await _scheduleService.GetForAdmin();
+            return result;
+        }
+
         [HttpPost]
         public async Task<ResponseApi> Create(ScheduleRequest scheduleRequest)
         {
             var result = await _scheduleService.Create(scheduleRequest);
             return result;
         }
+
+        //[HttpDelete("delete")]
+        //public async Task<ResponseApi> Delete(int id)
+        //{
+        //    var result = await _scheduleService.Delete(id);
+        //    return result;
+        //}
     }
 }

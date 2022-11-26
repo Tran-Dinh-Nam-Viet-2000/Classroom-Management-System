@@ -29,7 +29,7 @@ namespace CMSFPTU_WebApi.Services
                     ClassId = n.ClassId,
                     ClassCode = n.ClassCode,
                     SystemStatusId = n.SystemStatusId
-                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).ToListAsync();
+                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).OrderByDescending(x => x.ClassId).ToListAsync();
 
             return classes;
         }
@@ -188,7 +188,7 @@ namespace CMSFPTU_WebApi.Services
                     ClassId = n.ClassId,
                     ClassCode = n.ClassCode,
                     SystemStatusId = n.SystemStatusId
-                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted).ToListAsync();
+                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Deleted).OrderByDescending(x => x.ClassId).ToListAsync();
 
             return classes;
         }

@@ -38,7 +38,7 @@ namespace CMSFPTU_WebApi.Services
                     SystemStatusId = n.SystemStatusId
                 }).Where(n => (n.SystemStatusId == (int)LkSystemStatus.WaitingForApproval
                             || n.SystemStatusId == (int)LkSystemStatus.Approved
-                            || n.SystemStatusId == (int)LkSystemStatus.Rejected) && n.AccountId == accountId).ToListAsync();
+                            || n.SystemStatusId == (int)LkSystemStatus.Rejected) && n.AccountId == accountId).OrderByDescending(x => x.RequestId).ToListAsync();
 
             return request;
         }
@@ -207,7 +207,7 @@ namespace CMSFPTU_WebApi.Services
                     RequestByUser = n.Account.AccountCode,
                     RequestDate = n.RequestDate,
                     SystemStatusId = n.SystemStatusId
-                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.WaitingForApproval).ToListAsync();
+                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.WaitingForApproval).OrderByDescending(x => x.RequestId).ToListAsync();
 
             return request;
         }
