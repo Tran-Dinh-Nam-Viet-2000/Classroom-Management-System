@@ -76,13 +76,13 @@ namespace CMSFPTU_WebApi.Services
 
         public async Task<IEnumerable<ScheduleResponse>> Get(int accountId)
         {
-            var schedule = await _dbContext.Schedules
+            var schedule = await _dbContext.Schedules.Include(x => x.ClassSubject).Include(a => a.ClassSubject.Class)
                 .Select(n => new ScheduleResponse
                 {
                     ClassSubject = n.ClassSubject,
                     Room = n.Room,
                     ScheduleId = n.ScheduleId,
-                    StartTime = new DateTime(n.ScheduleDate.Year, n.ScheduleDate.Month, n.ScheduleDate.Day, n.Slot.StartTime.Hours, n.Slot.StartTime.Minutes, n.Slot.StartTime.Seconds) ,
+                    StartTime = new DateTime(n.ScheduleDate.Year, n.ScheduleDate.Month, n.ScheduleDate.Day, n.Slot.StartTime.Hours, n.Slot.StartTime.Minutes, n.Slot.StartTime.Seconds),
                     EndTime = new DateTime(n.ScheduleDate.Year, n.ScheduleDate.Month, n.ScheduleDate.Day, n.Slot.EndTime.Hours, n.Slot.EndTime.Minutes, n.Slot.EndTime.Seconds),
                     Slot = n.Slot,
                     SystemStatusId = (int)n.SystemStatusId

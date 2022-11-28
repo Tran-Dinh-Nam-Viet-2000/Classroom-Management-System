@@ -52,6 +52,9 @@ namespace CMSFPTU_WebApi
             services.AddScoped<IScheduleService, ScheduleService>();
 
             services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(options =>
+    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CMSFPTU_WebApi", Version = "v1" });
