@@ -77,7 +77,7 @@ namespace CMSFPTU_WebApi.Services
 
         public async Task<IEnumerable<ScheduleResponse>> GetForAdmin()
         {
-            var schedules = await _dbContext.Schedules
+            var schedules = await _dbContext.Schedules.Include(x => x.ClassSubject).Include(x => x.ClassSubject.Class).Include(x => x.ClassSubject.Subject)
                 .Select(n => new ScheduleResponse
                 {
                     ClassSubject = n.ClassSubject,
