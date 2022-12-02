@@ -9,7 +9,6 @@ namespace CMSFPTU_WebApi.Entities
     {
         public Slot()
         {
-            ClassSlots = new HashSet<ClassSlot>();
             Requests = new HashSet<Request>();
             Schedules = new HashSet<Schedule>();
         }
@@ -18,7 +17,6 @@ namespace CMSFPTU_WebApi.Entities
         public TimeSpan StartTime { get; set; }
         public TimeSpan EndTime { get; set; }
 
-        public virtual ICollection<ClassSlot> ClassSlots { get; set; }
         public virtual ICollection<Request> Requests { get; set; }
         public virtual ICollection<Schedule> Schedules { get; set; }
     }

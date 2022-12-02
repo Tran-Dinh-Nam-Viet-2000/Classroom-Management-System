@@ -46,15 +46,12 @@ namespace CMSFPTU_WebApi
             services.AddScoped<IRoomTypeService, RoomTypeService>();
             services.AddScoped<IClassSubjectService, ClassSubjectService>();
             services.AddScoped<IRequestTeacherService, RequestTeacherService>();
-            services.AddScoped<ICalendarService, CalendarService>();
-            services.AddScoped<IClassRoomService, ClassRoomService>();
-            services.AddScoped<IClassSlotService, ClassSlotService>();
             services.AddScoped<IScheduleService, ScheduleService>();
 
             services.AddControllers();
             services.AddControllers().AddNewtonsoftJson(options =>
-    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
-);
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CMSFPTU_WebApi", Version = "v1" });

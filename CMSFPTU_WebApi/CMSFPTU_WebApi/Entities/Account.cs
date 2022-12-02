@@ -9,7 +9,6 @@ namespace CMSFPTU_WebApi.Entities
     {
         public Account()
         {
-            AccountSubjects = new HashSet<AccountSubject>();
             Requests = new HashSet<Request>();
         }
 
@@ -36,7 +35,6 @@ namespace CMSFPTU_WebApi.Entities
         public virtual Class Class { get; set; }
         public virtual Role Role { get; set; }
         public virtual SystemStatus SystemStatus { get; set; }
-        public virtual ICollection<AccountSubject> AccountSubjects { get; set; }
         public virtual ICollection<Request> Requests { get; set; }
     }
 }

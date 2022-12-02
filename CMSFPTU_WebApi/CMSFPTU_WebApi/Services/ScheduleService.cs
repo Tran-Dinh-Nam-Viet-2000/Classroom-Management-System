@@ -53,6 +53,50 @@ namespace CMSFPTU_WebApi.Services
             };
         }
 
+        public async Task<IEnumerable<ScheduleResponse>> Get(int accountId)
+        {
+            var schedule = await _dbContext.Schedules.Include(x => x.ClassSubject).Include(x => x.ClassSubject.Class).Include(x => x.ClassSubject.Subject)
+                .Select(n => new ScheduleResponse
+                {
+                    ClassSubject = n.ClassSubject,
+                    Room = n.Room,
+                    ScheduleId = n.ScheduleId,
+                    StartTime = new DateTime(n.ScheduleDate.Year, n.ScheduleDate.Month, 
+                                             n.ScheduleDate.Day, n.Slot.StartTime.Hours, 
+                                             n.Slot.StartTime.Minutes, n.Slot.StartTime.Seconds),
+                    EndTime = new DateTime(n.ScheduleDate.Year, n.ScheduleDate.Month, 
+                                           n.ScheduleDate.Day, n.Slot.EndTime.Hours, 
+                                           n.Slot.EndTime.Minutes, n.Slot.EndTime.Seconds),
+                    Slot = n.Slot,
+                    SystemStatusId = (int)n.SystemStatusId
+                }).Where(x => x.ClassSubject.Class.Accounts.Select(x =>x.AccountId).Contains(accountId)
+                           && x.SystemStatusId == (int)LkSystemStatus.Active)
+                  .OrderByDescending(x => x.ScheduleId).ToListAsync();
+            return schedule;
+        }
+
+        public async Task<IEnumerable<ScheduleResponse>> GetForAdmin()
+        {
+            var schedules = await _dbContext.Schedules
+                .Select(n => new ScheduleResponse
+                {
+                    ClassSubject = n.ClassSubject,
+                    Room = n.Room,
+                    ScheduleId = n.ScheduleId,
+                    Slot = n.Slot,
+                    StartTime = new DateTime(n.ScheduleDate.Year, n.ScheduleDate.Month, 
+                                             n.ScheduleDate.Day, n.Slot.StartTime.Hours, 
+                                             n.Slot.StartTime.Minutes, n.Slot.StartTime.Seconds),
+                    EndTime = new DateTime(n.ScheduleDate.Year, n.ScheduleDate.Month, 
+                                           n.ScheduleDate.Day, n.Slot.EndTime.Hours, 
+                                           n.Slot.EndTime.Minutes, n.Slot.EndTime.Seconds),
+                    SystemStatusId = (int)n.SystemStatusId
+                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active)
+                .OrderByDescending(x => x.ScheduleId).ToListAsync();
+
+            return schedules;
+        }
+
         //public async Task<ResponseApi> Delete(int id)
         //{
         //    var query = await _dbContext.Schedules.FirstOrDefaultAsync(n => n.ScheduleId == id);
@@ -73,39 +117,5 @@ namespace CMSFPTU_WebApi.Services
         //        Message = Messages.SuccessfullyDeleted
         //    };
         //}
-
-        public async Task<IEnumerable<ScheduleResponse>> Get(int accountId)
-        {
-            var schedule = await _dbContext.Schedules.Include(x => x.ClassSubject).Include(a => a.ClassSubject.Class)
-                .Select(n => new ScheduleResponse
-                {
-                    ClassSubject = n.ClassSubject,
-                    Room = n.Room,
-                    ScheduleId = n.ScheduleId,
-                    StartTime = new DateTime(n.ScheduleDate.Year, n.ScheduleDate.Month, n.ScheduleDate.Day, n.Slot.StartTime.Hours, n.Slot.StartTime.Minutes, n.Slot.StartTime.Seconds),
-                    EndTime = new DateTime(n.ScheduleDate.Year, n.ScheduleDate.Month, n.ScheduleDate.Day, n.Slot.EndTime.Hours, n.Slot.EndTime.Minutes, n.Slot.EndTime.Seconds),
-                    Slot = n.Slot,
-                    SystemStatusId = (int)n.SystemStatusId
-                }).Where(x => x.ClassSubject.Class.Accounts.Select(x =>x.AccountId).Contains(accountId)
-                    && x.SystemStatusId == (int)LkSystemStatus.Active).ToListAsync();
-            return schedule;
-        }
-
-        public async Task<IEnumerable<ScheduleResponse>> GetForAdmin()
-        {
-            var schedules = await _dbContext.Schedules
-                .Select(n => new ScheduleResponse
-                {
-                    ClassSubject = n.ClassSubject,
-                    Room = n.Room,
-                    ScheduleId = n.ScheduleId,
-                    Slot = n.Slot,
-                    StartTime = new DateTime(n.ScheduleDate.Year, n.ScheduleDate.Month, n.ScheduleDate.Day, n.Slot.StartTime.Hours, n.Slot.StartTime.Minutes, n.Slot.StartTime.Seconds),
-                    EndTime = new DateTime(n.ScheduleDate.Year, n.ScheduleDate.Month, n.ScheduleDate.Day, n.Slot.EndTime.Hours, n.Slot.EndTime.Minutes, n.Slot.EndTime.Seconds),
-                    SystemStatusId = (int)n.SystemStatusId
-                }).Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).ToListAsync();
-
-            return schedules;
-        }
     }
 }
