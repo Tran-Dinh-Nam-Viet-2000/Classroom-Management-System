@@ -31,6 +31,7 @@ namespace CMSFPTU_WebApi.Entities
         public long RoleId { get; set; }
         public int SystemStatusId { get; set; }
         public long? ClassId { get; set; }
+        public int? CodeRandom { get; set; }
 
         public virtual Class Class { get; set; }
         public virtual Role Role { get; set; }

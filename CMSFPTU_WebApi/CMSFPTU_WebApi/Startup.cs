@@ -47,6 +47,7 @@ namespace CMSFPTU_WebApi
             services.AddScoped<IClassSubjectService, ClassSubjectService>();
             services.AddScoped<IRequestTeacherService, RequestTeacherService>();
             services.AddScoped<IScheduleService, ScheduleService>();
+            services.AddScoped<IClassroomManagementService, ClassroomManagementService>();
 
             services.AddControllers();
             services.AddControllers().AddNewtonsoftJson(options =>

@@ -14,6 +14,7 @@ namespace CMSFPTU_WebApi.Constants
         public const string AccountIsNull = "Account does not exist, please try again";
         public const string SubjectIsNull = "Subject does not exist, please try again";
         public const string RecordIsNull = "Record does not exist, please try again";
+        public const string EmailIsNull = "Email does not exist, please try again";
 
         //Success
         public const string DataIsNotNull = "Success";

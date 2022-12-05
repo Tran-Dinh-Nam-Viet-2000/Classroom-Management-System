@@ -21,5 +21,8 @@ namespace CMSFPTU_WebApi.Services.Interface
         Task<ResponseApi> Restore(int id);
         Task<IEnumerable<AccountResponse>> GetDeleted();
         Task<ResponseApi> GetAccountDeleted(int id);
+        //Forgot password
+        Task<ResponseApi> ValidationForgotPassword(string email);
+        Task<ResponseApi> ValidationRandomPassword(int codeRandom, string email);
     }
 }

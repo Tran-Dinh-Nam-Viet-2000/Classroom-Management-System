@@ -224,7 +224,17 @@ namespace CMSFPTU_WebApi.Services
                     Message = Messages.RecordIsNull,
                 };
             }
+            var classs = _dbContext.Schedules.FirstOrDefault(n => n.ClassSubject.ClassId == request.ClassId
+                                                               && n.ClassSubject.SubjectId == request.SubjectId);
+
             request.SystemStatusId = (int)LkSystemStatus.Approved;
+            _dbContext.Schedules.Add(new Schedule {
+                RoomId = request.RoomId,
+                SlotId = request.SlotId,
+                ScheduleDate = request.RequestDate,
+                ClassSubjectId = classs.ClassSubjectId,
+                SystemStatusId = (int)LkSystemStatus.Active
+            });
             await _dbContext.SaveChangesAsync();
 
             return new ResponseApi
