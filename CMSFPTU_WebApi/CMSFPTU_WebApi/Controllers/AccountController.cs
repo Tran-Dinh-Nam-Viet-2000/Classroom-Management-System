@@ -84,19 +84,5 @@ namespace CMSFPTU_WebApi.Controllers
             var result = await _accountService.GetAccountDeleted(id);
             return result;
         }
-
-        [HttpPost("validation-forgot-password")]
-        public async Task<ResponseApi> ValidationForgotPassword(string email)
-        {
-            var result = await _accountService.ValidationForgotPassword(email);
-            return result;
-        }
-
-        [HttpPost("validation-random-password")]
-        public async Task<ResponseApi> ValidationRandomPassword(int codeRandom, string email)
-        {
-            var result = await _accountService.ValidationRandomPassword(codeRandom, email);
-            return result;
-        }
     }
 }

@@ -335,51 +335,5 @@ namespace CMSFPTU_WebApi.Services
                 };
             }
         }
-
-        public async Task<ResponseApi> ValidationForgotPassword(string email)
-        {
-            var checkEmail = _dbContext.Accounts.FirstOrDefault(n => n.Email == email);
-            if (checkEmail == null)
-            {
-                return new ResponseApi
-                {
-                    Status = false,
-                    Message = Messages.EmailIsNull
-                };
-            }
-            else
-            {
-                // Generate a random number  
-                Random random = new Random();
-                // Any random integer   
-                int num = random.Next();
-                checkEmail.CodeRandom = num;
-                await _dbContext.SaveChangesAsync();
-                //handle send email
-            }
-            return new ResponseApi
-            {
-                Status = true,
-                Message = Messages.DataIsNotNull
-            };
-        }
-
-        public async Task<ResponseApi> ValidationRandomPassword(int codeRandom, string email)
-        {
-            var checkAccount = await _dbContext.Accounts.FirstOrDefaultAsync(n => n.Email == email && n.CodeRandom == codeRandom);
-            if (checkAccount == null)
-            {
-                return new ResponseApi
-                {
-                    Status = false,
-                    Message = Messages.Fail
-                };
-            }
-            return new ResponseApi
-            {
-                Status = true,
-                Message = Messages.DataIsNotNull
-            };
-        }
     }
 }

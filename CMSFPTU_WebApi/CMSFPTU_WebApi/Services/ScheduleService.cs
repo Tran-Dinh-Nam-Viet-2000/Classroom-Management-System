@@ -55,7 +55,7 @@ namespace CMSFPTU_WebApi.Services
 
         public async Task<IEnumerable<ScheduleResponse>> Get(int accountId)
         {
-            var schedule = await _dbContext.Schedules.Include(x => x.ClassSubject).Include(x => x.ClassSubject.Class).Include(x => x.ClassSubject.Subject)
+            var schedule = await _dbContext.Schedules.Include(x => x.ClassSubject).Include(x => x.ClassSubject.Class).Include(x => x.ClassSubject.Subject).Include(x => x.ClassSubject.Class.Accounts)
                 .Select(n => new ScheduleResponse
                 {
                     ClassSubject = n.ClassSubject,
@@ -97,25 +97,33 @@ namespace CMSFPTU_WebApi.Services
             return schedules;
         }
 
-        //public async Task<ResponseApi> Delete(int id)
-        //{
-        //    var query = await _dbContext.Schedules.FirstOrDefaultAsync(n => n.ScheduleId == id);
-        //    if (query == null || query.SystemStatusId == (int)LkSystemStatus.Deleted)
-        //    {
-        //        return new ResponseApi
-        //        {
-        //            Status = false,
-        //            Message = Messages.RecordIsNull
-        //        };
-        //    }
-        //    query.SystemStatusId = (int)LkSystemStatus.Deleted;
-        //    await _dbContext.SaveChangesAsync();
+        public async Task<ResponseApi> GetSchedule(int scheduleId, int accountId)
+        {
+            var schedule = await _dbContext.Schedules
+                .Select(x => new ScheduleDetailsResponse
+                {
+                    ScheduleId = x.ScheduleId,
+                    ClassSubject = x.ClassSubject,
+                    ScheduleDate = x.ScheduleDate,
+                    Room = x.Room,
+                    Slot = x.Slot,
+                    SystemStatusId = (int)x.SystemStatusId
+                }).FirstOrDefaultAsync(n => n.ScheduleId == scheduleId && n.ClassSubject.Class.Accounts.Select(x => x.AccountId).Contains(accountId));
+            if (schedule == null || schedule.SystemStatusId == (int)LkSystemStatus.Rejected)
+            {
+                return new ResponseApi 
+                {
+                    Status = false,
+                    Message = Messages.RecordIsNull
+                };
+            }
 
-        //    return new ResponseApi
-        //    {
-        //        Status = true,
-        //        Message = Messages.SuccessfullyDeleted
-        //    };
-        //}
+            return new ResponseApi
+            {
+                Status = true,
+                Message = Messages.DataIsNotNull,
+                Body = schedule
+            };
+        }
     }
 }

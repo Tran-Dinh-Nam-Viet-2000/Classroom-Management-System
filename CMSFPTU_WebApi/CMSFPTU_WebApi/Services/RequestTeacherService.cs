@@ -228,7 +228,9 @@ namespace CMSFPTU_WebApi.Services
                                                                && n.ClassSubject.SubjectId == request.SubjectId);
 
             request.SystemStatusId = (int)LkSystemStatus.Approved;
-            _dbContext.Schedules.Add(new Schedule {
+
+            _dbContext.Schedules.Add(new Schedule
+            {
                 RoomId = request.RoomId,
                 SlotId = request.SlotId,
                 ScheduleDate = request.RequestDate,

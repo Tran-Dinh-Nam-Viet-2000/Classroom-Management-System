@@ -30,6 +30,7 @@ namespace CMSFPTU_WebApi.Constants
         public const string SuccessfullyLogined = "Successfully logined in";
         public const string SuccessfullyApproved = "Successfully approved";
         public const string SuccessfullyRejected = "Successfully rejected";
+        public const string ChangePasswordSuccessfully = "Change password successfully";
 
         //Already exists
         public const string RecordAlreadyExists = "Record already exists, please try again";
