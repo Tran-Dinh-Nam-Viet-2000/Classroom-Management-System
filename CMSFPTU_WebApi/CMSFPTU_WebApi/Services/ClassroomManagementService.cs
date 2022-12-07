@@ -21,22 +21,28 @@ namespace CMSFPTU_WebApi.Services
 
         public async Task<IEnumerable<ClassroomResponse>> Get(DateTime date, bool status)
         {
+            var rooms = _dbContext.Rooms.Where(n => n.SystemStatusId == (int)LkSystemStatus.Active).ToList();
             var query = _dbContext.Schedules;
             if (status)
             {
-                query.Where(n => n.ScheduleDate != date && n.SystemStatusId != (int)LkSystemStatus.Deleted);
+                return await query.Where(n => n.ScheduleDate == date && !rooms.Contains(n.Room))
+                    .Select(n => new ClassroomResponse
+                    {
+                        Date = n.ScheduleDate,
+                        RoomNumber = n.Room.RoomNumber,
+                        SlotId = n.SlotId
+                    }).ToListAsync();
             }
             else
             {
-                query.Where(n => n.ScheduleDate == date && n.SystemStatusId == (int)LkSystemStatus.Active);
+                return await query.Where(n => n.ScheduleDate == date && rooms.Contains(n.Room))
+                    .Select(n => new ClassroomResponse
+                    {
+                        Date = n.ScheduleDate,
+                        RoomNumber = n.Room.RoomNumber,
+                        SlotId = n.SlotId
+                    }).ToListAsync();
             }
-
-
-            return await query.Select(n => new ClassroomResponse { 
-                Date = n.ScheduleDate,
-                RoomNumber = n.Room.RoomNumber,
-                SlotId = n.SlotId
-            }).ToListAsync();
         }
     }
 }

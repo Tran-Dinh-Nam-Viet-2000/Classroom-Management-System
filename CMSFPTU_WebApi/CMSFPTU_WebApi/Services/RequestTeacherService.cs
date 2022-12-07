@@ -147,7 +147,8 @@ namespace CMSFPTU_WebApi.Services
                 SubjectId = teacherRequest.SubjectId,
                 AccountId = teacherRequest.AccountId,
                 SystemStatusId = (int)LkSystemStatus.WaitingForApproval,
-                RequestDate = teacherRequest.RequestDate
+                RequestDate = teacherRequest.RequestDate,
+                RequestTime = DateTime.Now
             };
 
             if (teacherRequest.RequestDate < DateTime.Now)
@@ -206,6 +207,7 @@ namespace CMSFPTU_WebApi.Services
                     AccountId = (long)n.AccountId,
                     RequestByUser = n.Account.AccountCode,
                     RequestDate = n.RequestDate,
+                    RequestTime = (DateTime)n.RequestTime,
                     SystemStatusId = n.SystemStatusId
                 }).Where(n => n.SystemStatusId == (int)LkSystemStatus.WaitingForApproval).OrderByDescending(x => x.RequestId).ToListAsync();
 
@@ -224,17 +226,23 @@ namespace CMSFPTU_WebApi.Services
                     Message = Messages.RecordIsNull,
                 };
             }
-            var classs = _dbContext.Schedules.FirstOrDefault(n => n.ClassSubject.ClassId == request.ClassId
-                                                               && n.ClassSubject.SubjectId == request.SubjectId);
-
             request.SystemStatusId = (int)LkSystemStatus.Approved;
-
+            var classSubject = _dbContext.Schedules.FirstOrDefault(n => n.ClassSubject.ClassId == request.ClassId
+                                                               && n.ClassSubject.SubjectId == request.SubjectId);
+            //if (classSubject == null)
+            //{
+            //    return new ResponseApi
+            //    {
+            //        Status = false,
+            //        Message = Messages.Fail,
+            //    };
+            //}
             _dbContext.Schedules.Add(new Schedule
             {
                 RoomId = request.RoomId,
                 SlotId = request.SlotId,
                 ScheduleDate = request.RequestDate,
-                ClassSubjectId = classs.ClassSubjectId,
+                ClassSubjectId = classSubject.ClassSubjectId,
                 SystemStatusId = (int)LkSystemStatus.Active
             });
             await _dbContext.SaveChangesAsync();

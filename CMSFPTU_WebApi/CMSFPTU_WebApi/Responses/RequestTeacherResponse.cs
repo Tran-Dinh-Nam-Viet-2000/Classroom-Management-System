@@ -10,6 +10,7 @@ namespace CMSFPTU_WebApi.Responses
     {
         public long RequestId { get; set; }
         public DateTime RequestDate { get; set; }
+        public DateTime RequestTime { get; set; }
         public long RequestBy { get; set; }
         public int SystemStatusId { get; set; }
         public long AccountId { get; set; }
