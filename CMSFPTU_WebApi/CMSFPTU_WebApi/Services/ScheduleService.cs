@@ -99,7 +99,8 @@ namespace CMSFPTU_WebApi.Services
 
         public async Task<ResponseApi> GetSchedule(int scheduleId, int accountId)
         {
-            var schedule = await _dbContext.Schedules.Include(n => n.ClassSubject).Include(n => n.ClassSubject.Class).Include(n => n.ClassSubject.Subject)
+            var schedule = await _dbContext.Schedules.Include(n => n.ClassSubject).Include(n => n.ClassSubject.Class)
+                .Include(n => n.ClassSubject.Subject).Include(n => n.ClassSubject.Class.Accounts)
                 .Select(x => new ScheduleDetailsResponse
                 {
                     ScheduleId = x.ScheduleId,
