@@ -39,7 +39,7 @@ namespace CMSFPTU_WebApi.Services
                     {
                         Date = n.ScheduleDate,
                         RoomNumber = n.Room.RoomNumber,
-                        SlotId = n.SlotId
+                        Slot = n.Slot
                     }).ToListAsync();
             }
         }
