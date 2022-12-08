@@ -21,9 +21,9 @@ namespace CMSFPTU_WebApi.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<ClassroomResponse>> Get(DateTime date, bool status)
+        public async Task<IEnumerable<ClassroomResponse>> Get(DateTime date, bool status, int slotId)
         {
-            var result = await _classroomManagementService.Get(date, status);
+            var result = await _classroomManagementService.Get(date, status, slotId);
             return result;
         }
     }

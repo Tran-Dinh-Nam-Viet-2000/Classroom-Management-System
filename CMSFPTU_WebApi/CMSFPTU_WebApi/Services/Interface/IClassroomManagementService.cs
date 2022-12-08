@@ -8,6 +8,6 @@ namespace CMSFPTU_WebApi.Services.Interface
 {
     public interface IClassroomManagementService
     {
-        Task<IEnumerable<ClassroomResponse>> Get(DateTime date, bool status);
+        Task<IEnumerable<ClassroomResponse>> Get(DateTime date, bool status, int slotId);
     }
 }

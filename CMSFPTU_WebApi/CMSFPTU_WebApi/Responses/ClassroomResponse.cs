@@ -8,8 +8,10 @@ namespace CMSFPTU_WebApi.Responses
 {
     public class ClassroomResponse
     {
+
         public DateTime Date { get; set; }
         public int RoomNumber { get; set; }
         public long SlotId { get; set; }
+        public long RoomId { get; set; }
     }
 }
