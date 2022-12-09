@@ -10,6 +10,7 @@ namespace CMSFPTU_WebApi.Responses
     {
         public DateTime Date { get; set; }
         public int RoomNumber { get; set; }
+        public RoomType RoomType { get; set; }
         public Slot Slot { get; set; }
         public long RoomId { get; set; }
     }
