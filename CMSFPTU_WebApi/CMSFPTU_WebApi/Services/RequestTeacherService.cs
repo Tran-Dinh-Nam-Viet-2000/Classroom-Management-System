@@ -318,5 +318,18 @@ namespace CMSFPTU_WebApi.Services
 
             return rooms;
         }
+
+        public async Task<IEnumerable<FilterClassResponse>> GetClass(int accountId)
+        {
+            var classes = await _dbContext.Accounts
+                .Select(n => new FilterClassResponse
+                {
+                    AccountId = n.AccountId,
+                    ClassId = n.Class.ClassId,
+                    ClassCode = n.Class.ClassCode,
+                    SystemStatusId = n.SystemStatusId,
+                }).Where(n => n.AccountId == accountId && n.SystemStatusId == (int)LkSystemStatus.Active).ToListAsync();
+            return classes;
+        }
     }
 }

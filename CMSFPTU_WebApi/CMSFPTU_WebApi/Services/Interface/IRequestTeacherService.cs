@@ -26,5 +26,6 @@ namespace CMSFPTU_WebApi.Services.Interface
         Task<IEnumerable<RequestTypeResponse>> GetRequestType();
         Task<IEnumerable<ClassSubjectForRequestResponse>> GetSubject(int classId);
         Task<IEnumerable<RoomResponse>> GetRoom(int slotId, DateTime requestDate);
+        Task<IEnumerable<FilterClassResponse>> GetClass(int accountId);
     }
 }

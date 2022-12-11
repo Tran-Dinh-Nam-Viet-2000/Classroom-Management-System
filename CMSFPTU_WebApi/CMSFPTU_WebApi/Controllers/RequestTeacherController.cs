@@ -110,5 +110,12 @@ namespace CMSFPTU_WebApi.Controllers
             var result = await _requestTeacher.GetRoom(slotId, requestDate);
             return result;
         }
+        [HttpGet("get-class")]
+        public async Task<IEnumerable<FilterClassResponse>> GetClass(int accountId)
+        {
+            var result = await _requestTeacher.GetClass(accountId);
+            return result;
+        }
+        
     }
 }
